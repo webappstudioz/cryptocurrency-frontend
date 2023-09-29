@@ -1,0 +1,7 @@
+export const REGISTER_USER = "register_user"
+export const REGISTER_USER_SUCCESSFUL = "register_user_successfull"
+export const REGISTER_USER_FAILED = "register_user_failed"
+export const REGISTER_USER_SOCIAL = "register_user_social"
+export const REMOVE_USER_DETAIL = "remove_user_detail" 
+export const REGISTER_SILENT = "register_silent"
+export const REGISTER_SILENT_SUCCESS = "register_silent_success"

@@ -1,0 +1,277 @@
+// 
+// authentication.scss
+//
+
+
+// authentication
+
+.authentication-bg {
+    background-color: #fff;  
+    img{
+        @media (max-width: 991.98px){
+            position: relative;
+            z-index:99;
+        }
+    }
+    .form-footer{
+        margin-top: 30px;
+    }
+    .form-g {
+        margin-bottom: 30px !important;
+    }
+    .form-check-input{
+        width: 20px;
+        height: 20px;
+        position: relative;
+        top: -3px;
+        background: #F5F5F7;
+        border: transparent;
+        border-radius: 6px;
+    }
+    .form-check{
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    label{
+        color:#9F9EB2;
+        margin-left: 8px;
+    }
+    .was-validated .form-control:invalid, .form-control.is-invalid{
+        box-shadow: 0px 12px 23px #FFEDED0f;
+        border-color: #FFEDED;
+      }
+      .form-control{
+        border-radius: 12px;
+        border: 1px solid #EFEFF2;
+        height: 46px;
+        padding: 0.47rem 25px 0.47rem 50px;       
+      }
+      .form-icon {
+        position: absolute;
+        top: 13px;
+        left: 17px;
+    }
+    .pw-icon {
+        position: absolute;
+        top: 14px;
+        right: 25px;
+        cursor:pointer;
+    }
+    .auth-logo {
+        .logo {
+            margin: 0px auto;
+        }
+    }
+
+    .row {
+        align-items: center;
+        min-height: 100vh;
+        height: 100% !important;
+
+        .left-panel {
+            position: relative;
+            z-index: 9;
+            text-align: center;
+            height: 100%;
+            padding-top: 30px;
+            @media (max-width: 991.98px){
+                padding: 50px 0px;
+            }
+            @media (max-width: 991.98px){
+                &:after{
+                    content: "";
+                    position: absolute;
+                    width: 100%;
+                    background-color: $sidebar-bg;
+                    background-image: url(../../../../assets/images/pattern-bg.png);
+                    left: 0;
+                    top: 0;
+                    height: 100%;
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                }
+            }
+            .inner-content {
+                margin-bottom: 50px;
+                p{
+                    font-size:14px;
+                    line-height: 24px; 
+                    color:#9F9EB2 !important; 
+                    font-weight: 600;   
+                      
+                }
+            }
+           
+            .slide-content {
+                @media (max-width: 991.98px){
+                    position: relative;
+                    z-index:99;
+                }
+                img {
+                    width: 458px;
+                    height: 337px;
+                    object-fit: contain;
+                    margin: 40px auto 0px;
+                    @media (max-width: 991.98px){
+                        width: 100%;
+                        position: relative;
+                        z-index: 99;                      
+                    }
+                }
+
+                h3 {
+                    font-size: 40px;
+                    font-weight: 700;
+                    line-height: 150%;
+                    margin-bottom: 16px;
+                }
+            }
+
+            .slick-dots {
+                @media (max-width: 991.98px){
+                    bottom: 10px;
+                }
+                li {
+                    width: 47px;
+
+                    button {
+                        width: 47px;
+
+                        &:before {
+                            width: 47px;
+                            height: 3px;
+                            background: rgba(255, 255, 255, 0.2);
+                            color: transparent;
+                        }
+                    }
+                }
+
+                .slick-active {
+                    button {
+                        &:before {
+                            background: #6062F9;
+                        }
+
+                    }
+                }
+
+            }
+        }
+        .right_content{
+            width:60%;
+            margin:0 auto;
+            @media (max-width: 991.98px){
+                width:100%;
+                margin-top:50px;
+                padding-bottom: 50px;
+            }
+            .s-icon{
+                height:30px;
+                object-fit: contain;
+                margin-bottom: 30px;
+                }
+            h5{
+                font-size:28px;
+                color:#3F3D65;
+                font-weight:700;
+                line-height: 150%;              
+            }
+            .sub_header{
+                position: relative;
+                margin-bottom:40px;
+                &:after{
+                    content: "";
+                    background: #EFEFF2;
+                    position: absolute;
+                    left: 0;
+                    top: 11px;
+                    height: 1px;
+                    width: 100%;
+                }
+                p{
+                    span{
+                        background:#fff;
+                        padding: 0px 16px;
+                        position: relative;
+                        z-index:9;
+                        font-weight:500;
+                    }
+                }
+            }          
+        }
+    }
+
+    &:after {
+        content: "";
+        position: absolute;
+        width: 50%;
+        background-color: $sidebar-bg;
+        background-image: url(../../../../assets/images/pattern-bg.png);
+        left: 0;
+        top: 0;
+        height: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        @media (max-width: 991.98px){
+            display:none;
+        }
+    }
+    .forgot-content {
+        margin-top: 12px;
+    }
+    .register{
+        .sub_header{
+            margin-bottom: 30px !important;
+        }
+    }
+
+}
+
+
+// signin card title
+
+.signin-other-title {
+    position: relative;
+
+    &:after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        left: 0;
+        right: 0;
+        background-color: $border-color;
+        top: 10px;
+    }
+
+    .title {
+        display: inline-block;
+        position: relative;
+        z-index: 9;
+        background-color: $card-bg;
+        padding: 2px 16px;
+    }
+}
+
+
+// auth carousel
+
+.auth-carousel {
+    &.owl-theme {
+        .owl-dots {
+            .owl-dot {
+                span {
+                    background-color: $card-bg;
+                }
+
+                &.active {
+                    span {
+                        background-color: $primary;
+                    }
+                }
+            }
+        }
+    }
+}
