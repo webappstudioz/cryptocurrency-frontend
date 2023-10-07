@@ -26,7 +26,7 @@ const RadialChart = () => {
     },
     series: [44, 55, 67, 83],
     labels: ['Computer', 'Tablet', 'Laptop', 'Mobile'],
-    colors: ['#6062F9', '#EFFFF0', '#50a5f1', '#f1b44c'],
+    colors: ['#285a3d', '#EFFFF0', '#50a5f1', '#f1b44c'],
   }
 
   return (

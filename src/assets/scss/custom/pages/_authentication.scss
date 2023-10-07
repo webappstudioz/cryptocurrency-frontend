@@ -82,8 +82,9 @@
                     content: "";
                     position: absolute;
                     width: 100%;
-                    background-color: $sidebar-bg;
-                    background-image: url(../../../../assets/images/pattern-bg.png);
+                    // background-color: $sidebar-bg;
+                    background-image: url(../../../../assets/images/c2c/logoGreen.jpg);
+                    // background-image: url(../../../../assets/images/pattern-bg.png);
                     left: 0;
                     top: 0;
                     height: 100%;
@@ -150,7 +151,7 @@
                 .slick-active {
                     button {
                         &:before {
-                            background: #6062F9;
+                            background: #285a3d;
                         }
 
                     }
@@ -207,7 +208,8 @@
         position: absolute;
         width: 50%;
         background-color: $sidebar-bg;
-        background-image: url(../../../../assets/images/pattern-bg.png);
+        background-image: url(../../../../assets/images/c2c/logoGreen.jpg);
+        // background-image: url(../../../../assets/images/pattern-bg.png);
         left: 0;
         top: 0;
         height: 100%;

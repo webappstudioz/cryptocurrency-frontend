@@ -1054,7 +1054,7 @@ const ProductCheckout = (props) => {
                       <div className="rs-product-left-payment-btn">
                         <Switch
                           borderRadius={6}
-                          onColor="#6062f9"
+                          onColor="#285a3d"
                           activeBoxShadow="0px 0px 1px 2px"
                           onChange={() => {
                             setCreditCardApplied(!creditCardApplied);

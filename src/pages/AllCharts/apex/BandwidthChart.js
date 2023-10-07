@@ -50,7 +50,7 @@ const BandwidthChart = ({ bandwidthChartData, product } = props) => {
       name: "Incoming",
       data: ddata || [],
       color: "#2d2e86",
-      borderColor: "#6062f9",
+      borderColor: "#285a3d",
     },
     {
       name: "Outgoing",
@@ -111,7 +111,7 @@ const BandwidthChart = ({ bandwidthChartData, product } = props) => {
         height: 8,
         strokeWidth: "3px",
         strokeColor: ["#2d2e86", "#5685c4"],
-        fillColors: ["#6062f9", "#AFB1FC"],
+        fillColors: ["#285a3d", "#AFB1FC"],
         radius: 8,
         offsetX: 0,
         offsetY: 0,

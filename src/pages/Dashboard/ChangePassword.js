@@ -39,7 +39,7 @@ const series1 = [{
 
 const options1 = {
   fill: {
-    colors: ['#6062F9']
+    colors: ['#285a3d']
   },
   chart: {
     width: 70,
@@ -112,7 +112,7 @@ const series3 = [55];
 
 const options3 = {
   fill: {
-    colors: ['#6062F9']
+    colors: ['#285a3d']
   },
   chart: {
     sparkline: {

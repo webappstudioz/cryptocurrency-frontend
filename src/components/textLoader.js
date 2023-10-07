@@ -18,7 +18,7 @@ const TextLoader = props => {
     <div >
       <LoadingBar 
         // color="#f11946"
-        color="linear-gradient(to right, #fd2839, #fb29fc, #6062f9)"
+        color="linear-gradient(to right, #fd2839, #fb29fc, #285a3d)"
         ref={ref} 
       />
       {loading? <div style={divStyle} className="loader-form mdc-linear-progress">

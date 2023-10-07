@@ -263,12 +263,12 @@ const BillingAddressModal = ({openModal, setOpenModal, setLoading} = props) => {
 					.min(3, "The company name must be at least 3 characters long.")
 					.max(20, "The company name can't be longer than 30 characters."),
 				phoneNumber: Yup.string()
-					.required("Please enter your phone number.")
+					// .required("Please enter your phone number.")
 					.matches(customRegex.phoneNumber, "Please enter a valid phone number."),
 				addressAuto: Yup.string().when('addressType', {
 					is: 'Automatically', // Use 'Automatically' to match addressType
 					then: Yup.string()
-						.required("Please enter your address.")
+						// .required("Please enter your address.")
 						.matches(customRegex.address, "Please enter a valid address.")
 						.matches(customRegex.spaces, "Please enter a valid address.")
 						.min(2, "The address must be at least 3 characters long.")
@@ -277,7 +277,7 @@ const BillingAddressModal = ({openModal, setOpenModal, setLoading} = props) => {
 				addressManual: Yup.string().when('addressType', {
 					is: 'Manually', // Use 'Manually' to match addressType
 					then: Yup.string()
-						.required("Please enter your address.")
+						// .required("Please enter your address.")
 						.matches(customRegex.address, "Please enter a valid address.")
 						.matches(customRegex.spaces, "Please enter a valid address.")
 						.min(2, "The address must be at least 3 characters long.")
@@ -286,7 +286,7 @@ const BillingAddressModal = ({openModal, setOpenModal, setLoading} = props) => {
 				city: Yup.string().when('addressType', {
 					is: 'Manually',
 					then: Yup.string()
-						.required("Please enter the name of your city.")
+						// .required("Please enter the name of your city.")
 						.matches(customRegex.address, "Please enter a valid city name.")
 						.min(3, "The city name must be at least 3 characters long.")
 						.max(30, "The city name can't be longer than 30 characters."),
@@ -295,7 +295,7 @@ const BillingAddressModal = ({openModal, setOpenModal, setLoading} = props) => {
 				zipCode: Yup.string().when('addressType', {
 					is: 'Manually',
 					then: Yup.string()
-						.required("Please enter your zip code.")
+						// .required("Please enter your zip code.")
 						.matches(customRegex.onlyDigitsRegex, "Please enter only digits for the zip code.")
 						.min(1, "The zip code must be at least 3 characters long.")
 						.max(10, "The zip code can't be longer than 30 characters."),
@@ -303,7 +303,7 @@ const BillingAddressModal = ({openModal, setOpenModal, setLoading} = props) => {
 				country: Yup.string().when('addressType', {
 					is: 'Manually',
 					then: Yup.string()
-						.required("Please enter your country.")
+						// .required("Please enter your country.")
 						.min(3, "The country must be at least 3 characters long.")
 						.max(30, "The country can't be longer than 30 characters."),
 				})
@@ -311,6 +311,8 @@ const BillingAddressModal = ({openModal, setOpenModal, setLoading} = props) => {
 			return schema
 		},
 		onSubmit: (values) => {
+			setOpenModal(false)
+			return
 			setSpinner({...spinner, step1:true})
 			setLoading(true)
 			setStep2Disabled(false)
@@ -484,8 +486,8 @@ const BillingAddressModal = ({openModal, setOpenModal, setLoading} = props) => {
 				<div className="modal-content ">
 					<div className="modal-body user-info">
 						<div className="stepwizard">
-							<h3 className="user-info">Update User Information</h3>
-							<div className={activeTab === "step-2" ? "stepwizard-row setup-panel active" : "stepwizard-row setup-panel"}>
+							<h3 className="user-info">Withdrawal Information</h3>
+							{/* <div className={activeTab === "step-2" ? "stepwizard-row setup-panel active" : "stepwizard-row setup-panel"}>
 								<div className="stepwizard-step">
 									<button
 										type="button"
@@ -517,7 +519,7 @@ const BillingAddressModal = ({openModal, setOpenModal, setLoading} = props) => {
 										}}
 									>Currency Information</p>
 								</div>
-							</div>
+							</div> */}
 						</div>
 						{/* <form role="form" action="" method="post"> */}
 						{activeTab === "step-1" &&
@@ -531,7 +533,7 @@ const BillingAddressModal = ({openModal, setOpenModal, setLoading} = props) => {
 										<Input
 											type="text"
 											className="form-control"
-											placeholder="Company Name (Optional)"
+											placeholder="please enter here"
 											name="companyName"
 											onChange={billingInfoForm.handleChange}
 											onBlur={billingInfoForm.handleBlur}
@@ -558,7 +560,7 @@ const BillingAddressModal = ({openModal, setOpenModal, setLoading} = props) => {
 											</>
 										) : null}
 									</div>
-									<div className="form-group">
+									{/* <div className="form-group">
 										<Input
 											type="tel"
 											id="phone"
@@ -608,8 +610,8 @@ const BillingAddressModal = ({openModal, setOpenModal, setLoading} = props) => {
 											</>
 										) : null}
 										<div id="flag-container"></div>
-									</div>
-									<div className="form-group manual_address_field">
+									</div> */}
+									{/* <div className="form-group manual_address_field">
 										{addressType === "Automatically" ?
 											<>
 											<Input
@@ -645,7 +647,7 @@ const BillingAddressModal = ({openModal, setOpenModal, setLoading} = props) => {
 												) : null}</>
 											
 											: null}
-									</div>
+									</div> */}
 									{addressType === "Manually" && <>
 									<div className="form-group manual_address_field">
 											<Input
@@ -776,9 +778,10 @@ const BillingAddressModal = ({openModal, setOpenModal, setLoading} = props) => {
 
 									</>}
 									<div className="form-group manually_address">
-										<span className="or">or</span>{" "}
+										<span className="or"></span>{" "}
 										<span className="manual_address" onClick={() => setAddressType(addressType === "Automatically" ? "Manually" : "Automatically")}>
-											Enter Address {addressType === "Automatically" ? "Manually" : "Automatically"}
+											Your Crypto Address 
+											{/* {addressType === "Automatically" ? "Manually" : "Automatically"} */}
 										</span>
 
 									</div>
@@ -787,7 +790,7 @@ const BillingAddressModal = ({openModal, setOpenModal, setLoading} = props) => {
 										type="submit"
 										disabled={spinner.step1}
 										ref={continueRef}
-									>{spinner.step1? <div className="ui active inline loader"></div> : "Continue"}</button>
+									>{spinner.step1? <div className="ui active inline loader"></div> : "Save"}</button>
 								</div>
 							</Form>
 						}

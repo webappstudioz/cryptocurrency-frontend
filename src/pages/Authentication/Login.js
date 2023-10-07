@@ -23,7 +23,7 @@ import logo from "../../assets/images/Logo.svg"
 import mockup from "../../assets/images/mockup.png"
 import rederror from "../../assets/images/redvalidationicon/rederror.jpg"
 import hand from "../../assets/images/hand.PNG"
-
+import logoGreen from "../../assets/images/c2c/logoGreen.jpg"
 import email from "../../assets/images/email.svg"
 import lock from "../../assets/images/Lock.svg"
 import google_i from "../../assets/images/super-g.svg"
@@ -73,17 +73,18 @@ const Login = props => {
 
     validationSchema: Yup.object({
       email: Yup.string()
-        .required("Please enter your email address")
+        // .required("Please enter your email address")
         .matches(customRegex.email, "Please enter a valid email address"),
       password: Yup.string()
-        .required("Please Enter Your Password")
+        // .required("Please Enter Your Password")
         .min(6, "Please Enter Valid Password"),
     }),
 
     onSubmit: async values => {
-      setSpinner(true)
-      setAction(true)
-      dispatch(loginUser(values, props.history, "mainlogin", invoiceId))
+      props.history.push("/dashboard")
+      // setSpinner(true)
+      // setAction(true)
+      // dispatch(loginUser(values, props.history, "mainlogin", invoiceId))
     },
   })
 
@@ -102,41 +103,41 @@ const Login = props => {
     }
   },[reduxData])
 
-  // const signIn = (res, type) => {
-  //   if (type === "google" && res) {
-  //     var data = new URLSearchParams({
-  //       first_name: res?.profileObj?.givenName,
-  //       last_name: res?.profileObj?.familyName,
-  //       email: res?.profileObj?.email,
-  //       social_id: res?.googleId,
-  //       imageUrl: res?.profileObj?.imageUrl,
-  //       social_type: "google",
-  //     })
-  //     dispatch(socialLogin(data, props.history, type, invoiceId))
-  //   } else if (type === "facebook" && res) {
-  //     const postData = {
-  //       name: res.name,
-  //       email: res.email,
-  //       token: res.accessToken,
-  //       idToken: res.tokenId,
-  //     }
-  //     dispatch(socialLogin(postData, props.history, type))
-  //   }
-  // }
+  const signIn = (res, type) => {
+    if (type === "google" && res) {
+      var data = new URLSearchParams({
+        first_name: res?.profileObj?.givenName,
+        last_name: res?.profileObj?.familyName,
+        email: res?.profileObj?.email,
+        social_id: res?.googleId,
+        imageUrl: res?.profileObj?.imageUrl,
+        social_type: "google",
+      })
+      dispatch(socialLogin(data, props.history, type, invoiceId))
+    } else if (type === "facebook" && res) {
+      const postData = {
+        name: res.name,
+        email: res.email,
+        token: res.accessToken,
+        idToken: res.tokenId,
+      }
+      dispatch(socialLogin(postData, props.history, type))
+    }
+  }
 
-  // //handleGoogleLoginResponse
-  // const responseGoogle = response => {
-  //   setLoader(true)
-  //   setAction(true)
-  //    if (response) {
-  //     signIn(response, "google")
-  //   }
-  // }
+  //handleGoogleLoginResponse
+  const responseGoogle = response => {
+    setLoader(true)
+    setAction(true)
+     if (response) {
+      signIn(response, "google")
+    }
+  }
 
-  // //handleFacebookLoginResponse
-  // const facebookResponse = response => {
-  //   signIn(response, "facebook")
-  // }
+  //handleFacebookLoginResponse
+  const facebookResponse = response => {
+    signIn(response, "facebook")
+  }
 
   useEffect(() => {
     document.body.className = "authentication-bg"
@@ -146,29 +147,28 @@ const Login = props => {
     }
   })
 
-  //login with google
-  // useEffect(() => {
-  //   const clientId =
-  //     "471779568255-ev1mm78t9g4tu4si9ms57n692qc0pnbu.apps.googleusercontent.com"
-  //   function start() {
-  //     gapi?.client?.init({
-  //       clientId: clientId,
-  //       scope: "",
-  //     })
-  //   }
-  //   gapi.load("client:auth2", start)
+  useEffect(() => {
+    const clientId =
+      "471779568255-ev1mm78t9g4tu4si9ms57n692qc0pnbu.apps.googleusercontent.com"
+    function start() {
+      gapi?.client?.init({
+        clientId: clientId,
+        scope: "",
+      })
+    }
+    gapi.load("client:auth2", start)
 
-  //   let data = read_cookie(SETTINGS.COOKIE_KEY)
-  //   if (data.length > 0) {
-  //     setRememberCheck(true)
-  //     let user = JSON.parse(decrypt(data))
-  //     setUserInfo(user)
-  //     let token = read_cookie(SETTINGS.userToken)
-  //     if (token.length > 0) {
-  //       dispatch(loginUser(user, props.history))
-  //     }
-  //   }
-  // }, [])
+    let data = read_cookie(SETTINGS.COOKIE_KEY)
+    if (data.length > 0) {
+      setRememberCheck(true)
+      let user = JSON.parse(decrypt(data))
+      setUserInfo(user)
+      let token = read_cookie(SETTINGS.userToken)
+      if (token.length > 0) {
+        dispatch(loginUser(user, props.history))
+      }
+    }
+  }, [])
 
   return (
     <React.Fragment>
@@ -178,9 +178,10 @@ const Login = props => {
         <Container fluid>
           <Row>
             <Col lg={6} className="left-panel">
-            <Link to="/productlist"><img src={logo} alt="" /> </Link>
-              <div className="slide-content">
-                <Slider {...settings}>
+              {/* <img src={logoGreen} /> */}
+            {/* <Link to="/productlist"><img src={logo} alt="" /> </Link> */}
+              {/* <div className="slide-content"> */}
+                {/* <Slider {...settings}>
                   <div>
                     <img src={mockup} alt="" />
                     <div className="inner-content">
@@ -214,15 +215,15 @@ const Login = props => {
                       </p>
                     </div>
                   </div>
-                </Slider>
-              </div>
+                </Slider> */}
+              {/* </div> */}
             </Col>
             <Col lg={6}>
               <div className="right_content">
                 <div className="text-center mt-2">
-                  {/* <img className="s-icon" src={hand} alt="" />
-                  <h5 className="m-0">Welcome Back !</h5> */}
-                  {/* <GoogleLogin
+                  <h5 className="m-0">Login</h5>
+              {/*     <img className="s-icon" src={hand} alt="" />
+                  <GoogleLogin
                     
                     clientId="471779568255-ev1mm78t9g4tu4si9ms57n692qc0pnbu.apps.googleusercontent.com"
                     buttonText="Login with gooogle"
@@ -240,12 +241,12 @@ const Login = props => {
                         Sign In with Google
                       </button>
                     )}
-                  /> */}
+                  />
                   <div className="sub_header">
                     <p className="text-muted m-0">
                       <span>or Sign in with Email</span>
                     </p>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="p-2 mt-4">

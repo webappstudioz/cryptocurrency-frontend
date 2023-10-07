@@ -262,7 +262,7 @@ export function WidBalance(props) {
           </div>
           <h6>
             {currency?.prefix}
-            {balance || "0.00"} {currency?.suffix}
+            {balance || "$0.00 USD"} {currency?.suffix}
           </h6>
         </div>
       </div>

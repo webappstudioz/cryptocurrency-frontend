@@ -23,34 +23,35 @@ const Authmiddleware = ({
        id = url[2]
      }
 
-      if(pathname === 'invoice-detail' && id && !localStorage.getItem("authUser")){
-        return (
-          <Redirect to={{
-            pathname: "/login",
-            state: {
-              invoiceid: id
-            }
-          }}/>
-        )
-      } else if (isAuthProtected && !localStorage.getItem("authUser")) {
-        return (
-          <Redirect
-            to={{ pathname: "/productlist", state: { from: props.location } }}
-          />
-        );
-      } else if(localStorage.getItem("authUser") && props?.location.pathname == "/login" ){
-        return (
-          <Redirect
-            to={{ pathname: "/dashboard"}}
-          />
-        );
-      } else if(localStorage.getItem("authUser") && props?.location.pathname != "/dashboard" && info?.profile_completed === 0 && props?.location.pathname !="/product-checkout"){
-        return (
-          <Redirect
-            to={{ pathname: "/dashboard"}}
-          />
-        );
-      }
+      
+      // if(pathname === 'invoice-detail' && id && !localStorage.getItem("authUser")){
+      //   return (
+      //     <Redirect to={{
+      //       pathname: "/login",
+      //       state: {
+      //         invoiceid: id
+      //       }
+      //     }}/>
+      //   )
+      // } else if (isAuthProtected && !localStorage.getItem("authUser")) {
+      //   return (
+      //     <Redirect
+      //       to={{ pathname: "/productlist", state: { from: props.location } }}
+      //     />
+      //   );
+      // } else if(localStorage.getItem("authUser") && props?.location.pathname == "/login" ){
+      //   return (
+      //     <Redirect
+      //       to={{ pathname: "/dashboard"}}
+      //     />
+      //   );
+      // } else if(localStorage.getItem("authUser") && props?.location.pathname != "/dashboard" && info?.profile_completed === 0 && props?.location.pathname !="/product-checkout"){
+      //   return (
+      //     <Redirect
+      //       to={{ pathname: "/dashboard"}}
+      //     />
+      //   );
+      // }
    
       return (
         <Layout>

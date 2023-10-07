@@ -5,7 +5,7 @@ const PieChart = () => {
   const series = [44, 55, 41, 17, 15]
   const options = {
     labels: ["Series 1", "Series 2", "Series 3", "Series 4", "Series 5"],
-    colors: ["#EFFFF0", "#6062F9", "#f1b44c", "#50a5f1", "#FFEDED"],
+    colors: ["#EFFFF0", "#285a3d", "#f1b44c", "#50a5f1", "#FFEDED"],
     legend: {
       show: !0,
       position: 'bottom',

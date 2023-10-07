@@ -85,6 +85,8 @@ const StepVerification = () => {
     }),
 
     onSubmit: () => {
+      navigate.push("/dashboard")
+      return
       setSpinner(true)
       setAction(true)
       var data = new URLSearchParams({
@@ -173,7 +175,7 @@ const StepVerification = () => {
         <Container fluid>
           <Row>
             <Col lg={6} sm={12} className="left-panel">
-              <Link to="/productlist">
+              {/* <Link to="/productlist">
                 <img src={logo} alt="" />{" "}
               </Link>
               <div className="slide-content">
@@ -212,13 +214,13 @@ const StepVerification = () => {
                     </div>
                   </div>
                 </Slider>
-              </div>
+              </div> */}
             </Col>
             <Col lg={6}>
               <div className="right_content">
                 <div className="text-center mt-2">
                   <img className="s-icon mb-0 mb-3" src={tick} alt="" />
-                  <h5 className="m-0">2 - Step Verification</h5>
+                  <h5 className="m-0">Verification</h5>
                   <div className="forgot-content">
                     {userInfo?.email ? (
                       <p className="text-muted m-0 font-normal">
@@ -285,7 +287,7 @@ const StepVerification = () => {
                             caretColor: "#3F3D65",
                           }}
                           focusStyle={{
-                            border: "1px solid #6062F9",
+                            border: "1px solid #285a3d",
                             outline: "none",
                             borderRadius: "12px",
                           }}

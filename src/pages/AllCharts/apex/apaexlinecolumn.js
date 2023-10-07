@@ -47,7 +47,7 @@ const Apaexlinecolumn = () => {
       name: 'Free Cash Flow',
       data: [37, 42, 38, 26, 47, 50, 54, 55, 43]
     }],
-    colors: ['#f1b44c', '#6062F9', '#EFFFF0'],
+    colors: ['#f1b44c', '#285a3d', '#EFFFF0'],
     xaxis: {
       categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
     },

@@ -163,7 +163,7 @@ export function isValidJson(jsonString) {
 
 //set page title
 export const setPageTitle = title => {
-  document.title = `RedSwitches - ${title}`
+  document.title = `C2C - ${title}`
   return title
 }
 

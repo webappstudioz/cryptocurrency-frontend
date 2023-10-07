@@ -96,7 +96,7 @@ const SidebarContent = props => {
             <li>
               <Link to="/productlist" className="waves-effect">
                 <img src={server} alt="" />
-                <span>Bare-MetalServers</span>
+                <span>Bare-MetalServersss</span>
               </Link>
             </li>
             <li>

@@ -82,7 +82,7 @@ const AnnouncmentDetail = (props) => {
                 to="/announcments"
                 type="button"
                 style={{
-                  backgroundColor: "#6062F9",
+                  backgroundColor: "#285a3d",
                   borderRadius: "7px",
                   color: "white",
                 }}

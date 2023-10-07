@@ -69,10 +69,10 @@ const MyAccount = props => {
     },
     validationSchema: Yup.object({
       firstName: Yup.string()
-        .required("First name required.")
+        // .required("First name required.")
         .matches(/^[A-Za-z]+$/, "Only albhabets are allowed."),
       lastName: Yup.string()
-      .required("Last name required.")
+      // .required("Last name required.")
       .matches(/^[A-Za-z]+$/,"Only albhabets are allowed"),
       companyName: Yup.string(),
       phoneNumber: Yup.string()
@@ -84,10 +84,11 @@ const MyAccount = props => {
       zipCode: Yup.string().required("Zip code is required."),
     }),
     onSubmit: async values => {
+      return
       if (selectedCountry != undefined && selectedCountry != null && selectedCountry.length > 1) {
-        setcountryError(false)
+        // setcountryError(false)
       } else {
-        setcountryError(true)
+        // setcountryError(true)
       }
       // if (selectedState != undefined && selectedState != null && selectedState.length > 1) {
       // } else {   }
@@ -300,7 +301,7 @@ const MyAccount = props => {
               <CardBody>
                 <div className="my-account-header">
                   <h6 className="font16  font-semibold">
-                    Personal / Company Details
+                    Personal Details
                   </h6>
                 </div>
                 <Row>
@@ -585,7 +586,7 @@ const MyAccount = props => {
                         options={countryList}
                       />
                     )}
-                    {countryError && (
+                    {/* {countryError && (
                       <div style={{ display: "flex" }}>
                         <img
                           className="form-error-icon"
@@ -597,7 +598,7 @@ const MyAccount = props => {
                           Country required
                         </span>
                       </div>
-                    )}
+                    )} */}
                   </Col>
                   <Col lg="6">
                     {!inlineLoader ? (
@@ -627,7 +628,7 @@ const MyAccount = props => {
               </CardBody>
             </Card>
             <Card className="m-0">
-              <CardBody>
+              {/* <CardBody>
                 <div className="my-account-header">
                   <h6 className="font16 font-semibold mb-20">
                     Email preferences
@@ -738,7 +739,7 @@ const MyAccount = props => {
                     </label>
                   </div>
                 </div>
-              </CardBody>
+              </CardBody> */}
             </Card>
             <div className="btn-group mt-30">
               <button

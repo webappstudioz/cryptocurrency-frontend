@@ -208,7 +208,7 @@ const StepVerification = props => {
                             caretColor: "#3F3D65",
                           }}
                           focusStyle={{
-                            border: "1px solid #6062F9",
+                            border: "1px solid #285a3d",
                             outline: "none",
                             borderRadius: "12px",
                           }}

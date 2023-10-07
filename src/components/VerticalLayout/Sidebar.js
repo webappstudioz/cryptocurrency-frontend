@@ -12,15 +12,16 @@ import logoDark from "../../assets/images/Logo.svg";
 import logoLight from "../../assets/images/logo-light.png";
 import BillingAddressModal from "../Common/billingAdressModal";
 import ProgressBar from "../progressBar";
+import sidebarlogoG from "../../assets/images/c2c/sidebarlogoG.jpg"
 import { loginData } from "../../pages/Authentication/store/apiServices";
 import { storeUserData } from "../../pages/Authentication/store/apiServices";
 const Sidebar = props => {
   const [loading, setLoading] = useState("")
-  const [openModal, setOpenModal] = useState(false)
+  // const [openModal, setOpenModal] = useState(true)
 
   useEffect(() => {
-    let info = loginData()
-    info?.profile_completed === 0? setOpenModal(true) : setOpenModal(false)
+    // let info = loginData()
+    // info?.profile_completed === 0? setOpenModal(true) : setOpenModal(false)
   },[])
 
   useEffect(()=>{
@@ -42,21 +43,21 @@ const Sidebar = props => {
         <div className="navbar-brand-box">
           <Link to="/dashboard" className="logo logo-dark">
             <span className="logo-sm">
-              <img src={logoSm} alt="" height="22" />
+              <img src={sidebarlogoG} alt="" height="22" />
             </span>
             <span className="logo-lg">
-              <img src={logoDark} alt="" height="35" />
+              <img src={sidebarlogoG} alt="" height="35" />
             </span>
           </Link>
 
-          <Link to="/" className="logo logo-light">
+          {/* <Link to="/" className="logo logo-light">
             <span className="logo-sm">
               <img src={logoSm} alt="" height="22" />
             </span>
             <span className="logo-lg">
               <img src={logoDark} alt="" height="35" />
             </span>
-          </Link>
+          </Link> */}
         </div>
         <button
           onClick={() => {
@@ -67,7 +68,7 @@ const Sidebar = props => {
         </button>
         <div className="sidebar-menu-scroll">
         <SidebarContent /> 
-         {openModal && <BillingAddressModal setLoading={setLoading} openModal={openModal} setOpenModal={setOpenModal}/>}
+         {/* {openModal && <BillingAddressModal setLoading={setLoading} openModal={openModal} setOpenModal={setOpenModal}/>} */}
           {/* {props.type !== "condensed" ? <SidebarContent /> : <SidebarContent />} */}
         </div>
       </div>

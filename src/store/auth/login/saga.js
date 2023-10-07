@@ -14,69 +14,71 @@ import { toast } from "react-toastify"
 import { storeAuthToken, storeUserData } from "../../../pages/Authentication/store/apiServices"
 import { registerUserSilently } from "../register/saga"
 function* loginUser({ payload: { user, history, invoiceId } }) {
-  history.push({pathname: "/two-fa"})
+  try {
+    if (process.env.REACT_APP_DEFAULTAUTH === "jwt") {
+      var data = qs.stringify({
+        email: user.email,
+        password: user.password,
+      })
+      let config = {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+      const response = yield call(postJwtLoginNew, data, config)
+      if (response) {
+        yield put(loginSuccess(response))
+        if (user.rememberMe) {
+          let userEnc = encrypt(JSON.stringify(user))
+          userEnc? bake_cookie(SETTINGS.COOKIE_KEY, userEnc) : ""
+          let userToken = encrypt(JSON.stringify(response.token))
+          userToken? bake_cookie(SETTINGS.TOKENKEY, userToken) : ""
+        } else if (!user.rememberMe) {
+          delete_cookie(SETTINGS.COOKIE_KEY)
+          delete_cookie(SETTINGS.TOKENKEY)
+        }
+        let info = response?.data?.data
+        if(info?.currency){
+          bake_cookie(SETTINGS.CURRENCY, info?.currency?.id)
+        } 
 
-  // try {
-  //   if (process.env.REACT_APP_DEFAULTAUTH === "jwt") {
-  //     var data = qs.stringify({
-  //       email: user.email,
-  //       password: user.password,
-  //     })
-  //     let config = {
-  //       headers: {
-  //         "Content-Type": "application/x-www-form-urlencoded",
-  //       },
-  //     }
-  //     const response = yield call(postJwtLoginNew, data, config)
-  //     if (response) {
-  //       yield put(loginSuccess(response))
-  //       if (user.rememberMe) {
-  //         let userEnc = encrypt(JSON.stringify(user))
-  //         userEnc? bake_cookie(SETTINGS.COOKIE_KEY, userEnc) : ""
-  //         let userToken = encrypt(JSON.stringify(response.token))
-  //         userToken? bake_cookie(SETTINGS.TOKENKEY, userToken) : ""
-  //       } else if (!user.rememberMe) {
-  //         delete_cookie(SETTINGS.COOKIE_KEY)
-  //         delete_cookie(SETTINGS.TOKENKEY)
-  //       }
-  //       let info = response?.data?.data
-  //       if(info?.currency){
-  //         bake_cookie(SETTINGS.CURRENCY, info?.currency?.id)
-  //       } 
-
-  //       if (info?.is_verified === false) {
-  //           toast.success(response?.data?.message, {
-  //             position: toast.POSITION.TOP_RIGHT,
-  //           })
-  //           history.push({pathname:'/Verification', state:{email: info?.email, token: info?.token}}) // now we will send the token and email in state.
-  //       } else if (info?.two_factor) {
-  //             toast.success(response?.data?.message, {
-  //             position: toast.POSITION.TOP_RIGHT,
-  //           })
-  //           invoiceId? 
-  //           history.push({pathname: "/two-fa", state:{
-  //             invoiceId: invoiceId
-  //           }}) : 
-  //           history.push({pathname: "/two-fa", state:{
-  //             token: info?.token
-  //           }})
-  //       } else {
-  //           toast.success(response?.data?.message, {
-  //             position: toast.POSITION.TOP_RIGHT,
-  //           })
-  //           storeLoginTime();
-  //           storeUserData(response?.data?.data)
-  //           storeAuthToken(response?.data?.data?.token)
-  //           invoiceId? history.push(`/invoice-detail/${invoiceId}`) : history.push("/dashboard")
-  //       }
-  //     }
-  //   }
-  // } catch (error) {
-  //   toast.error(error?.response?.data?.message, {
-  //     position: toast.POSITION.TOP_RIGHT,
-  //   })
-  //   yield put(apiError(error?.response?.data?.message))
-  // }
+        if (info?.is_verified === false) {
+            toast.success(response?.data?.message, {
+              position: toast.POSITION.TOP_RIGHT,
+            })
+            // let encrytInfo = encrypt(JSON.stringify(info)) // in starting we store user token and email in localstorge in encrypted form.
+            // localStorage.setItem("jwt", JSON.stringify(encrytInfo))
+            history.push({pathname:'/Verification', state:{email: info?.email, token: info?.token}}) // now we will send the token and email in state.
+        } else if (info?.two_factor) {
+            // let encInfo = encrypt(JSON.stringify(info?.token))
+            // localStorage.setItem("jwt", JSON.stringify(encInfo))
+            toast.success(response?.data?.message, {
+              position: toast.POSITION.TOP_RIGHT,
+            })
+            invoiceId? 
+            history.push({pathname: "/two-fa", state:{
+              invoiceId: invoiceId
+            }}) : 
+            history.push({pathname: "/two-fa", state:{
+              token: info?.token
+            }})
+        } else {
+            toast.success(response?.data?.message, {
+              position: toast.POSITION.TOP_RIGHT,
+            })
+            storeLoginTime();
+            storeUserData(response?.data?.data)
+            storeAuthToken(response?.data?.data?.token)
+            invoiceId? history.push(`/invoice-detail/${invoiceId}`) : history.push("/dashboard")
+        }
+      }
+    }
+  } catch (error) {
+    toast.error(error?.response?.data?.message, {
+      position: toast.POSITION.TOP_RIGHT,
+    })
+    yield put(apiError(error?.response?.data?.message))
+  }
 }
 
 function* loginSocial({ payload: { data, history, type, invoiceId } }) {

@@ -9,7 +9,7 @@ const chartapex = () => {
   ]
   const options = {
     chart: { zoom: { enabled: !1 }, toolbar: { show: !1 } },
-    colors: ['#6062F9', '#f1b44c'],
+    colors: ['#285a3d', '#f1b44c'],
     dataLabels: {
       enabled: !1,
     },

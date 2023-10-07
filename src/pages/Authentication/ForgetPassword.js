@@ -59,6 +59,7 @@ const ForgetPasswordPage = props => {
     }),
 
     onSubmit: values => {
+      return
       setSpinner(true)
       setUserEmail(values.email)
       dispatch(userForgetPassword(values, props.history))
@@ -101,7 +102,7 @@ const ForgetPasswordPage = props => {
         <Container fluid>
           <Row>
             <Col lg={6} className="left-panel">
-            <Link onClick={(e) => {spinner? e?.preventDefault() : null }} to="/productlist"><img src={logo} alt="" /> </Link>
+            {/* <Link onClick={(e) => {spinner? e?.preventDefault() : null }} to="/productlist"><img src={logo} alt="" /> </Link>
               <div className="slide-content">
                 <Slider {...settings}>
                   <div>
@@ -138,7 +139,7 @@ const ForgetPasswordPage = props => {
                     </div>
                   </div>
                 </Slider>
-              </div>
+              </div> */}
             </Col>
             <Col lg={6}>
               <div className="right_content">

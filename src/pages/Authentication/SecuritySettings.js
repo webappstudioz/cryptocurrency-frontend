@@ -303,9 +303,9 @@ const SecuritySettings = props => {
                                     caretColor: "#3F3D65",
                                   }}
                                   focusStyle={{
-                                    border: "1px solid #6062F9",
+                                    border: "1px solid #285a3d",
                                     outline: "none",
-                                    boxShadow: "0px 12px 16px #6062f90f",
+                                    boxShadow: "0px 12px 16px #285a3d0f",
                                     borderRadius: "12px",
                                   }}
                                 ></OtpInput>

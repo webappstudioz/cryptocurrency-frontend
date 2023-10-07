@@ -149,8 +149,8 @@ const Billing = props => {
 
   useEffect(() => {
     setPageTitle("Billing")
-    getPaymentGateways()
-    getStoredCards()
+    // getPaymentGateways()
+    // getStoredCards()
   }, [])
 
   const getPaymentGateways = async () => {
@@ -191,6 +191,7 @@ const Billing = props => {
     }),
 
     onSubmit: values => {
+      return
       let amount = ""
       values?.customAmount? amount = values?.customAmount : amount = selectedAmount
       if (selectedMethod == "stripe" && amount) {
@@ -400,7 +401,7 @@ const Billing = props => {
       >
         <Container fluid>
           {/* Render Breadcrumb */}
-          <Breadcrumb title="Minible" breadcrumbItem="Payment Methods" />
+          <Breadcrumb title="Minible" breadcrumbItem="Add Funds" />
 
           <Row>
             <Col lg="12">
@@ -414,502 +415,183 @@ const Billing = props => {
                   return false
                 }}
               >
-                <Card>
+               {/* <Card>
                   <CardBody>
                     <div className="inner-content invite-user rd-group">
-                      <h6 className="font16  font-semibold">
+                       <h6 className="font16  font-semibold">
                         Select a Payment Method
-                      </h6>
+                      </h6> 
                       <div className="radio-btn">
-                        <Row>
-                          {paymentMethods?.map((method, index) => {
-                            if (method?.value === "paypal") {
-                              return (
-                                <Col key={index}>
-                                  <div className="form-check form-check-inline mt-20">
-                                    <Input
-                                      type="radio"
-                                      id="customRadioInline1"
-                                      name="customRadioInline1"
-                                      className="form-check-input"
-                                      value={method?.value}
-                                      checked={method?.value === selectedMethod}
-                                      onChange={() => {}}
-                                      onClick={() => {
-                                        setSelectedMethod(method?.value)
-                                      }}
-                                      disabled={spinner}
-                                    />
-                                    <Label
-                                      className="form-check-label"
-                                      htmlFor="customRadioInline1"
-                                    >
-                                      <img src={paypal} />
-                                      <p className="font-normal">Paypal</p>
-                                    </Label>
-                                  </div>
-                                  {/* <div>
-                                    <form
-                                      action="https://www.sandbox.paypal.com/cgi-bin/webscr"
-                                      method="post"
-                                      ref={formRef}
-                                      onSubmit={e => {
-                                        handleSubmit(e)
-                                      }}
-                                    >
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.cmd && (
-                                        <input
-                                          type="hidden"
-                                          name="cmd"
-                                          id="paypal-cmd"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.cmd || ""
-                                          }
-                                        />
-                                      )}
+                        <Row>*/}
+                          {/* {paymentMethods?.map((method, index) => { */}
+                           { // if (method?.value === "paypal") {
+                            //   return (
+                            //     <Col key={index}>
+                            //       <div className="form-check form-check-inline mt-20">
+                            //         <Input
+                            //           type="radio"
+                            //           id="customRadioInline1"
+                            //           name="customRadioInline1"
+                            //           className="form-check-input"
+                            //           value={method?.value}
+                            //           checked={method?.value === selectedMethod}
+                            //           onChange={() => {}}
+                            //           onClick={() => {
+                            //             setSelectedMethod(method?.value)
+                            //           }}
+                            //           disabled={spinner}
+                            //         />
+                            //         <Label
+                            //           className="form-check-label"
+                            //           htmlFor="customRadioInline1"
+                            //         >
+                            //           <img src={paypal} />
+                            //           <p className="font-normal">Paypal</p>
+                            //         </Label>
+                            //       </div>
 
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.business && (
-                                        <input
-                                          type="hidden"
-                                          name="business"
-                                          id="paypal-business"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.business || ""
-                                          }
-                                        />
-                                      )}
+                            //     </Col>
+                            //   )
+                            // }
 
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.item_name && (
-                                        <input
-                                          type="hidden"
-                                          name="item_name"
-                                          id="paypal-item_name"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.item_name || ""
-                                          }
-                                        />
-                                      )}
+                            // if (method?.value === "stripe") {
+                            //   return (
+                            //     <Col key={index}>
+                            //       <div className="form-check form-check-inline mt-20">
+                            //         <Input
+                            //           type="radio"
+                            //           id="customRadioInline2"
+                            //           name="customRadioInline1"
+                            //           className="form-check-input"
+                            //           value={method?.value}
+                            //           checked={method?.value === selectedMethod}
+                            //           onChange={() => {}}
+                            //           onClick={() => {
+                            //             setSelectedMethod(method?.value)
+                            //           }}
+                            //           disabled={spinner}
+                            //         />
+                            //         <Label
+                            //           className="form-check-label"
+                            //           htmlFor="customRadioInline2"
+                            //         >
+                            //           {/* <img src={stripe} /> */}
+                            //           <img className="credit-card"  src={cardLogo} />
+                            //           <p className="font-normal">Credit card </p>
+                            //         </Label>
+                            //       </div>
+                            //     </Col>
+                            //   )
+                            // }
 
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.no_shipping && (
-                                        <input
-                                          type="hidden"
-                                          name="no_shipping"
-                                          id="paypal-no_shipping"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.no_shipping || ""
-                                          }
-                                        />
-                                      )}
+                            // if (method?.value === "banktransfer") {
+                            //   return (
+                            //     <Col key={index}>
+                            //       <div className="form-check form-check-inline mt-20">
+                            //         <Input
+                            //           type="radio"
+                            //           id="customRadioInline5"
+                            //           name="customRadioInline1"
+                            //           className="form-check-input"
+                            //           value={method?.value}
+                            //           checked={method?.value === selectedMethod}
+                            //           onChange={() => {}}
+                            //           onClick={() => {
+                            //             setSelectedMethod(method?.value)
+                            //           }}
+                            //           disabled={spinner}
+                            //         />
+                            //         <Label
+                            //           className="form-check-label"
+                            //           htmlFor="customRadioInline5"
+                            //         >
+                            //           <img src={wise} />
+                            //           <p className="font-normal">
+                            //             {" "}
+                            //             BankTransfer{" "}
+                            //           </p>
+                            //         </Label>
+                            //       </div>
+                            //     </Col>
+                            //   )
+                            // }
 
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.no_note && (
-                                        <input
-                                          type="hidden"
-                                          name="no_note"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.no_note || ""
-                                          }
-                                        />
-                                      )}
+                            // if (method?.value === "crypto") {
+                            //   return (
+                            //     <Col key={index}>
+                            //       <div className="form-check form-check-inline mt-20">
+                            //         <Input
+                            //           type="radio"
+                            //           id="customRadioInline3"
+                            //           name="customRadioInline1"
+                            //           className="form-check-input"
+                            //           value={method?.value}
+                            //           checked={method?.value === selectedMethod}
+                            //           onChange={() => {}}
+                            //           onClick={() => {
+                            //             setSelectedMethod(method?.value)
+                            //           }}
+                            //         />
+                            //         <Label
+                            //           className="form-check-label"
+                            //           htmlFor="customRadioInline3"
+                            //         >
+                            //           <img src={usd} />
+                            //           <p className="font-normal">Crypto</p>
+                            //         </Label>
+                            //       </div>
+                            //     </Col>
+                            //   )
+                            // }
 
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.currency_code && (
-                                        <input
-                                          type="hidden"
-                                          name="currency_code"
-                                          id="paypal-currency_code"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.currency_code || ""
-                                          }
-                                        />
-                                      )}
-
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.amount && (
-                                        <input
-                                          type="hidden"
-                                          name="amount"
-                                          id="paypal-amount"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.amount || ""
-                                          }
-                                        />
-                                      )}
-
-                                      <input
-                                        type="hidden"
-                                        name="tax"
-                                        value={
-                                          paypalBasicFormData?.paypal_data
-                                            ?.tax || 0
-                                        }
-                                      />
-
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.address_override && (
-                                        <input
-                                          type="hidden"
-                                          name="address_override"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.address_override || ""
-                                          }
-                                        />
-                                      )}
-
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.first_name && (
-                                        <input
-                                          type="hidden"
-                                          name="first_name"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.first_name || ""
-                                          }
-                                        />
-                                      )}
-
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.last_name && (
-                                        <input
-                                          type="hidden"
-                                          name="last_name"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.last_name || ""
-                                          }
-                                        />
-                                      )}
-
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.email && (
-                                        <input
-                                          type="hidden"
-                                          name="email"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.email || ""
-                                          }
-                                        />
-                                      )}
-
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.address1 && (
-                                        <input
-                                          type="hidden"
-                                          name="address1"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.address1 || ""
-                                          }
-                                        />
-                                      )}
-
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.city && (
-                                        <input
-                                          type="hidden"
-                                          name="city"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.city || ""
-                                          }
-                                        />
-                                      )}
-
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.state && (
-                                        <input
-                                          type="hidden"
-                                          name="state"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.state || ""
-                                          }
-                                        />
-                                      )}
-
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.zip && (
-                                        <input
-                                          type="hidden"
-                                          name="zip"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.zip || ""
-                                          }
-                                        />
-                                      )}
-
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.country && (
-                                        <input
-                                          type="hidden"
-                                          name="country"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.country || ""
-                                          }
-                                        />
-                                      )}
-
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.night_phone_a && (
-                                        <input
-                                          type="hidden"
-                                          name="night_phone_a"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.night_phone_a || ""
-                                          }
-                                        />
-                                      )}
-
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.night_phone_b && (
-                                        <input
-                                          type="hidden"
-                                          name="night_phone_b"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.night_phone_b || ""
-                                          }
-                                        />
-                                      )}
-
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.custom && (
-                                        <input
-                                          type="hidden"
-                                          name="custom"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.custom || ""
-                                          }
-                                        />
-                                      )}
-
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.charset && (
-                                        <input
-                                          type="hidden"
-                                          name="charset"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.charset || ""
-                                          }
-                                        />
-                                      )}
-
-                                      {paypalBasicFormData?.invoiceId && (
-                                        <input
-                                          type="hidden"
-                                          name="return"
-                                          id="paypal-return"
-                                          value={`${HOST_URL}/invoice-detail/${paypalBasicFormData?.invoiceId}/${SETTINGS.successKey}`}
-                                        />
-                                      )}
-
-                                      {paypalBasicFormData?.paypal_data?.bn && (
-                                        <input
-                                          type="hidden"
-                                          name="bn"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.bn || ""
-                                          }
-                                        />
-                                      )}
-
-                                      {paypalBasicFormData?.paypal_data?.rm && (
-                                        <input
-                                          type="hidden"
-                                          name="rm"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.rm || ""
-                                          }
-                                        />
-                                      )}
-
-                                      {paypalBasicFormData?.invoiceId && (
-                                        <input
-                                          type="hidden"
-                                          name="cancel_return"
-                                          id="paypal-cancel_return"
-                                          value={`${HOST_URL}/invoice-detail/${paypalBasicFormData?.invoiceId}/${SETTINGS.cancelkey}`}
-                                        />
-                                      )}
-
-                                      {paypalBasicFormData?.paypal_data
-                                        ?.notify_url && (
-                                        <input
-                                          type="hidden"
-                                          name="notify_url"
-                                          id="paypal-notify_url"
-                                          value={
-                                            paypalBasicFormData?.paypal_data
-                                              ?.notify_url || ""
-                                          }
-                                        />
-                                      )}
-                                      <button type="submit" hidden>
-                                        Submit
-                                      </button>
-                                    </form>
-                                  </div> */}
-                                </Col>
-                              )
-                            }
-
-                            if (method?.value === "stripe") {
-                              return (
-                                <Col key={index}>
-                                  <div className="form-check form-check-inline mt-20">
-                                    <Input
-                                      type="radio"
-                                      id="customRadioInline2"
-                                      name="customRadioInline1"
-                                      className="form-check-input"
-                                      value={method?.value}
-                                      checked={method?.value === selectedMethod}
-                                      onChange={() => {}}
-                                      onClick={() => {
-                                        setSelectedMethod(method?.value)
-                                      }}
-                                      disabled={spinner}
-                                    />
-                                    <Label
-                                      className="form-check-label"
-                                      htmlFor="customRadioInline2"
-                                    >
-                                      {/* <img src={stripe} /> */}
-                                      <img className="credit-card"  src={cardLogo} />
-                                      <p className="font-normal">Credit card </p>
-                                    </Label>
-                                  </div>
-                                </Col>
-                              )
-                            }
-
-                            if (method?.value === "banktransfer") {
-                              return (
-                                <Col key={index}>
-                                  <div className="form-check form-check-inline mt-20">
-                                    <Input
-                                      type="radio"
-                                      id="customRadioInline5"
-                                      name="customRadioInline1"
-                                      className="form-check-input"
-                                      value={method?.value}
-                                      checked={method?.value === selectedMethod}
-                                      onChange={() => {}}
-                                      onClick={() => {
-                                        setSelectedMethod(method?.value)
-                                      }}
-                                      disabled={spinner}
-                                    />
-                                    <Label
-                                      className="form-check-label"
-                                      htmlFor="customRadioInline5"
-                                    >
-                                      <img src={wise} />
-                                      <p className="font-normal">
-                                        {" "}
-                                        BankTransfer{" "}
-                                      </p>
-                                    </Label>
-                                  </div>
-                                </Col>
-                              )
-                            }
-
-                            if (method?.value === "crypto") {
-                              return (
-                                <Col key={index}>
-                                  <div className="form-check form-check-inline mt-20">
-                                    <Input
-                                      type="radio"
-                                      id="customRadioInline3"
-                                      name="customRadioInline1"
-                                      className="form-check-input"
-                                      value={method?.value}
-                                      checked={method?.value === selectedMethod}
-                                      onChange={() => {}}
-                                      onClick={() => {
-                                        setSelectedMethod(method?.value)
-                                      }}
-                                    />
-                                    <Label
-                                      className="form-check-label"
-                                      htmlFor="customRadioInline3"
-                                    >
-                                      <img src={usd} />
-                                      <p className="font-normal">Crypto</p>
-                                    </Label>
-                                  </div>
-                                </Col>
-                              )
-                            }
-
-                            if (method?.value === "razorpay") {
-                              return (
-                                <Col key={index}>
-                                  <div className="form-check form-check-inline mt-20">
-                                    {razorpayFormInfo? <RazorPayForm 
-                                        razorpayFormInfo={razorpayFormInfo} 
-                                        submitRazorPayForm={submitRazorPayForm} 
-                                        Razorpay={Razorpay} 
-                                        setSubmitRazorPayForm={setSubmitRazorPayForm}
-                                        invoiceId={invoiceId}
-                                        setSpinner={setSpinner}
-                                        setLoading={setLoading}
-                                        setOpenModal={setOpenModal} 
-                                      /> : ""}
-                                    <Input
-                                      type="radio"
-                                      id="customRadioInline4"
-                                      name="customRadioInline1"
-                                      className="form-check-input"
-                                      value={method?.value}
-                                      checked={method?.value === selectedMethod}
-                                      onChange={() => {}}
-                                      onClick={() => {
-                                        setSelectedMethod(method?.value)
-                                      }}
-                                      disabled={spinner}
-                                    />
-                                    <Label
-                                      className="form-check-label"
-                                      htmlFor="customRadioInline4"
-                                    >
-                                      <img src={razor} />
-                                      <p className="font-normal">
-                                        {" "}
-                                        UPI/NEFT/IMPS{" "}
-                                      </p>
-                                    </Label>
-                                  </div>
-                                </Col>
-                              )
-                            }
-                          })}
-                        </Row>
+                            // if (method?.value === "razorpay") {
+                            //   return (
+                            //     <Col key={index}>
+                            //       <div className="form-check form-check-inline mt-20">
+                            //         {razorpayFormInfo? <RazorPayForm 
+                            //             razorpayFormInfo={razorpayFormInfo} 
+                            //             submitRazorPayForm={submitRazorPayForm} 
+                            //             Razorpay={Razorpay} 
+                            //             setSubmitRazorPayForm={setSubmitRazorPayForm}
+                            //             invoiceId={invoiceId}
+                            //             setSpinner={setSpinner}
+                            //             setLoading={setLoading}
+                            //             setOpenModal={setOpenModal} 
+                            //           /> : ""}
+                            //         <Input
+                            //           type="radio"
+                            //           id="customRadioInline4"
+                            //           name="customRadioInline1"
+                            //           className="form-check-input"
+                            //           value={method?.value}
+                            //           checked={method?.value === selectedMethod}
+                            //           onChange={() => {}}
+                            //           onClick={() => {
+                            //             setSelectedMethod(method?.value)
+                            //           }}
+                            //           disabled={spinner}
+                            //         />
+                            //         <Label
+                            //           className="form-check-label"
+                            //           htmlFor="customRadioInline4"
+                            //         >
+                            //           <img src={razor} />
+                            //           <p className="font-normal">
+                            //             {" "}
+                            //             UPI/NEFT/IMPS{" "}
+                            //           </p>
+                            //         </Label>
+                            //       </div>
+                            //     </Col>
+                            //   )
+                            // }
+                          // })}
+}
+                        {/* </Row>
                       </div>
                     </div>
                   </CardBody>
-                </Card>
+                </Card> */}
                 <div
                   className="slide"
                   // style={{ maxHeight: selectedMethod === "stripe" ? '500px' : '0px', overflow: 'hidden', transition: 'max-height 0.3s ease' }}
@@ -1101,7 +783,7 @@ const Billing = props => {
                                 htmlFor="customRadioInline6"
                               >
                                 <p className="font-normal">
-                                  {currency?.prefix}100 {currency?.suffix}
+                                  {currency?.prefix}$100 USD {currency?.suffix}
                                 </p>
                               </Label>
                             </div>
@@ -1127,7 +809,7 @@ const Billing = props => {
                                 htmlFor="customRadioInline7"
                               >
                                 <p className="font-normal">
-                                  {currency?.prefix}250 {currency?.suffix}{" "}
+                                  {currency?.prefix}$250 USD{currency?.suffix}{" "}
                                 </p>
                               </Label>
                             </div>
@@ -1153,7 +835,7 @@ const Billing = props => {
                                 htmlFor="customRadioInline8"
                               >
                                 <p className="font-normal">
-                                  {currency?.prefix}500 {currency?.suffix}
+                                  {currency?.prefix}$500 USD {currency?.suffix}
                                 </p>
                               </Label>
                             </div>
@@ -1180,14 +862,14 @@ const Billing = props => {
                               >
                                 <p className="font-normal">
                                   {" "}
-                                  {currency?.prefix}1000 {currency?.suffix}{" "}
+                                  {currency?.prefix}$1000 USD {currency?.suffix}{" "}
                                 </p>
                               </Label>
                             </div>
                           </Col>
                           <Col>
                             <div className="test form-check form-check-inline mt-20 ">
-                              <span className="prefix">{currency?.prefix}</span>
+                              <span className="prefix">{currency?.prefix}$</span>
                               {/* <div className="inner-input-box"> */}
                               <Input
                                 className="chose-payment"
@@ -1216,7 +898,7 @@ const Billing = props => {
                               {/* </div> */}
                               <span className="suffix">
                                 {/* {" "} */}
-                                {currency?.suffix}
+                                {currency?.suffix}USD
                               </span>
                               {/* {validation.touched.customAmount &&
                                 validation.errors.customAmount ? (

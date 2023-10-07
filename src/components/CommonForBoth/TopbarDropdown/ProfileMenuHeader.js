@@ -64,7 +64,10 @@ const ProfileMenuHeader = props => {
             alt="Header Avatar"
           />) : 
           (<p className="rounded-circle header-profile-user"  alt="Header Avatar">
-            <span className="userAvtar">{userData? userData?.first_name?.charAt(0)?.toUpperCase() : ""}{userData? userData?.last_name?.charAt(0)?.toUpperCase() : ""}</span>
+            <span className="userAvtar">
+              {"USX5474"?.charAt(0)?.toUpperCase()}
+              {/* {"USX5474"?.charAt(0)?.toUpperCase()} */}
+              </span>
           </p>)
           }
           <span className="d-none d-xl-inline-block ms-1 fw-medium font-size-15">
@@ -74,13 +77,15 @@ const ProfileMenuHeader = props => {
           /></span>{" "}  
         </DropdownToggle>
         <h6 className='mb-0 d-flex align-items-center sd-name'>
-          Hi {userData? userData?.first_name?.charAt(0)?.toUpperCase() + userData?.first_name?.slice(1).toLowerCase() : ""} 
-          {' '}{userData? userData?.last_name?.charAt(0)?.toUpperCase() + userData?.last_name?.slice(1).toLowerCase() : ""}
+          Hi USX5474
+          {/* {userData? userData?.first_name?.charAt(0)?.toUpperCase() + userData?.first_name?.slice(1).toLowerCase() : ""}  */}
+          {/* {' '}{userData? userData?.last_name?.charAt(0)?.toUpperCase() + userData?.last_name?.slice(1).toLowerCase() : ""} */}
         </h6>
 
         <DropdownMenu className="dropdown-menu-end" style={{ margin: 0 }}>
           <DropdownItem /*tag="a"*/  className="profile-header">
             <Link to="/my-account" className="dropdown-item">
+            {/* <Link to="/" className="dropdown-item"> */}
               {" "}   
               My Account{" "}
               <img src={polygon} />
@@ -90,11 +95,13 @@ const ProfileMenuHeader = props => {
           <div className="profile-center">
           {userData?.role != "user"? 
           <DropdownItem /*tag="a"*/ >    
-            <Link to="/user-management" className="dropdown-item">       
+            {/* <Link to="/user-management" className="dropdown-item">        */}
+            <Link to="/" className="dropdown-item">       
              User Management 
             </Link>
           </DropdownItem> : 
           <DropdownItem /* tag="a"*/ >    
+            {/* <Link to="/user-account-detail" className="dropdown-item">        */}
             <Link to="/user-account-detail" className="dropdown-item">       
               My Profile 
             </Link>
@@ -105,7 +112,8 @@ const ProfileMenuHeader = props => {
             </Link>      
           </DropdownItem>
           <DropdownItem /* tag="a"*/>  
-            <Link to="/security-settings" className="dropdown-item">       
+            {/* <Link to="/security-settings" className="dropdown-item">        */}
+            <Link to="/" className="dropdown-item">       
               Security Settings    
             </Link> 
           </DropdownItem>

@@ -44,175 +44,175 @@ const App = props => {
       };
   }, []);
 
-  useEffect(() => {
-    if(hit){
-      fetchdetails()
-    }
-  },[hit])
+  // useEffect(() => {
+  //   if(hit){
+  //     fetchdetails()
+  //   }
+  // },[hit])
 
-  useEffect(() =>{
-    const interval = setInterval(() => {
-      fetchdetails()
-      changeServiceStatus()
-      // removeService()
-    }, 10000)
+  // useEffect(() =>{
+  //   const interval = setInterval(() => {
+  //     fetchdetails()
+  //     changeServiceStatus()
+  //     // removeService()
+  //   }, 10000)
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, [])
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, [])
 
-  /**
-   * step 1.
-   * here we fetch list of servers which is installing servers.
-   */
-  const fetchdetails =async() =>{
-    try{
-      let res = await getListOsInstallServers()
-      let list = res?.data?.data
-      dispatch(osListFetched())
-      if(list?.length > 0){
-        list?.map((arrList) => {
-          if(arrList?.status === "ACTIVE"){
-            storeArrayFuc(arrList?.service_id, arrList?.uuid, arrList?.status, arrList?.percentage, arrList?.event)
-          }
-        })
-      }
-    }catch(error){  }
-  } 
+  // /**
+  //  * step 1.
+  //  * here we fetch list of servers which is installing servers.
+  //  */
+  // const fetchdetails =async() =>{
+  //   try{
+  //     let res = await getListOsInstallServers()
+  //     let list = res?.data?.data
+  //     dispatch(osListFetched())
+  //     if(list?.length > 0){
+  //       list?.map((arrList) => {
+  //         if(arrList?.status === "ACTIVE"){
+  //           storeArrayFuc(arrList?.service_id, arrList?.uuid, arrList?.status, arrList?.percentage, arrList?.event)
+  //         }
+  //       })
+  //     }
+  //   }catch(error){  }
+  // } 
 
-  /**
-   * step 2
-   * here we store array in localstorage.
-  */
-  const storeArrayFuc = (serverid, uuid, status, percentage, event) => {
-    const storedArray = JSON.parse(localStorage.getItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY)) || [];
-    const newArray = {serverId:serverid, jobId:uuid, status:status, percentage:percentage, event:event}
-    let isItemAlreadyExist = storedArray?.find((item) => item?.serverId === newArray?.serverId)
-    if(!isItemAlreadyExist){
-      storedArray?.push(newArray)
-      localStorage.setItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY, JSON.stringify(storedArray));
-    }else{
-      let existingObject = storedArray?.find((item) => item?.serverId === newArray?.serverId)
-      if(existingObject?.status != "FINISHED" && existingObject?.status != "CANCELED"){
-        let myObject = {serverId: serverid, jobId: uuid, status: status, percentage: percentage || existingObject?.percentage, event:event};
-        pushLatestStatus(myObject)
-      }
-    }
-  }
+  // /**
+  //  * step 2
+  //  * here we store array in localstorage.
+  // */
+  // const storeArrayFuc = (serverid, uuid, status, percentage, event) => {
+  //   const storedArray = JSON.parse(localStorage.getItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY)) || [];
+  //   const newArray = {serverId:serverid, jobId:uuid, status:status, percentage:percentage, event:event}
+  //   let isItemAlreadyExist = storedArray?.find((item) => item?.serverId === newArray?.serverId)
+  //   if(!isItemAlreadyExist){
+  //     storedArray?.push(newArray)
+  //     localStorage.setItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY, JSON.stringify(storedArray));
+  //   }else{
+  //     let existingObject = storedArray?.find((item) => item?.serverId === newArray?.serverId)
+  //     if(existingObject?.status != "FINISHED" && existingObject?.status != "CANCELED"){
+  //       let myObject = {serverId: serverid, jobId: uuid, status: status, percentage: percentage || existingObject?.percentage, event:event};
+  //       pushLatestStatus(myObject)
+  //     }
+  //   }
+  // }
 
-  /**
-   * step 3
-   * Set up a timer that starts at 10 seconds and doubles after each run,
-   * but doesn't exceed 2 minutes.
-   */
-  useEffect(() => {
-    const timeInterval = setInterval(() => {
-      let newTime = getJobTimer * 2
-      if(newTime > 120000){
-        newTime = 120000
-      }
-      setGetJobTimer(newTime)
-      getStoredServersList()
-    },getJobTimer)
+  // /**
+  //  * step 3
+  //  * Set up a timer that starts at 10 seconds and doubles after each run,
+  //  * but doesn't exceed 2 minutes.
+  //  */
+  // useEffect(() => {
+  //   const timeInterval = setInterval(() => {
+  //     let newTime = getJobTimer * 2
+  //     if(newTime > 120000){
+  //       newTime = 120000
+  //     }
+  //     setGetJobTimer(newTime)
+  //     getStoredServersList()
+  //   },getJobTimer)
 
-    return () => {
-      clearInterval(timeInterval)
-    }
-  },[getJobTimer])
+  //   return () => {
+  //     clearInterval(timeInterval)
+  //   }
+  // },[getJobTimer])
 
-  /**
-   * step4
-   * here we are fetching stored array and hit the function to get status or percentage of operating system installation. 
-   */
-  const getStoredServersList = () => {
-    let res = JSON.parse(localStorage.getItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY))
-    if(res){
-      res?.map((list)=> {
-        if(list?.status === "ACTIVE"){
-          syncInstallationStatus(list?.serverId, list?.jobId, list?.event)
-        }
-      })
-    }
-  }
+  // /**
+  //  * step4
+  //  * here we are fetching stored array and hit the function to get status or percentage of operating system installation. 
+  //  */
+  // const getStoredServersList = () => {
+  //   let res = JSON.parse(localStorage.getItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY))
+  //   if(res){
+  //     res?.map((list)=> {
+  //       if(list?.status === "ACTIVE"){
+  //         syncInstallationStatus(list?.serverId, list?.jobId, list?.event)
+  //       }
+  //     })
+  //   }
+  // }
 
-   /**
-   * step5
-   * here we are getting the status or percentage of operating system installation. 
-   */
-  const syncInstallationStatus = async(serverid, jobid, event) => {
-    try{
-      let data = new URLSearchParams({
-        service_id: serverid,
-        job_id: jobid
-      })
-      let res = await getOsInstallationInfo(data)
-      let info = res?.data?.data
-      if(info){
-        let myObject = {serverId: info?.service_id, jobId: info?.uuid, status: info?.status, percentage: info?.percentage, event: event};
-        pushLatestStatus(myObject)
-      }
-    }catch(error){  }
-  }
+  //  /**
+  //  * step5
+  //  * here we are getting the status or percentage of operating system installation. 
+  //  */
+  // const syncInstallationStatus = async(serverid, jobid, event) => {
+  //   try{
+  //     let data = new URLSearchParams({
+  //       service_id: serverid,
+  //       job_id: jobid
+  //     })
+  //     let res = await getOsInstallationInfo(data)
+  //     let info = res?.data?.data
+  //     if(info){
+  //       let myObject = {serverId: info?.service_id, jobId: info?.uuid, status: info?.status, percentage: info?.percentage, event: event};
+  //       pushLatestStatus(myObject)
+  //     }
+  //   }catch(error){  }
+  // }
 
-  /** 
-   * step6
-   * here we store the updated array
-  */
-  const pushLatestStatus = (myObject) => {
-    const storedArray = JSON.parse(localStorage.getItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY))
-    const indexToUpdate = storedArray?.findIndex(obj=> obj?.serverId === myObject?.serverId)
-    if(indexToUpdate !== -1){
-      storedArray[indexToUpdate] = myObject
-    }else {
-      storedArray?.push(myObject)
-    }
-    localStorage.setItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY, JSON.stringify(storedArray));
-  }
+  // /** 
+  //  * step6
+  //  * here we store the updated array
+  // */
+  // const pushLatestStatus = (myObject) => {
+  //   const storedArray = JSON.parse(localStorage.getItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY))
+  //   const indexToUpdate = storedArray?.findIndex(obj=> obj?.serverId === myObject?.serverId)
+  //   if(indexToUpdate !== -1){
+  //     storedArray[indexToUpdate] = myObject
+  //   }else {
+  //     storedArray?.push(myObject)
+  //   }
+  //   localStorage.setItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY, JSON.stringify(storedArray));
+  // }
 
-  /**
-   * step 7 
-   * Here, we are changing service status from FINSIHED to FINIALIZING and it into localStorage.
-   */
-  const changeServiceStatus = () => {
-    const storedArray = JSON.parse(localStorage.getItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY))
-    if(storedArray){
-      const updatedArray = storedArray?.map((service) => {
-        if(service?.status === "FINISHED"){
-          finalizingService(service?.serverId)
-          return { ...service, status:"FINALIZING"}
-        }
-        return service
-      })
-      localStorage.setItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY, JSON.stringify(updatedArray))
-    }
-  }
+  // /**
+  //  * step 7 
+  //  * Here, we are changing service status from FINSIHED to FINIALIZING and it into localStorage.
+  //  */
+  // const changeServiceStatus = () => {
+  //   const storedArray = JSON.parse(localStorage.getItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY))
+  //   if(storedArray){
+  //     const updatedArray = storedArray?.map((service) => {
+  //       if(service?.status === "FINISHED"){
+  //         finalizingService(service?.serverId)
+  //         return { ...service, status:"FINALIZING"}
+  //       }
+  //       return service
+  //     })
+  //     localStorage.setItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY, JSON.stringify(updatedArray))
+  //   }
+  // }
 
-  /**
-   * 8
-   * Here, we are finalizing the service.
-   */
-  const finalizingService = async(serviceId) => {
-    try{
-      let res = await productDetails(serviceId,1)
-      removeService(serviceId)
-    }catch(error){
-      removeService(serviceId)
-    }
-  }
+  // /**
+  //  * 8
+  //  * Here, we are finalizing the service.
+  //  */
+  // const finalizingService = async(serviceId) => {
+  //   try{
+  //     let res = await productDetails(serviceId,1)
+  //     removeService(serviceId)
+  //   }catch(error){
+  //     removeService(serviceId)
+  //   }
+  // }
 
-  /**
-   * step 9 
-   * Here, we are removing services from localStorage.
-   */
-  const removeService = (serviceId) => {
-    const storedArray = JSON.parse(localStorage.getItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY))
-    let indexToRemove = storedArray?.findIndex((item) => item?.serverId === serviceId)
-    if(indexToRemove !== -1){
-      storedArray?.splice(indexToRemove, 1);
-      localStorage.setItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY, JSON.stringify(storedArray));
-    }
-  }
+  // /**
+  //  * step 9 
+  //  * Here, we are removing services from localStorage.
+  //  */
+  // const removeService = (serviceId) => {
+  //   const storedArray = JSON.parse(localStorage.getItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY))
+  //   let indexToRemove = storedArray?.findIndex((item) => item?.serverId === serviceId)
+  //   if(indexToRemove !== -1){
+  //     storedArray?.splice(indexToRemove, 1);
+  //     localStorage.setItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY, JSON.stringify(storedArray));
+  //   }
+  // }
   
   useEffect(() => {
     window?.addEventListener('mousemove', handleUserActivity);

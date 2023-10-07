@@ -160,7 +160,7 @@
 }
 
 input.form-control.form-control:focus, input.is-invalid.form-control:focus,input.is-invalid.form-control:focus {
-    border: 1px solid #6062f9;
+    border: 1px solid #285a3d;
     box-shadow: 0px 0px 0px 3px rgba(159, 135, 255, 0.2);
 }
 input.is-invalid.form-control {
@@ -170,7 +170,7 @@ input.is-invalid.form-control {
     border: 1px solid #E91E63;
 }
 .input-outline:focus{
-    border: 1px solid #6062f9 !important;
+    border: 1px solid #285a3d !important;
     box-shadow: 0px 0px 0px 3px rgba(159, 135, 255, 0.2);
 }
 

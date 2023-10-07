@@ -51,6 +51,9 @@ import TicketView from "../pages/Service/TicketView"
 import InvoiceDetail from "../pages/Invoices/InvoiceDetail"
 import TicketSuccess from "../pages/Service/TicketSuccess"
 import InvoiceCheckout from "../pages/Invoices/InvoiceCheckout"
+import DepositFunds from "../pages/Accounts/depositFunds"
+import WithdrawFunds from "../pages/Accounts/withdrawFunds"
+import TransferFunds from "../pages/Accounts/transferFunds"
 
 const unAuthrizedRoutes = [
   { path: "/announcments", component: AnnouncmentsList},
@@ -100,8 +103,13 @@ const userRoutes = [
   { path: "/productslist", component: ProductListing },
   { path: "/confirm/:oid", component: Confirmation },
   { path: "/confirmation", component: Confirmation },
+  //accounts
+  { path: "/deposite-funds", component: DepositFunds },
+  { path: "/witdraw-funds", component: WithdrawFunds },
+  { path: "/transfer-funds", component: TransferFunds },
+
   // this route should be at the end of all other routes
-  { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
+  { path: "/", exact: true, component: () => <Redirect to="/login" /> },
   // { path: "**", component: ServiceList}
 ]
 

@@ -99,43 +99,71 @@ const SidebarContent = props => {
         <div id="sidebar-menu">
           <ul className="metismenu list-unstyled" id="side-menu">
             <li>
+              <Link to="/my-account" className="waves-effect">
+                <img src={overview} alt="" />
+                <span>My Profile</span>
+              </Link>
+            </li>
+            <li>
               <Link to="/dashboard" className="waves-effect">
                 <img src={overview} alt="" />
-                <span>Overview</span>
+                <span>Dashboard</span>
               </Link>
             </li>
 
             <li>
-              <Link to="/productslist" className="waves-effect">
-                <img src={server} alt="" />
-                <span>Bare-MetalServers</span>
+              <Link to="#" className="waves-effect">
+                <img src={overview} alt="" />
+                <span>Play & Win</span>
+              </Link>
+            </li>
+            <li className="menu-title s-title sidebar-title-v2">
+              {props.t("Accounts")}
+            </li>
+            <li>
+              <Link to="/deposite-funds" className="waves-effect">
+                <img src={overview} alt="" />
+                <span>Deposit</span>
               </Link>
             </li>
             <li>
-              <Link to={{ oj: "l" }} className="waves-effect">
-                <img src={cloud} alt="" />
-                <span>Cloud Servers</span>
+              <Link to="/witdraw-funds" className="waves-effect">
+                <img src={overview} alt="" />
+                <span>Withdraw</span>
               </Link>
             </li>
-
             <li>
-              <Link to="/invoice" className="waves-effect">
-                <img src={invoice} alt="" />
-                <span>{props.t("Invoice")}</span>
+              <Link to="/transfer-funds" className="waves-effect">
+                <img src={overview} alt="" />
+                <span>Transfer</span>
               </Link>
             </li>
             <li>
               <Link to="/billing" className="waves-effect">
                 <img src={billing} alt="" />
-                <span>{props.t("Billing")}</span>
+                <span>{props.t("Add Funds")}</span>
               </Link>
             </li>
-
+            <li>
+              <Link to="/" className="waves-effect">
+                <img src={invoice} alt="" />
+                <span>{props.t("Invite User")}</span>
+              </Link>
+            </li>
+            <li className="menu-title s-title sidebar-title-v2">
+              {props.t("Partner")}
+            </li>
+            <li>
+              <Link to="#" className="waves-effect">
+                <img src={overview} alt="" />
+                <span>Partner</span>
+              </Link>
+            </li> 
             <li className="menu-title s-title sidebar-title-v2">
               {props.t("HELP")}
-            </li>
+            </li> 
 
-            <li>
+            {/* <li>
               <Link to="/announcment" className=" waves-effect">
                 <img src={Announcements} alt="" />
                 <span>{props.t("Announcements")}</span>
@@ -146,7 +174,7 @@ const SidebarContent = props => {
                 <img src={settings} alt="" />
                 <span>{props.t("Settings")}</span>
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link to={"/support"} className=" waves-effect">
                 <img src={support} alt="" />
@@ -154,7 +182,7 @@ const SidebarContent = props => {
               </Link>
             </li>
           </ul>
-          <div className="sidebar_footer px-3">
+          {/* <div className="sidebar_footer px-3">
             <img src={sidebar} className="w-100" alt="" />
             <div className="footer_content text-center mt-3">
               <p className="text-center">
@@ -163,7 +191,7 @@ const SidebarContent = props => {
                 <i className="mdi mdi-heart text-danger"></i> In Melbourne
               </p>
             </div>
-          </div>
+          </div> */}
         </div>
       </SimpleBar>
     </React.Fragment>

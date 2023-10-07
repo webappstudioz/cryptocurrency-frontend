@@ -69,12 +69,12 @@ function DatatableTables() {
     if(syncStatus === 0){
       dashBoardCall0(0, true)
     }else if(syncStatus === true){
-      setLoading(true)
+      // setLoading(true)
       let loaderStatus = ""
       servicesList?.services? loaderStatus = false : loaderStatus = true
-      dashBoardCall0(0, loaderStatus)
+      // dashBoardCall0(0, loaderStatus)
     }else if(!servicesList?.services){
-      dashBoardCall0(0, true)
+      // dashBoardCall0(0, true)
     }
 
     // if(syncStatus !== false || syncStatus === true){
@@ -85,69 +85,69 @@ function DatatableTables() {
   useEffect(() => {
     if(allServiceSyncStatus){
     //call dashboard0 after all services synced for listing
-      dashBoardCall0(0, false)
+      // dashBoardCall0(0, false)
     }
   }, [allServiceSyncStatus])
 
-  useEffect(() => {
-    if(servicesList){
-      setTotalCount(servicesList?.services?.length)
-      setProducts(servicesList?.services)      
-    }
-  }, [servicesList, provisioningServiceArr])
+  // useEffect(() => {
+  //   if(servicesList){
+  //     setTotalCount(servicesList?.services?.length)
+  //     setProducts(servicesList?.services)      
+  //   }
+  // }, [servicesList, provisioningServiceArr])
 
   useEffect(() => {
     setCards(widgets)
   },[widgets])
 
-  useEffect(() => {
-    let serviceIdArr = localStorage.getItem(CONFIGURATIONS?.NEWSERVICEID)
-    if(serviceIdArr){
-      serviceIdArr = serviceIdArr.split(",")
-        if(servicesList?.services && provisioningServiceArr?.length != serviceIdArr?.length){
-          servicesList?.services?.map((service) => {
-            if(service?.status === "Active" && serviceIdArr.includes(service?.wid)){
-              setProvisioningServiceArr((prevArray) => [...prevArray, service?.wid])
-              handleProvisioningService(service?.id, service?.wid)
-            }
-          })
-        }
-    }
-  },[servicesList])
+  // useEffect(() => {
+  //   let serviceIdArr = localStorage.getItem(CONFIGURATIONS?.NEWSERVICEID)
+  //   if(serviceIdArr){
+  //     serviceIdArr = serviceIdArr.split(",")
+  //       if(servicesList?.services && provisioningServiceArr?.length != serviceIdArr?.length){
+  //         servicesList?.services?.map((service) => {
+  //           if(service?.status === "Active" && serviceIdArr.includes(service?.wid)){
+  //             setProvisioningServiceArr((prevArray) => [...prevArray, service?.wid])
+  //             handleProvisioningService(service?.id, service?.wid)
+  //           }
+  //         })
+  //       }
+  //   }
+  // },[servicesList])
 
-  const handleProvisioningService = async(id, wid) => {
-    try{
-      let res = await productDetails(id, 1)
-      if(res){
-        setFetchedServices((...prevArray) => [...prevArray, res?.data?.data])
-        let serviceIdArr = localStorage.getItem(CONFIGURATIONS?.NEWSERVICEID)
-        if(serviceIdArr){
-          let storedValues = serviceIdArr.split(",")
-          let indexToRemove = storedValues.indexOf(wid)
-          if(indexToRemove !== -1){
-            storedValues.splice(indexToRemove,1)
-            serviceIdArr = storedValues.join(",")
-            localStorage.setItem(CONFIGURATIONS?.NEWSERVICEID, serviceIdArr)
-            setProvisioningServiceArr((prevArray) => prevArray.filter(value => value !== wid))
-          }
-        }
-      }
-    }catch(error){
-    }
-  } 
+  // const handleProvisioningService = async(id, wid) => {
+  //   try{
+  //     let res = await productDetails(id, 1)
+  //     if(res){
+  //       setFetchedServices((...prevArray) => [...prevArray, res?.data?.data])
+  //       let serviceIdArr = localStorage.getItem(CONFIGURATIONS?.NEWSERVICEID)
+  //       if(serviceIdArr){
+  //         let storedValues = serviceIdArr.split(",")
+  //         let indexToRemove = storedValues.indexOf(wid)
+  //         if(indexToRemove !== -1){
+  //           storedValues.splice(indexToRemove,1)
+  //           serviceIdArr = storedValues.join(",")
+  //           localStorage.setItem(CONFIGURATIONS?.NEWSERVICEID, serviceIdArr)
+  //           setProvisioningServiceArr((prevArray) => prevArray.filter(value => value !== wid))
+  //         }
+  //       }
+  //     }
+  //   }catch(error){
+  //   }
+  // } 
 
-   useEffect(async() => {
-     if(fetchedServices?.length > 0){
-      dispatch(isSyncServicesFetched(fetchedServices))
-    }
-   },[fetchedServices?.length])
+  //  useEffect(async() => {
+  //    if(fetchedServices?.length > 0){
+  //     dispatch(isSyncServicesFetched(fetchedServices))
+  //   }
+  //  },[fetchedServices?.length])
 
-  useEffect(() => {
-    let call  = JSON.parse(localStorage.getItem("usertime"))
-    if(cardsData?.cardsUpdated && call?.call != 1 && reduxCall !=1){
-      dashBoardCall1(1)
-    }
-  },[reduxCall, cardsData?.cardsUpdated])
+  // useEffect(() => {
+  //   let call  = JSON.parse(localStorage.getItem("usertime"))
+  //   if(cardsData?.cardsUpdated && call?.call != 1 && reduxCall !=1){
+  //     dashBoardCall1(1)
+  //   }
+  // },[reduxCall, cardsData?.cardsUpdated])
 
   const handleCustomerClicks = () => {};
   
@@ -232,6 +232,7 @@ function DatatableTables() {
 
   // get dashboard data using call 0
   const dashBoardCall0 = async(call, loader) => {
+    return
     try {
       loader && setLoader(true);
       loader && setLoading(true);
@@ -277,6 +278,7 @@ function DatatableTables() {
 
   //get dashboard data using call 1
   const dashBoardCall1 = async(call) => {
+    return
     try {
       let res = await getWidgetsDetail(call);
       if (res) {
@@ -334,35 +336,35 @@ function DatatableTables() {
           {cardsActive == "Dashboard" && (
             <div className="server_info">
               <div className="row">
-                <div className="col">
-                  <Link to="#">
+                {/* <div className="col"> */}
+                  {/* <Link to="#">
                     <WidServer servers={cards?.servers}></WidServer>
-                  </Link>
-                </div>
-                <div className="col">
-                  <Link to="/invoice">
+                  </Link> */}
+                {/* </div> */}
+                {/* <div className="col"> */}
+                  {/* <Link to="/invoice">
                     <WidInvoice invoices={cards?.invoices}></WidInvoice>
-                  </Link>
-                </div>
+                  </Link> */}
+                {/* </div> */}
                 <div className="col">
                   <Link to="/support">
                     <WidTicket tickets={cards?.tickets}></WidTicket>
                   </Link>
-                </div>
-                {role === "client" && (
+                  
+                </div>                
                   <div className="col">
                     <WidBalance
                       balance={cards?.current_balance}
                       currency={cards?.currency}
                     ></WidBalance>
                   </div>
-                )}
               </div>
             </div>
           )}
           <Row>
             <Col xs="12">
-              {permission ? (
+              <h1>Work in Progress</h1>
+              {/* {permission ? (
                 <div className="table_v1">
                   <TableContainer
                     tableClassName="product-table table-shadow"
@@ -381,7 +383,7 @@ function DatatableTables() {
                 </div>
               ) : (
                 !sessioncheck && !loader && <PermissionDenied />
-              )}
+              )} */}
             </Col>
           </Row>
         </div>

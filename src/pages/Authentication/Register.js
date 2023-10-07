@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import { useState } from "react"
 import { Row, Col, Container, Form, Input, FormFeedback } from "reactstrap"
 import { Dropdown } from "semantic-ui-react"
@@ -47,6 +47,7 @@ var settings = {
 }
 
 const Register = props => {
+	const phoneInputRef = useRef(null);
   const [passwordInputType, setPasswordInputType] = useState(true)
   const [loader, setLoader] = useState(false)
   const [inviteInfo, setInviteInfo] = useState("")
@@ -58,11 +59,14 @@ const Register = props => {
   const [gstCountry, setGstCountry] = useState(false)
   const dispatch = useDispatch()
   let navigate = useHistory()
+	const [selectedPhoneCode, setSelectedPhoneCode] = useState()
+	const [selectedCountryCode, setSelectedCountryCode] = useState()
+
 
   useEffect(() =>{
     setPageTitle("Registration")
-    getcountry()
-    getGstCountriesList()
+    // getcountry()
+    // getGstCountriesList()
   },[])
 
   const getcountry = async () => {
@@ -103,44 +107,52 @@ const Register = props => {
       email: inviteInfo?.email || "",
       name: "",
       password: "",
+			phoneNumber: "",      
       country: "",
+      referralCode: "",
       termConditions: false,
-      gst:""
+      // gst:""
     },
     validationSchema: () => {
 
     
     let schema  = Yup.object().shape({
       email: Yup.string()
-        .required("Please enter your email ")
+        // .required("Please enter your email ")
         .matches(customRegex.email, "Please enter a valid email "),
       name: Yup.string()
-        .required("Please enter your name")
+        // .required("Please enter your name")
         .matches(customRegex.userName, "Please enter alphabets only")
         .matches(customRegex.spaces, "space not allowed")
         .min(3, "User name must be minimum 3 characters long")
         .max(15, "User name must be maximum 15 characters long"),
       password: Yup.string()
-        .required("Please enter your password")
+        // .required("Please enter your password")
         .min(8, "Password must be 8 characters at least")
         .matches(
           customRegex.password,
           "Please enter atleast one uppercase letter, one lowercase letter, one digit and one special character"
         ),
-      termConditions: Yup.bool().oneOf(
-        [true],
-        "You must accept the terms and conditions"
-      ),
+      phoneNumber: Yup.string()
+        // .required("Please enter your phone number.")
+        .matches(customRegex.phoneNumber, "Please enter a valid phone number."),  
+      termConditions: Yup.bool()
+      // .oneOf(
+      //   [true],
+      //   "You must accept the terms and conditions"
+      // ),
     })
 
     if(!inviteInfo){
       schema = schema.shape({country: Yup.string()
-      .required('Please select your country'),
+      // .required('Please select your country'),
       })
     }
     return schema 
   },
     onSubmit: (values) => {
+      navigate.push("/Verification")
+      return
       let terms = 0
       values.termConditions ? (terms = 1) : (terms = 0)
       let data = new URLSearchParams({
@@ -249,6 +261,40 @@ const Register = props => {
     }
   }
 
+  useEffect(() => {
+    const inputElement = phoneInputRef.current;
+    if (inputElement) {
+      const iti = intlTelInput(inputElement, {
+      separateDialCode: true,
+      initialCountry: selectedCountryCode,
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js"
+      
+      });
+    
+      inputElement?.addEventListener("countrychange", function () {
+      const selectedCountryData = iti.getSelectedCountryData();
+      setSelectedPhoneCode(selectedCountryData)
+      });
+      
+      // Clean up by destroying the intlTelInput instance when the component unmounts
+      return () => {
+      iti.destroy();
+      };
+    }
+    }, [phoneInputRef?.current, selectedCountryCode]);
+
+    useEffect(() => {
+      countryList?.map((country) => {
+        if(validation?.values?.country === country.value){
+          setSelectedCountryCode(country?.short_code?.toLowerCase())
+        }
+      })
+    },[
+      selectedPhoneCode, 
+      selectedCountryCode, 
+      countryList,
+      validation?.values?.country
+    ])
   return (
     <React.Fragment>
       <div
@@ -261,7 +307,7 @@ const Register = props => {
         <Container fluid>
           <Row>
             <Col lg={6} className="left-panel">
-              <Link onClick={(e) => {spinner? e?.preventDefault() : null }} to="/productlist"><img src={logo} alt="" /> </Link>
+              {/* <Link onClick={(e) => {spinner? e?.preventDefault() : null }} to="/productlist"><img src={logo} alt="" /> </Link>
               <div className="slide-content">
                 <Slider {...settings}>
                   <div>
@@ -294,8 +340,8 @@ const Register = props => {
                       </p>
                     </div>
                   </div>
-                </Slider>
-              </div>
+                </Slider> 
+              </div>*/}
             </Col>
             <Col lg={6}>
               <div className="right_content">
@@ -315,7 +361,7 @@ const Register = props => {
                   <h5 className="text-center">Create your account</h5>
                   {!inviteInfo && (
                     <>
-                      <GoogleLogin
+                      {/* <GoogleLogin
                         clientId="471779568255-ev1mm78t9g4tu4si9ms57n692qc0pnbu.apps.googleusercontent.com"
                         buttonText="Login with gooogle"
                         onSuccess={responseGoogle}
@@ -332,13 +378,13 @@ const Register = props => {
                             Sign Up with Google
                           </button>
                         )}
-                      />
+                      /> */}
 
-                      <div className="sub_header register">
+                      {/* <div className="sub_header register">
                         <p className="text-muted m-0">
                           <span>OR</span>
                         </p>
-                      </div>
+                      </div> */}
                     </>
                   )}
                 </div>
@@ -462,6 +508,57 @@ const Register = props => {
 
                       <img className="form-icon" src={lock} alt="" />
                     </div>
+                    <div className="form-group">
+										<Input
+											type="tel"
+											id="phone"
+											name="phoneNumber"
+											className="form-control"
+											placeholder="Phone Number"
+											innerRef={phoneInputRef}
+											onChange={(e) => {
+												const inputValue = e.target.value;
+												if (inputValue.startsWith(`+${selectedPhoneCode?.dialCode}`)) {
+												   // Remove the dial code from the input value
+													const phoneNumberWithoutDialCode = inputValue.substring(`+${selectedPhoneCode?.dialCode}`.length);
+													// Update the form field value using formik's handleChange
+													validation.handleChange({
+														target: {
+															name: "phoneNumber",
+															value: phoneNumberWithoutDialCode,
+														},
+													});
+												// }
+												} else {
+													// Handle other changes (e.g., non-dial code input)
+													validation.handleChange(e);
+												}
+											}}
+											onBlur={validation.handleBlur}
+											value={validation.values.phoneNumber || ""}
+											invalid={
+												validation.touched.phoneNumber &&
+													validation.errors.phoneNumber
+													? true
+													: false
+											}
+										/>
+										{validation.touched.phoneNumber &&
+											validation.errors.phoneNumber ? (
+											<>
+												<FormFeedback type="invalid" className="info-modal">
+													<img
+														className="form-error-icon"
+														src={rederror}
+														alt=""
+														height={15}
+													/>
+													{validation.errors.phoneNumber}
+												</FormFeedback>
+											</>
+										) : null}
+										<div id="flag-container"></div>
+									</div>
                     {!inviteInfo && <div className="mb-3 form-g position-relative">
                     <Dropdown
                       id="country"
@@ -495,6 +592,39 @@ const Register = props => {
                         </>
                       ) : null}
                     </div>}
+                    <div className="mb-3 form-g position-relative">
+                      <Input
+                        disabled={spinner}
+                        name="referralCode"
+                        type="text"
+                        className="input-outline"
+                        placeholder="Referral Code"
+                        onChange={validation.handleChange}
+                        onBlur={validation.handleBlur}
+                        value={validation.values.referralCode || ""}
+                        invalid={
+                          validation.touched.referralCode &&
+                          validation.errors.referralCode
+                            ? true
+                            : false
+                        }
+                      />
+                      {validation.touched.referralCode &&
+                      validation.errors.referralCode ? (
+                        <>
+                          <FormFeedback type="invalid">
+                            <img
+                              className="form-error-icon"
+                              src={rederror}
+                              alt=""
+                              height={15}
+                            />
+                            {validation.errors.referralCode}
+                          </FormFeedback>
+                        </>
+                      ) : null}
+                      <img className="form-icon" src={name} alt="" />
+                    </div>
                     {gstCountry && <div className="form-check">
                       <Input
                         disabled={spinner}

@@ -209,7 +209,7 @@ const Header = props => {
             <div className="user-content d-flex align-items-center">
               <ProfileMenuHeader />
             </div>
-            {path == "/dashboard" || path == "/services" ? (
+            {/* {path == "/dashboard" || path == "/services" ? (
               <div className="top-center search">
                 <div className="app-search d-none d-lg-block p-0">
                   <div className="position-relative">
@@ -243,7 +243,7 @@ const Header = props => {
               </div>
             ) : (
               ""
-            )}
+            )} */}
             <div className="d-flex align-items-center">
               <NotificationDropdown
                 notificationData={notificationData}
@@ -259,11 +259,13 @@ const Header = props => {
                 </Link>
               ) : window.location.pathname.includes("/ticket-view") ? (
                 ""
-              ) : (
-                <Link className="top-btn btn-for-hover" to={"/productslist"}>
-                  <img src={top} />
-                  Add service
-                </Link>
+              ) : 
+              (
+                null
+                // <Link className="top-btn btn-for-hover" to={"/productslist"}>
+                //   <img src={top} />
+                //   Add service
+                // </Link>
               )}
             </div>
           </div>
