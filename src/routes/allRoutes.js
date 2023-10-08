@@ -54,6 +54,7 @@ import InvoiceCheckout from "../pages/Invoices/InvoiceCheckout"
 import DepositFunds from "../pages/Accounts/depositFunds"
 import WithdrawFunds from "../pages/Accounts/withdrawFunds"
 import TransferFunds from "../pages/Accounts/transferFunds"
+import PaymentHistory from "../pages/Accounts/paymentHistory"
 
 const unAuthrizedRoutes = [
   { path: "/announcments", component: AnnouncmentsList},
@@ -107,6 +108,7 @@ const userRoutes = [
   { path: "/deposite-funds", component: DepositFunds },
   { path: "/witdraw-funds", component: WithdrawFunds },
   { path: "/transfer-funds", component: TransferFunds },
+  { path: "/payment-history", component: PaymentHistory },
 
   // this route should be at the end of all other routes
   { path: "/", exact: true, component: () => <Redirect to="/login" /> },

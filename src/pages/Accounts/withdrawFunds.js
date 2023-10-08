@@ -8,6 +8,7 @@ import {
   Label,
   Input,
   Form,
+  FormFeedback
 } from "reactstrap"
 
 // Formik Validation
@@ -52,6 +53,8 @@ import BankLogo from "../../assets/images/c2c/banklogo.png"
 import EthereumLogo from "../../assets/images/c2c/ethereum.png"
 import BitcoinLogo from "../../assets/images/c2c/bitcoinlogo.png"
 import TetherLogo from "../../assets/images/c2c/tetherlogo.png"
+import {  } from "reactstrap"
+
 const WithdrawFunds = props => {
     const [loader, setLoader] = useState(false)
     const [stripeCardHeight, setStripeCardHeight] = useState(0)
@@ -161,7 +164,7 @@ const WithdrawFunds = props => {
                                             </Label>
                                         </div>
                                     </Col>
-                                    <Col>
+                                    {/* <Col>
                                         <div className="form-check form-check-inline mt-20">
                                             <Input
                                                 type="radio"
@@ -208,7 +211,7 @@ const WithdrawFunds = props => {
                                                 <p className="font-normal">Ethereum</p>
                                             </Label>
                                         </div>
-                                    </Col>
+                                    </Col> */}
                                     <Col>
                                         <div className="form-check form-check-inline mt-20">
                                             <Input
@@ -310,7 +313,7 @@ const WithdrawFunds = props => {
                               <span>Address: TDGEKJ5586598970899787S</span>
                             </Col>
                           </Row>
-                          <Row>
+                          {/* <Row>
                             <Col>
                               <div className="btn-group mt-30">
                                 <button
@@ -322,7 +325,7 @@ const WithdrawFunds = props => {
                                 </button>
                               </div>
                             </Col>
-                          </Row>
+                          </Row> */}
                           <h6 className="font16  font-semibold">
                             Import to know
                           </h6>
@@ -342,115 +345,41 @@ const WithdrawFunds = props => {
                             <span>Carefully check the address. The transaction will be lost if the address is incorrect.</span>
                           </div>
                           <Row>
-                            <Col>
-                              <div className="form-check form-check-inline mt-20">
-                                <Input
-                                  type="radio"
-                                  id="customRadioInline6"
-                                  name="customRadioInline2"
-                                  className="form-check-input"
-                                  value="100"
-                                  checked={selectedAmount === 100}
-                                  onClick={() => {
-                                    validation.resetForm({ values: "" }),
-                                      setSelectedAmount(100)
-                                  }}
-                                  onChange={() => {}}
-                                  disabled={spinner}
-                                />
-                                <Label
-                                  className="form-check-label"
-                                  htmlFor="customRadioInline6"
-                                >
-                                  <p className="font-normal">
-                                    {currency?.prefix}$100 USD {currency?.suffix}
-                                  </p>
-                                </Label>
-                              </div>
+                          <Col >
+                              <Input
+                                name="doj"
+                                className="mt-3 input-outline"
+                                placeholder="Date of Joining"
+                                type="text"
+                                // disabled={true}
+                                // onChange={validation.handleChange}
+                                // onBlur={validation.handleBlur}
+                                // value={validation.values.doj || "10-07-2023"}
+                                // invalid={
+                                //   validation.touched.doj &&
+                                //   validation.errors.doj
+                                //     ? true
+                                //     : false
+                                // }
+                              />
+                              {/* {validation.touched.doj &&
+                              validation.errors.doj ? (
+                                <>
+                                  <FormFeedback type="invalid">
+                                    <img
+                                      className="form-error-icon"
+                                      src={rederror}
+                                      alt=""
+                                      height={15}
+                                    />
+                                    {validation.errors.doj}
+                                  </FormFeedback>
+                                </>
+                              ) : null} */}
                             </Col>
-                            <Col>
-                              <div className="form-check form-check-inline mt-20">
-                                <Input
-                                  type="radio"
-                                  id="customRadioInline7"
-                                  name="customRadioInline2"
-                                  className="form-check-input"
-                                  value="250"
-                                  checked={selectedAmount === 250}
-                                  onClick={() => {
-                                    validation.resetForm({ values: "" }),
-                                      setSelectedAmount(250)
-                                  }}
-                                  onChange={() => {}}
-                                  disabled={spinner}
-                                />
-                                <Label
-                                  className="form-check-label"
-                                  htmlFor="customRadioInline7"
-                                >
-                                  <p className="font-normal">
-                                    {currency?.prefix}$250 USD{currency?.suffix}{" "}
-                                  </p>
-                                </Label>
-                              </div>
-                            </Col>
-                            <Col>
-                              <div className="form-check form-check-inline mt-20">
-                                <Input
-                                  type="radio"
-                                  id="customRadioInline8"
-                                  name="customRadioInline2"
-                                  className="form-check-input"
-                                  value="500"
-                                  checked={selectedAmount === 500}
-                                  onClick={() => {
-                                    validation.resetForm({ values: "" }),
-                                      setSelectedAmount(500)
-                                  }}
-                                  onChange={() => {}}
-                                  disabled={spinner}
-                                />
-                                <Label
-                                  className="form-check-label"
-                                  htmlFor="customRadioInline8"
-                                >
-                                  <p className="font-normal">
-                                    {currency?.prefix}$500 USD {currency?.suffix}
-                                  </p>
-                                </Label>
-                              </div>
-                            </Col>
-                            <Col>
-                              <div className="form-check form-check-inline mt-20">
-                                <Input
-                                  type="radio"
-                                  id="customRadioInline9"
-                                  name="customRadioInline2"
-                                  className="form-check-input"
-                                  value="1000"
-                                  checked={selectedAmount === 1000}
-                                  onClick={() => {
-                                    validation.resetForm({ values: "" }),
-                                      setSelectedAmount(1000)
-                                  }}
-                                  onChange={() => {}}
-                                  disabled={spinner}
-                                />
-                                <Label
-                                  className="form-check-label"
-                                  htmlFor="customRadioInline9"
-                                >
-                                  <p className="font-normal">
-                                    {" "}
-                                    {currency?.prefix}$1000 USD {currency?.suffix}{" "}
-                                  </p>
-                                </Label>
-                              </div>
-                            </Col>
-                            <Col>
+                            {/* <Col>
                               <div className="test form-check form-check-inline mt-20 ">
                                 <span className="prefix">{currency?.prefix}$</span>
-                                {/* <div className="inner-input-box"> */}
                                 <Input
                                   className="chose-payment"
                                   value={validation.values.customAmount || ""}
@@ -475,29 +404,12 @@ const WithdrawFunds = props => {
                                   }}
                                   disabled={spinner}
                                 />
-                                {/* </div> */}
                                 <span className="suffix">
-                                  {/* {" "} */}
                                   {currency?.suffix}USD
                                 </span>
-                                {/* {validation.touched.customAmount &&
-                                  validation.errors.customAmount ? (
-                                    <>
-                                      <FormFeedback type="invalid">
-                                        <img
-                                          className="form-error-icon"
-                                          src={rederror}
-                                          alt=""
-                                          height={15}
-                                        />
-                                        {validation.errors.customAmount}
-                                      </FormFeedback>
-                                    </>
-                                  ) : null} */}
                               </div>
                               <span className="billing-max-amt">*Maximum amount: 5000</span>
-                            
-                            </Col>
+                            </Col> */}
                           </Row>
                         </div>
                       </div>
