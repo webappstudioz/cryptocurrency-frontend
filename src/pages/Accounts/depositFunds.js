@@ -52,6 +52,8 @@ import BankLogo from "../../assets/images/c2c/banklogo.png"
 import EthereumLogo from "../../assets/images/c2c/ethereum.png"
 import BitcoinLogo from "../../assets/images/c2c/bitcoinlogo.png"
 import TetherLogo from "../../assets/images/c2c/tetherlogo.png"
+import file from "../../assets/images/file.png";
+
 const DepositFunds = props => {
     const [loader, setLoader] = useState(false)
     const [stripeCardHeight, setStripeCardHeight] = useState(0)
@@ -62,6 +64,9 @@ const DepositFunds = props => {
     const [paypalBasicFormData, setPaypalBasicFormData] = useState()
     const [loading, setLoading] = useState("")
     const [openModal, setOpenModal] = useState(false)
+    const [selectedFile, setSelectedFile] = useState([]);
+    const [inputKey, setInputKey] = useState(0);
+    const [errorMsg, setErrorMsg] = useState("");
 
     const validation = useFormik({
         //   // enableReinitialize : use this flag when initial values needs to be changed
@@ -106,7 +111,39 @@ const DepositFunds = props => {
           }
         },
       })
-      
+
+      const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const fileSize = file.size / 1024 / 1024; // in MB
+          const fileType = file.type.split("/")[1]; // get file extension
+    
+          // Validate file size (10MB max)
+          if (fileSize > 20) {
+            setErrorMsg("File size should be less than 20 MB");
+          } else {
+            // Validate file extension
+            if (
+              fileType === "jpg" ||
+              fileType === "jpeg" ||
+              fileType === "png" ||
+              fileType === "pdf" ||
+              fileType === "doc" ||
+              fileType === "xls" ||
+              fileType === "zip"
+            ) {
+              setSelectedFile([...selectedFile, file]);
+              // setSelectedFile(file)
+              setErrorMsg("");
+            } else {
+              setErrorMsg(
+                "Only JPG, PNG, PDF, DOC, XLS, and ZIP files are allowed"
+              );
+            }
+          }
+        }
+      };
+
     return (
         <React.Fragment>
         <div
@@ -341,7 +378,7 @@ const DepositFunds = props => {
                           <div>
                             <span>Carefully check the address. The transaction will be lost if the address is incorrect.</span>
                           </div>
-                          <Row>
+                          {/* <Row>
                             <Col>
                               <div className="form-check form-check-inline mt-20">
                                 <Input
@@ -450,7 +487,7 @@ const DepositFunds = props => {
                             <Col>
                               <div className="test form-check form-check-inline mt-20 ">
                                 <span className="prefix">{currency?.prefix}$</span>
-                                {/* <div className="inner-input-box"> */}
+                                // <div className="inner-input-box"> 
                                 <Input
                                   className="chose-payment"
                                   value={validation.values.customAmount || ""}
@@ -475,34 +512,92 @@ const DepositFunds = props => {
                                   }}
                                   disabled={spinner}
                                 />
-                                {/* </div> */}
+                                // </div> 
                                 <span className="suffix">
-                                  {/* {" "} */}
+                                  // {" "} 
                                   {currency?.suffix}USD
                                 </span>
-                                {/* {validation.touched.customAmount &&
-                                  validation.errors.customAmount ? (
-                                    <>
-                                      <FormFeedback type="invalid">
-                                        <img
-                                          className="form-error-icon"
-                                          src={rederror}
-                                          alt=""
-                                          height={15}
-                                        />
-                                        {validation.errors.customAmount}
-                                      </FormFeedback>
-                                    </>
-                                  ) : null} */}
+                                  // {validation.touched.customAmount &&
+                                  // validation.errors.customAmount ? (
+                                  //   <>
+                                  //     <FormFeedback type="invalid">
+                                  //       <img
+                                  //         className="form-error-icon"
+                                  //         src={rederror}
+                                  //         alt=""
+                                  //         height={15}
+                                  //       />
+                                  //       {validation.errors.customAmount}
+                                  //     </FormFeedback>
+                                  //   </>
+                                  // ) : null} 
                               </div>
                               <span className="billing-max-amt">*Maximum amount: 5000</span>
                             
                             </Col>
-                          </Row>
+                          </Row> */}
                         </div>
                       </div>
                     </CardBody>
                   </Card>
+                  <Card className="m-0  ">
+                    <CardBody>
+                      <div className="inner-content invite-user rd-group">
+                        <h6 className="font16  font-semibold">
+                          Complete Your Payment
+                        </h6>
+                        <div className="col-lg-6 form-group mb-4">
+                            <p className="place-holder">Upload Screen Short</p>
+                            <label
+                              htmlFor="file-upload"
+                              className="custom-file-upload form-control"
+                            >
+                              {/* {selectedFile?.length > 0 ? (
+                                <p> Add More +</p>
+                              ) : ( */}
+                                <img src={file} alt="Upload file icon" />
+                              {/* )} */}
+                              <input
+                                disabled={spinner}
+                                key={inputKey}
+                                id="file-upload"
+                                type="file"
+                                accept=".jpg,.jpeg,.png,.pdf,.doc,.xls,.zip"
+                                onChange={handleFileChange}
+                                onClick={(event) => {
+                                  if (
+                                    event.target.files.length === 1 &&
+                                    event.target.files[0].name ===
+                                      selectedFile[selectedFile.length - 1]
+                                        ?.name
+                                  ) {
+                                    event.target.value = null;
+                                  }
+                                }}
+                                multiple
+                              />
+                              {/* <button>Add more +</button> */}
+                            </label>
+                            </div>
+                            <div className="col-lg-6 form-group">
+                              <p className="place-holder">Support PIN</p>
+                              <input
+                                type="text"
+                                placeholder="Enter Support PIN"
+                                className="form-control"
+                                id="support_pin"
+                                // disabled={supportPin || spinner}
+                                name="Crypto Address"
+                                // value={email}
+                                // onChange={(e) => setemail(e.target.value)}
+                                // onChange={validation.handleChange}
+                                // onBlur={validation.handleBlur}
+                                // value={supportPin || validation.values.support_pin || ""}
+                              />
+                            </div>
+                      </div>
+                    </CardBody>
+                  </Card>      
                   <div className="btn-group mt-30">
                     <button
                       className="btn btn-primary w-100 waves-effect waves-light btn-save font-normal btnv1"

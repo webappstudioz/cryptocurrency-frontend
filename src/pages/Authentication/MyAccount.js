@@ -59,13 +59,13 @@ const MyAccount = props => {
       firstName: userData?.first_name || "",
       lastName: userData?.last_name || "",
       email: userData?.email || "",
-      companyName: userData?.company_name || "",
+      // companyName: userData?.company_name || "",
       phoneNumber: userData?.phone_number || "",
-      addressOne: userData?.address_one || "",
-      addressTwo: userData?.address_two || "",
+      // addressOne: userData?.address_one || "",
+      // addressTwo: userData?.address_two || "",
       city: userData?.city || "",
-      zipCode: userData?.zip_code || "",
-      TaxId: userData?.tax_id || "",
+      // zipCode: userData?.zip_code || "",
+      // TaxId: userData?.tax_id || "",
     },
     validationSchema: Yup.object({
       firstName: Yup.string()
@@ -74,14 +74,14 @@ const MyAccount = props => {
       lastName: Yup.string()
       // .required("Last name required.")
       .matches(/^[A-Za-z]+$/,"Only albhabets are allowed"),
-      companyName: Yup.string(),
+      // companyName: Yup.string(),
       phoneNumber: Yup.string()
         .matches(/^([+]\d{2})?\d{10}$/, "Please enter valid Phone number.")
         .required("Phone number is required."),
-      TaxId: Yup.string(),
-      addressOne: Yup.string().required("Address 1 is required."),
+      // TaxId: Yup.string(),
+      // addressOne: Yup.string().required("Address 1 is required."),
       city: Yup.string().required("City is required."),
-      zipCode: Yup.string().required("Zip code is required."),
+      // zipCode: Yup.string().required("Zip code is required."),
     }),
     onSubmit: async values => {
       return
@@ -305,8 +305,40 @@ const MyAccount = props => {
                   </h6>
                 </div>
                 <Row>
-                  <Col lg="6">
+                <Col lg="6">
                   <FocusError formik={validation} />
+                    <Input
+                      name="userName"
+                      className="mt-3 input-outline"
+                      placeholder="User name"
+                      type="text"
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      disabled={true}
+                      value={validation.values.userName || "USX5474"}
+                      invalid={
+                        validation.touched.userName &&
+                        validation.errors.userName
+                          ? true
+                          : false
+                      }
+                    />
+                    {validation.touched.userName &&
+                    validation.errors.userName ? (
+                      <>
+                        <FormFeedback type="invalid">
+                          <img
+                            className="form-error-icon"
+                            src={rederror}
+                            alt=""
+                            height={15}
+                          />
+                          {validation.errors.userName}
+                        </FormFeedback>
+                      </>
+                    ) : null}
+                  </Col>
+                  <Col lg="6">
                     <Input
                       name="firstName"
                       className="mt-3 input-outline"
@@ -378,7 +410,7 @@ const MyAccount = props => {
                       readOnly
                     />
                   </Col>
-                  <Col lg="6">
+                  {/* <Col lg="6">
                     <Input
                       name="companyName"
                       className="mt-3 input-outline"
@@ -408,7 +440,7 @@ const MyAccount = props => {
                         </FormFeedback>
                       </>
                     ) : null}
-                  </Col>
+                  </Col> */}
                   <Col lg="6">
                     <Input
                       name="phoneNumber"
@@ -439,8 +471,40 @@ const MyAccount = props => {
                         </FormFeedback>
                       </>
                     ) : null}
-                  </Col>
+                  </Col> 
                   <Col lg="6">
+                    <Input
+                      name="doj"
+                      className="mt-3 input-outline"
+                      placeholder="Date of Joining"
+                      type="text"
+                      disabled={true}
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      value={validation.values.doj || "10-07-2023"}
+                      invalid={
+                        validation.touched.doj &&
+                        validation.errors.doj
+                          ? true
+                          : false
+                      }
+                    />
+                    {validation.touched.doj &&
+                    validation.errors.doj ? (
+                      <>
+                        <FormFeedback type="invalid">
+                          <img
+                            className="form-error-icon"
+                            src={rederror}
+                            alt=""
+                            height={15}
+                          />
+                          {validation.errors.doj}
+                        </FormFeedback>
+                      </>
+                    ) : null}
+                  </Col>
+                  {/* <Col lg="6">
                     <Input
                       name="TaxId"
                       className="mt-3 input-outline"
@@ -468,16 +532,16 @@ const MyAccount = props => {
                         </FormFeedback>
                       </>
                     ) : null}
-                  </Col>
-                </Row>
+                  </Col> */}
+                {/* </Row>
               </CardBody>
             </Card>
             <Card>
               <CardBody>
                 <div className="my-account-header">
-                  <h6 className="font16  font-semibold">Billing Address</h6>
+                  <h6 className="font16  font-semibold">Account Details</h6>
                 </div>
-                <Row>
+                <Row> */}
                   <Col lg="12">
                     <Input
                       name="addressOne"
@@ -508,7 +572,7 @@ const MyAccount = props => {
                       </>
                     ) : null}
                   </Col>
-                  <Col lg="12">
+                  {/* <Col lg="12">
                     <Input
                       name="addressTwo"
                       value={validation.values.addressTwo}
@@ -517,7 +581,7 @@ const MyAccount = props => {
                       onChange={validation.handleChange}
                       onBlur={validation.handleBlur}
                     />
-                  </Col>
+                  </Col> */}
                   <Col lg="6">
                     <Input
                       name="city"
@@ -741,6 +805,266 @@ const MyAccount = props => {
                 </div>
               </CardBody> */}
             </Card>
+            <Card>
+              <CardBody>
+                <div className="my-account-header">
+                  <h6 className="font16  font-semibold">Crypto Currency Account Details</h6>
+                </div>
+                <Row>
+                <Col lg="6">
+                    <Input
+                      name="cryptoId"
+                      value={validation.values.cryptoId}
+                      className="mt-3 input-outline"
+                      placeholder="Crypto Id"
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      invalid={
+                        validation.touched.cryptoId &&
+                        validation.errors.cryptoId
+                          ? true
+                          : false
+                      }
+                    />
+                    {validation.touched.cryptoId &&
+                    validation.errors.cryptoId ? (
+                      <>
+                        <FormFeedback type="invalid">
+                          <img
+                            className="form-error-icon"
+                            src={rederror}
+                            alt=""
+                            height={15}
+                          />
+                          {validation.errors.cryptoId}
+                        </FormFeedback>
+                      </>
+                    ) : null}
+                  </Col>
+                <Col lg="6">
+                    <Input
+                      name="cryptoQRCode"
+                      type="file"
+                      value={validation.values.cryptoQRCode}
+                      className="mt-3 input-outline"
+                      placeholder="Crypto QR Code"
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      invalid={
+                        validation.touched.cryptoQRCode &&
+                        validation.errors.cryptoQRCode
+                          ? true
+                          : false
+                      }
+                    />
+                    {validation.touched.cryptoQRCode &&
+                    validation.errors.cryptoQRCode ? (
+                      <>
+                        <FormFeedback type="invalid">
+                          <img
+                            className="form-error-icon"
+                            src={rederror}
+                            alt=""
+                            height={15}
+                          />
+                          {validation.errors.cryptoQRCode}
+                        </FormFeedback>
+                      </>
+                    ) : null}
+                  </Col>
+                </Row>
+              </CardBody>
+            </Card>
+            <Card>
+              <CardBody>
+                <div className="my-account-header">
+                  <h6 className="font16  font-semibold">Bank Account Details</h6>
+                </div>
+                <Row>
+                <Col lg="12">
+                    <Input
+                      name="bankName"
+                      value={validation.values.bankName}
+                      className="mt-3 input-outline"
+                      placeholder="Bank Name"
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      invalid={
+                        validation.touched.bankName &&
+                        validation.errors.bankName
+                          ? true
+                          : false
+                      }
+                    />
+                    {validation.touched.bankName &&
+                    validation.errors.bankName ? (
+                      <>
+                        <FormFeedback type="invalid">
+                          <img
+                            className="form-error-icon"
+                            src={rederror}
+                            alt=""
+                            height={15}
+                          />
+                          {validation.errors.bankName}
+                        </FormFeedback>
+                      </>
+                    ) : null}
+                  </Col>
+                  <Col lg="6">
+                    <Input
+                      name="accountNum"
+                      value={validation.values.accountNum}
+                      className="mt-3 input-outline"
+                      placeholder="Account Number"
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      invalid={
+                        validation.touched.accountNum &&
+                        validation.errors.accountNum
+                          ? true
+                          : false
+                      }
+                    />
+                    {validation.touched.accountNum &&
+                    validation.errors.accountNum ? (
+                      <>
+                        <FormFeedback type="invalid">
+                          <img
+                            className="form-error-icon"
+                            src={rederror}
+                            alt=""
+                            height={15}
+                          />
+                          {validation.errors.accountNum}
+                        </FormFeedback>
+                      </>
+                    ) : null}
+                  </Col>
+                  <Col lg="6">
+                    <Input
+                      name="ifscCode"
+                      value={validation.values.ifscCode}
+                      className="mt-3 input-outline"
+                      placeholder="IFCS Code"
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      invalid={
+                        validation.touched.ifscCode &&
+                        validation.errors.ifscCode
+                          ? true
+                          : false
+                      }
+                    />
+                    {validation.touched.ifscCode &&
+                    validation.errors.ifscCode ? (
+                      <>
+                        <FormFeedback type="invalid">
+                          <img
+                            className="form-error-icon"
+                            src={rederror}
+                            alt=""
+                            height={15}
+                          />
+                          {validation.errors.ifscCode}
+                        </FormFeedback>
+                      </>
+                    ) : null}
+                  </Col>
+                  <Col lg="12">
+                    <Input
+                      name="accountName"
+                      value={validation.values.accountName}
+                      className="mt-3 input-outline"
+                      placeholder="Account Name"
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      invalid={
+                        validation.touched.accountName &&
+                        validation.errors.accountName
+                          ? true
+                          : false
+                      }
+                    />
+                    {validation.touched.accountName &&
+                    validation.errors.accountName ? (
+                      <>
+                        <FormFeedback type="invalid">
+                          <img
+                            className="form-error-icon"
+                            src={rederror}
+                            alt=""
+                            height={15}
+                          />
+                          {validation.errors.accountName}
+                        </FormFeedback>
+                      </>
+                    ) : null}
+                  </Col>
+                  <Col lg="6">
+                    <Input
+                      name="upiId"
+                      value={validation.values.upiId}
+                      className="mt-3 input-outline"
+                      placeholder="UPI Id"
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      invalid={
+                        validation.touched.upiId &&
+                        validation.errors.upiId
+                          ? true
+                          : false
+                      }
+                    />
+                    {validation.touched.upiId &&
+                    validation.errors.upiId ? (
+                      <>
+                        <FormFeedback type="invalid">
+                          <img
+                            className="form-error-icon"
+                            src={rederror}
+                            alt=""
+                            height={15}
+                          />
+                          {validation.errors.upiId}
+                        </FormFeedback>
+                      </>
+                    ) : null}
+                  </Col>
+                  <Col lg="6">
+                    <Input
+                      name="bankQRCode"
+                      type="file"
+                      value={validation.values.bankQRCode}
+                      className="mt-3 input-outline"
+                      placeholder="Address 1"
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      invalid={
+                        validation.touched.bankQRCode &&
+                        validation.errors.bankQRCode
+                          ? true
+                          : false
+                      }
+                    />
+                    {validation.touched.bankQRCode &&
+                    validation.errors.bankQRCode ? (
+                      <>
+                        <FormFeedback type="invalid">
+                          <img
+                            className="form-error-icon"
+                            src={rederror}
+                            alt=""
+                            height={15}
+                          />
+                          {validation.errors.bankQRCode}
+                        </FormFeedback>
+                      </>
+                    ) : null}
+                  </Col>
+                </Row>
+              </CardBody>
+            </Card>    
             <div className="btn-group mt-30">
               <button
                 className="btn btn-primary w-100 waves-effect waves-light btn-cancel m-0"
