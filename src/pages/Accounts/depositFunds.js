@@ -55,330 +55,330 @@ import TetherLogo from "../../assets/images/c2c/tetherlogo.png"
 import file from "../../assets/images/file.png";
 
 const DepositFunds = props => {
-    const [loader, setLoader] = useState(false)
-    const [stripeCardHeight, setStripeCardHeight] = useState(0)
-    const [selectedMethod, setSelectedMethod] = useState()
-    const [selectedAmount, setSelectedAmount] = useState(100)
-    const [spinner, setSpinner] = useState(false)
-    const [currency, setCurrency] = useState()
-    const [paypalBasicFormData, setPaypalBasicFormData] = useState()
-    const [loading, setLoading] = useState("")
-    const [openModal, setOpenModal] = useState(false)
-    const [selectedFile, setSelectedFile] = useState([]);
-    const [inputKey, setInputKey] = useState(0);
-    const [errorMsg, setErrorMsg] = useState("");
+  const [loader, setLoader] = useState(false)
+  const [stripeCardHeight, setStripeCardHeight] = useState(0)
+  const [selectedMethod, setSelectedMethod] = useState()
+  const [selectedAmount, setSelectedAmount] = useState(100)
+  const [spinner, setSpinner] = useState(false)
+  const [currency, setCurrency] = useState()
+  const [paypalBasicFormData, setPaypalBasicFormData] = useState()
+  const [loading, setLoading] = useState("")
+  const [openModal, setOpenModal] = useState(false)
+  const [selectedFile, setSelectedFile] = useState([]);
+  const [inputKey, setInputKey] = useState(0);
+  const [errorMsg, setErrorMsg] = useState("");
 
-    const validation = useFormik({
-        //   // enableReinitialize : use this flag when initial values needs to be changed
-        enableReinitialize: true,
-    
-        initialValues: {
-          customAmount: "",
-        },
-        validationSchema: Yup.object({
-          customAmount: Yup.string()
-          .matches(customRegex?.amount, "Please valid amount"),
-        }),
-    
-        onSubmit: values => {
-          return
-          let amount = ""
-          values?.customAmount? amount = values?.customAmount : amount = selectedAmount
-          if (selectedMethod == "stripe" && amount) {
-            if (values?.customAmount) {
-              setstripecondition(true)
-              setSpinner(true)
-              setLoading(true)
-              setOpenModal(true)
-            } else if (selectedAmount != "custom") {
-              setstripecondition(true)
-              setSpinner(true)
-              setLoading(true)
-              setOpenModal(true)
-            }
-          } else {
-            if (values?.customAmount) {
-              HandleAddWalletAmount(values?.customAmount)
-            } else if (selectedAmount != "custom") {
-              HandleAddWalletAmount(selectedAmount)
-            }
-          }
-    
-          if (!values?.customAmount && selectedAmount === "custom") {
-            toast.error("Please select or enter an amount to wallet", {
-              position: toast.POSITION.TOP_RIGHT,
-            })
-          }
-        },
-      })
+  const validation = useFormik({
+    //   // enableReinitialize : use this flag when initial values needs to be changed
+    enableReinitialize: true,
 
-      const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-          const fileSize = file.size / 1024 / 1024; // in MB
-          const fileType = file.type.split("/")[1]; // get file extension
-    
-          // Validate file size (10MB max)
-          if (fileSize > 20) {
-            setErrorMsg("File size should be less than 20 MB");
-          } else {
-            // Validate file extension
-            if (
-              fileType === "jpg" ||
-              fileType === "jpeg" ||
-              fileType === "png" ||
-              fileType === "pdf" ||
-              fileType === "doc" ||
-              fileType === "xls" ||
-              fileType === "zip"
-            ) {
-              setSelectedFile([...selectedFile, file]);
-              // setSelectedFile(file)
-              setErrorMsg("");
-            } else {
-              setErrorMsg(
-                "Only JPG, PNG, PDF, DOC, XLS, and ZIP files are allowed"
-              );
-            }
-          }
+    initialValues: {
+      customAmount: "",
+    },
+    validationSchema: Yup.object({
+      customAmount: Yup.string()
+        .matches(customRegex?.amount, "Please valid amount"),
+    }),
+
+    onSubmit: values => {
+      return
+      let amount = ""
+      values?.customAmount ? amount = values?.customAmount : amount = selectedAmount
+      if (selectedMethod == "stripe" && amount) {
+        if (values?.customAmount) {
+          setstripecondition(true)
+          setSpinner(true)
+          setLoading(true)
+          setOpenModal(true)
+        } else if (selectedAmount != "custom") {
+          setstripecondition(true)
+          setSpinner(true)
+          setLoading(true)
+          setOpenModal(true)
         }
-      };
+      } else {
+        if (values?.customAmount) {
+          HandleAddWalletAmount(values?.customAmount)
+        } else if (selectedAmount != "custom") {
+          HandleAddWalletAmount(selectedAmount)
+        }
+      }
 
-    return (
-        <React.Fragment>
-        <div
-          className={
-            loader
-              ? "page-content payment  overlayerloader"
-              : "page-content payment"
-          }
-        >
-          <Container fluid>
-            <Breadcrumb title="Minible" breadcrumbItem="Deposit Funds" />
-  
-            <Row>
-              <Col lg="12">
-                <Form
-                  className="form-horizontal user-management"
-                  onSubmit={e => {
-                    e.preventDefault()
-                    validation.handleSubmit()
-                    return false
+      if (!values?.customAmount && selectedAmount === "custom") {
+        toast.error("Please select or enter an amount to wallet", {
+          position: toast.POSITION.TOP_RIGHT,
+        })
+      }
+    },
+  })
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const fileSize = file.size / 1024 / 1024; // in MB
+      const fileType = file.type.split("/")[1]; // get file extension
+
+      // Validate file size (10MB max)
+      if (fileSize > 20) {
+        setErrorMsg("File size should be less than 20 MB");
+      } else {
+        // Validate file extension
+        if (
+          fileType === "jpg" ||
+          fileType === "jpeg" ||
+          fileType === "png" ||
+          fileType === "pdf" ||
+          fileType === "doc" ||
+          fileType === "xls" ||
+          fileType === "zip"
+        ) {
+          setSelectedFile([...selectedFile, file]);
+          // setSelectedFile(file)
+          setErrorMsg("");
+        } else {
+          setErrorMsg(
+            "Only JPG, PNG, PDF, DOC, XLS, and ZIP files are allowed"
+          );
+        }
+      }
+    }
+  };
+
+  return (
+    <React.Fragment>
+      <div
+        className={
+          loader
+            ? "page-content payment  overlayerloader"
+            : "page-content payment"
+        }
+      >
+        <Container fluid>
+          <Breadcrumb title="Minible" breadcrumbItem="Deposit Funds" />
+
+          <Row>
+            <Col lg="12">
+              <Form
+                className="form-horizontal user-management"
+                onSubmit={e => {
+                  e.preventDefault()
+                  validation.handleSubmit()
+                  return false
+                }}
+              >
+                <Card>
+                  <CardBody>
+                    <div className="inner-content invite-user rd-group">
+                      <h6 className="font16  font-semibold">
+                        Select a Payment Method
+                      </h6>
+                      <div className="radio-btn">
+                        <Row>
+                          <Col>
+                            <div className="form-check form-check-inline mt-20">
+                              <Input
+                                type="radio"
+                                id="tether"
+                                name="paymentMethod"
+                                className="form-check-input"
+                                // value={method?.value}
+                                // checked={method?.value === selectedMethod}
+                                onChange={() => { }}
+                                onClick={() => {
+                                  // setSelectedMethod(method?.value)
+                                }}
+                              // disabled={spinner}
+                              />
+                              <Label
+                                className="form-check-label"
+                                htmlFor="tether"
+                              >
+                                <img src={TetherLogo} />
+                                <p className="font-normal">Tether</p>
+                              </Label>
+                            </div>
+                          </Col>
+                          <Col>
+                            <div className="form-check form-check-inline mt-20">
+                              <Input
+                                type="radio"
+                                id="bitcoin"
+                                name="paymentMethod"
+                                className="form-check-input"
+                                // value={method?.value}
+                                // checked={method?.value === selectedMethod}
+                                onChange={() => { }}
+                                onClick={() => {
+                                  // setSelectedMethod(method?.value)
+                                }}
+                              // disabled={spinner}
+                              />
+                              <Label
+                                className="form-check-label"
+                                htmlFor="bitcoin"
+                              >
+                                <img src={BitcoinLogo} />
+                                <p className="font-normal">Bitcoin</p>
+                              </Label>
+                            </div>
+                          </Col>
+                          <Col>
+                            <div className="form-check form-check-inline mt-20">
+                              <Input
+                                type="radio"
+                                id="ethereum"
+                                name="paymentMethod"
+                                className="form-check-input"
+                                // value={method?.value}
+                                // checked={method?.value === selectedMethod}
+                                onChange={() => { }}
+                                onClick={() => {
+                                  // setSelectedMethod(method?.value)
+                                }}
+                              // disabled={spinner}
+                              />
+                              <Label
+                                className="form-check-label"
+                                htmlFor="ethereum"
+                              >
+                                <img src={EthereumLogo} />
+                                <p className="font-normal">Ethereum</p>
+                              </Label>
+                            </div>
+                          </Col>
+                          <Col>
+                            <div className="form-check form-check-inline mt-20">
+                              <Input
+                                type="radio"
+                                id="banks"
+                                name="paymentMethod"
+                                className="form-check-input"
+                                // value={method?.value}
+                                // checked={method?.value === selectedMethod}
+                                onChange={() => { }}
+                                onClick={() => {
+                                  // setSelectedMethod(method?.value)
+                                }}
+                              // disabled={spinner}
+                              />
+                              <Label
+                                className="form-check-label"
+                                htmlFor="banks"
+                              >
+                                <img src={BankLogo} />
+                                <p className="font-normal">India Local Banks</p>
+                              </Label>
+                            </div>
+                          </Col>
+                        </Row>
+                      </div>
+                    </div>
+                  </CardBody>
+                </Card>
+                <div
+                  className="slide"
+                  style={{
+                    // height: selectedMethod === "stripe" ? selectedCard === "add_new"? "auto" : "450px" : "0px",
+                    height: stripeCardHeight,
+                    overflow: "hidden",
+                    maxHeight: "450px",
+                    transition: "height 0.6s ease 0s",
+                    opacity: selectedMethod === "stripe" ? 1 : 0,
                   }}
                 >
-                <Card>
-                    <CardBody>
-                        <div className="inner-content invite-user rd-group">
-                            <h6 className="font16  font-semibold">
-                                Select a Payment Method
-                            </h6>
-                            <div className="radio-btn">
-                                <Row>
-                                    <Col>
-                                        <div className="form-check form-check-inline mt-20">
-                                            <Input
-                                                type="radio"
-                                                id="tether"
-                                                name="paymentMethod"
-                                                className="form-check-input"
-                                                // value={method?.value}
-                                                // checked={method?.value === selectedMethod}
-                                                onChange={() => {}}
-                                                onClick={() => {
-                                                    // setSelectedMethod(method?.value)
-                                                }}
-                                                // disabled={spinner}
-                                            />
-                                            <Label
-                                                className="form-check-label"
-                                                htmlFor="tether"
-                                            >
-                                                <img src={TetherLogo} />
-                                                <p className="font-normal">Tether</p>
-                                            </Label>
-                                        </div>
-                                    </Col>
-                                    <Col>
-                                        <div className="form-check form-check-inline mt-20">
-                                            <Input
-                                                type="radio"
-                                                id="bitcoin"
-                                                name="paymentMethod"
-                                                className="form-check-input"
-                                                // value={method?.value}
-                                                // checked={method?.value === selectedMethod}
-                                                onChange={() => {}}
-                                                onClick={() => {
-                                                    // setSelectedMethod(method?.value)
-                                                }}
-                                                // disabled={spinner}
-                                            />
-                                            <Label
-                                                className="form-check-label"
-                                                htmlFor="bitcoin"
-                                            >
-                                                <img src={BitcoinLogo} />
-                                                <p className="font-normal">Bitcoin</p>
-                                            </Label>
-                                        </div>
-                                    </Col>
-                                    <Col>
-                                        <div className="form-check form-check-inline mt-20">
-                                            <Input
-                                                type="radio"
-                                                id="ethereum"
-                                                name="paymentMethod"
-                                                className="form-check-input"
-                                                // value={method?.value}
-                                                // checked={method?.value === selectedMethod}
-                                                onChange={() => {}}
-                                                onClick={() => {
-                                                    // setSelectedMethod(method?.value)
-                                                }}
-                                                // disabled={spinner}
-                                            />
-                                            <Label
-                                                className="form-check-label"
-                                                htmlFor="ethereum"
-                                            >
-                                                <img src={EthereumLogo} />
-                                                <p className="font-normal">Ethereum</p>
-                                            </Label>
-                                        </div>
-                                    </Col>
-                                    <Col>
-                                        <div className="form-check form-check-inline mt-20">
-                                            <Input
-                                                type="radio"
-                                                id="banks"
-                                                name="paymentMethod"
-                                                className="form-check-input"
-                                                // value={method?.value}
-                                                // checked={method?.value === selectedMethod}
-                                                onChange={() => {}}
-                                                onClick={() => {
-                                                    // setSelectedMethod(method?.value)
-                                                }}
-                                                // disabled={spinner}
-                                            />
-                                            <Label
-                                                className="form-check-label"
-                                                htmlFor="banks"
-                                            >
-                                                <img src={BankLogo} />
-                                                <p className="font-normal">India Local Banks</p>
-                                            </Label>
-                                        </div>
-                                    </Col>                                                                        
-                                </Row> 
-                            </div>   
-                        </div>  
+                  <Card className="m-10 stripe-form">
+                    <CardBody
+                      className="credit-card-scroll"
+                      style={{
+                        backgroundColor: "#fafafb",
+                        margin: "20px auto",
+                        overflowY: "auto",
+                        borderRadius: "12px",
+                        maxHeight: "400px",
+                      }}
+                    >
+                      {selectedMethod === "stripe" && <CreditCard
+                        paymentMethods={paymentMethods}
+                        stripecondition={stripecondition}
+                        setstripecondition={setstripecondition}
+                        setSpinner={setSpinner}
+                        spinner={spinner}
+                        selectedMethod={selectedMethod}
+                        selectedAmount={selectedAmount}
+                        custompay={custompay}
+                        setOpenModal={setOpenModal}
+                        paymentId={""}
+                        setSelectedCard={setSelectedCard}
+                        page={"billing"}
+                        setLoading={setLoading}
+                      />}
                     </CardBody>
-                </Card>
-                  <div
-                    className="slide"
-                    style={{
-                      // height: selectedMethod === "stripe" ? selectedCard === "add_new"? "auto" : "450px" : "0px",
-                      height: stripeCardHeight,
-                      overflow: "hidden",
-                      maxHeight: "450px",
-                      transition: "height 0.6s ease 0s",
-                      opacity: selectedMethod === "stripe" ? 1 : 0,
-                    }}
-                  >
-                    <Card className="m-10 stripe-form">
-                        <CardBody
-                        className="credit-card-scroll"
-                          style={{
-                            backgroundColor: "#fafafb",
-                            margin: "20px auto",
-                            overflowY: "auto" ,
-                            borderRadius: "12px",
-                            maxHeight: "400px",
-                          }}
-                        >
-                          {selectedMethod === "stripe" && <CreditCard 
-                            paymentMethods={paymentMethods}
-                            stripecondition={stripecondition}
-                            setstripecondition={setstripecondition}
-                            setSpinner={setSpinner}
-                            spinner={spinner}
-                            selectedMethod={selectedMethod}
-                            selectedAmount={selectedAmount}
-                            custompay={custompay}
-                            setOpenModal={setOpenModal}
-                            paymentId={""}
-                            setSelectedCard={setSelectedCard}
-                            page={"billing"}
-                            setLoading={setLoading}
-                          />}
-                     </CardBody>
-                      </Card>
-                  </div>
-                  <div
-                    className="slide"
-                    style={{
+                  </Card>
+                </div>
+                <div
+                  className="slide"
+                  style={{
                     //   height: selectedMethod === "banktransfer" ? "258px" : "0px",
-                      overflow: "hidden",
-                      transition: "height 0.3s ease",
+                    overflow: "hidden",
+                    transition: "height 0.3s ease",
                     //   opacity: selectedMethod === "banktransfer" ? 1 : 0,
-                    }}
-                  >
-                  </div>
-                  <Card className="m-0  ">
-                    <CardBody>
-                      <div className="inner-content invite-user rd-group">
+                  }}
+                >
+                </div>
+                <Card className="m-0  ">
+                  <CardBody>
+                    <div className="inner-content invite-user rd-group">
+                      <h6 className="font16  font-semibold">
+                        Choose Payment Amount
+                      </h6>
+                      <div className="radio-btn amount">
+                        <Row>
+                          <Col>
+                            <span>Payment method: Tether</span>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col>
+                            <span>Minimum deposit amount: 50</span>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col>
+                            <span>Address: TDGEKJ5586598970899787S</span>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col>
+                            <div className="btn-group mt-30">
+                              <button
+                                className="btn btn-primary w-100 waves-effect btn-save font-normal btnv1"
+                                type="submit"
+                                disabled={spinner}
+                              >
+                                {spinner ? <div className="ui active inline loader"></div> : "Copy Crypto Address"}
+                              </button>
+                            </div>
+                          </Col>
+                        </Row>
                         <h6 className="font16  font-semibold">
-                          Choose Payment Amount
+                          Import to know
                         </h6>
-                        <div className="radio-btn amount">
-                          <Row>
-                            <Col>
-                              <span>Payment method: Tether</span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col>
-                              <span>Minimum deposit amount: 50</span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col>
-                              <span>Address: TDGEKJ5586598970899787S</span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col>
-                              <div className="btn-group mt-30">
-                                <button
-                                  className="btn btn-primary w-100 waves-effect btn-save font-normal btnv1"
-                                  type="submit"
-                                  disabled={spinner}
-                                >
-                                  {spinner? <div className="ui active inline loader"></div> : "Copy Crypto Address"}
-                                </button>
-                              </div>
-                            </Col>
-                          </Row>
-                          <h6 className="font16  font-semibold">
-                            Import to know
-                          </h6>
-                          <div>
-                            <span>The minimum deposit amount is 50t. All deposit below the limit will be lost.</span>
-                          </div>
-                          <div>
-                            <span>Carefully check the address. The transaction will be lost if the address is incorrect.</span>
-                          </div>
-                          <h6 className="font16  font-semibold">
-                            How it works
-                          </h6>
-                          <div>
-                            <span>Copy the address, then go to your crypto waller application, paste the address, specify the deposit amount, and complete the transfer</span>
-                          </div>
-                          <div>
-                            <span>Carefully check the address. The transaction will be lost if the address is incorrect.</span>
-                          </div>
-                          {/* <Row>
+                        <div>
+                          <span>The minimum deposit amount is 50t. All deposit below the limit will be lost.</span>
+                        </div>
+                        <div>
+                          <span>Carefully check the address. The transaction will be lost if the address is incorrect.</span>
+                        </div>
+                        <h6 className="font16  font-semibold">
+                          How it works
+                        </h6>
+                        <div>
+                          <span>Copy the address, then go to your crypto waller application, paste the address, specify the deposit amount, and complete the transfer</span>
+                        </div>
+                        <div>
+                          <span>Carefully check the address. The transaction will be lost if the address is incorrect.</span>
+                        </div>
+                        {/* <Row>
                             <Col>
                               <div className="form-check form-check-inline mt-20">
                                 <Input
@@ -536,26 +536,28 @@ const DepositFunds = props => {
                             
                             </Col>
                           </Row> */}
-                        </div>
                       </div>
-                    </CardBody>
-                  </Card>
-                  <Card className="m-0  ">
-                    <CardBody>
-                      <div className="inner-content invite-user rd-group">
-                        <h6 className="font16  font-semibold">
-                          Complete Your Payment
-                        </h6>
-                        <div className="col-lg-6 form-group mb-4">
+                    </div>
+                  </CardBody>
+                </Card>
+                <Card className="m-0">
+                  <CardBody>
+                    <Row>
+                      <Col>
+                        <div className="inner-content invite-user rd-group">
+                          <h6 className="font16  font-semibold">
+                            Complete Your Payment
+                          </h6>
+                          <div className="col-lg-6 form-group mb-4">
                             <p className="place-holder">Upload Screen Short</p>
                             <label
                               htmlFor="file-upload"
                               className="custom-file-upload form-control"
                             >
                               {/* {selectedFile?.length > 0 ? (
-                                <p> Add More +</p>
-                              ) : ( */}
-                                <img src={file} alt="Upload file icon" />
+                                  <p> Add More +</p>
+                                ) : ( */}
+                              <img src={file} alt="Upload file icon" />
                               {/* )} */}
                               <input
                                 disabled={spinner}
@@ -568,8 +570,8 @@ const DepositFunds = props => {
                                   if (
                                     event.target.files.length === 1 &&
                                     event.target.files[0].name ===
-                                      selectedFile[selectedFile.length - 1]
-                                        ?.name
+                                    selectedFile[selectedFile.length - 1]
+                                      ?.name
                                   ) {
                                     event.target.value = null;
                                   }
@@ -578,48 +580,50 @@ const DepositFunds = props => {
                               />
                               {/* <button>Add more +</button> */}
                             </label>
-                            </div>
-                            <div className="col-lg-6 form-group">
-                              <p className="place-holder">Support PIN</p>
-                              <input
-                                type="text"
-                                placeholder="Enter Support PIN"
-                                className="form-control"
-                                id="support_pin"
-                                // disabled={supportPin || spinner}
-                                name="Crypto Address"
-                                // value={email}
-                                // onChange={(e) => setemail(e.target.value)}
-                                // onChange={validation.handleChange}
-                                // onBlur={validation.handleBlur}
-                                // value={supportPin || validation.values.support_pin || ""}
-                              />
-                            </div>
-                      </div>
-                    </CardBody>
-                  </Card>      
-                  <div className="btn-group mt-30">
-                    <button
-                      className="btn btn-primary w-100 waves-effect waves-light btn-save font-normal btnv1"
-                      type="submit"
-                      disabled={spinner}
-                    >
-                      {spinner? <div className="ui active inline loader"></div> : "Add Fund"}
-                    </button>
-                  </div>
-                </Form>
-              </Col>
-            </Row>
-          </Container>
-          <div
-            style={{ display: "none" }}
-            dangerouslySetInnerHTML={{ __html: paypalBasicFormData }}
-          ></div>
-        </div>
-        <TextLoader loading={loading} loader={loader}/>
-        <PaymentModal openModal={openModal} message={"Payment"}/>
-      </React.Fragment>
-    )
+                          </div>
+                          <div className="col-lg-6 form-group">
+                            <p className="place-holder">Crypto Address</p>
+                            <input
+                              type="text"
+                              placeholder="Enter Crypto Address"
+                              className="form-control"
+                              id="support_pin"
+                              // disabled={supportPin || spinner}
+                              name="Crypto Address"
+                            // value={email}
+                            // onChange={(e) => setemail(e.target.value)}
+                            // onChange={validation.handleChange}
+                            // onBlur={validation.handleBlur}
+                            // value={supportPin || validation.values.support_pin || ""}
+                            />
+                          </div>
+                        </div>
+                      </Col>
+                    </Row>
+                  </CardBody>
+                </Card>
+                <div className="btn-group mt-30">
+                  <button
+                    className="btn btn-primary w-100 waves-effect waves-light btn-save font-normal btnv1"
+                    type="submit"
+                    disabled={spinner}
+                  >
+                    {spinner ? <div className="ui active inline loader"></div> : "Add Fund"}
+                  </button>
+                </div>
+              </Form>
+            </Col>
+          </Row>
+        </Container>
+        <div
+          style={{ display: "none" }}
+          dangerouslySetInnerHTML={{ __html: paypalBasicFormData }}
+        ></div>
+      </div>
+      <TextLoader loading={loading} loader={loader} />
+      <PaymentModal openModal={openModal} message={"Payment"} />
+    </React.Fragment>
+  )
 }
 
 export default withRouter(DepositFunds)

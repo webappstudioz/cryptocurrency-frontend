@@ -6,7 +6,7 @@ import { Switch, Route, BrowserRouter as Router } from "react-router-dom"
 import { connect, useDispatch, useSelector } from "react-redux"
 
 // Import Routes all
-import { userRoutes, authRoutes, userVerifyRoutes, unAuthrizedRoutes } from "./routes/allRoutes"
+import { userRoutes, authRoutes, userVerifyRoutes, unAuthrizedRoutes, adminRoutes } from "./routes/allRoutes"
 
 // Import all middleware
 import Authmiddleware from "./routes/middleware/Authmiddleware"
@@ -17,6 +17,7 @@ import VerticalLayout from "./components/VerticalLayout/"
 import HorizontalLayout from "./components/HorizontalLayout/"
 import NonAuthLayout from "./components/NonAuthLayout"
 import UnAuthVerticalLayout from "./components/UnAuthVerticalLayout"
+import AdminLayout from "./components/AdminLayout"
 // Import scss
 import "./assets/scss/theme.scss"
 import { ToastContainer } from "react-toastify"
@@ -29,6 +30,7 @@ import { getListOsInstallServers, productDetails } from "./pages/Authentication/
 import { getOsInstallationInfo } from "../src/pages/Authentication/store/apiServices"
 import { update } from "lodash"
 import { osListFetched } from "./store/osInstallList/action"
+import Adminmiddleware from "./routes/middleware/Adminmiddleware"
 const App = props => {
   const dispatch = useDispatch()
   const hit = useSelector(state => state?.OSInstallationList?.hit)
@@ -252,8 +254,22 @@ const App = props => {
     return layoutCls
   }
 
+  function getAdminLayout() {
+    let layoutCls = AdminLayout
+    switch (props?.layout?.layoutType) {
+      case "horizontal":
+        layoutCls = HorizontalLayout
+        break
+      default:
+        layoutCls = AdminLayout
+        break
+    }
+    return layoutCls
+  }
+
   const Layout = getLayout()
   const UnAuthLayout = getUnAuthLayout()
+  const AdminsLayout = getAdminLayout()
   return (
     <React.Fragment>
       <Router>
@@ -296,6 +312,17 @@ const App = props => {
               key={idx}
               // isAuthProtected={true}
               isAuthProtected={false}
+              exact={true}
+            />
+          ))}
+
+          {adminRoutes?.map((route, idx) => (
+            <Adminmiddleware 
+              path={route?.path}
+              layout={AdminsLayout}
+              component={route?.component}
+              key={idx}
+              isAuthProtected={true}
               exact={true}
             />
           ))}

@@ -104,7 +104,8 @@ export const userRole = () => {
 export const loginData = () => {
   let auth = localStorage.getItem("authUser")
   if (auth) {
-    let res = decrypt(JSON.parse(auth))
+    // let res = decrypt(JSON.parse(auth))
+    let res = auth
     if (res) {
       let info = JSON.parse(res)
       return info

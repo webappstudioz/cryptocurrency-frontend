@@ -6315,3 +6315,155 @@ x
 
 
 //update billing address end
+
+body{
+  background: #eee
+}
+.news{
+  width: 160px
+}
+.news-scroll a{
+  text-decoration: none
+}
+.dot{
+  height: 6px;
+  width: 6px;
+  margin-left: 3px;
+  margin-right: 3px;
+  margin-top: 2px !important;
+  background-color: rgb(207,23,23);
+  border-radius: 50%;
+  display: inline-block
+}
+
+// ---- Play and win Css Start ------
+
+.casino-box-main{
+  margin-top: 120px;
+  padding: 0px 20px;
+}
+.casino-wrapper {
+  max-width: 1200px;
+  width: 100%;
+  background-color: #00a105;
+  border-radius: 15px;
+  border: 3px solid gold;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+.casino-top-btn-grp {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+}
+.btn-casion {
+  display: flex;
+  flex-direction: column;
+  max-width: 150px;
+  min-height: 45px;
+  border: 3px solid #fec72d;
+  width: 100%;
+  padding: 0px;
+  justify-content: center;
+  background-color: #505557;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.btn-casion:hover{
+  border: 2px solid #fec72d;
+}
+.btn-casion input{
+  background-color: #000;
+  color: #fff;
+  font-size: 10px;
+}
+.btn-casion span{
+  font-size: 12px;
+  color: #fff;
+}
+.casino-table-main{
+  margin-top: 20px;
+}
+.poker-wheel-box {
+  max-width: 380px;
+  height: 380px;
+  background-color: #285a3d;
+  border: 3px solid #fdc72d;
+  border-radius: 50%;
+}
+.poker-number-table td{
+  border: 1px solid #fff;
+}
+.poker-number-table{
+  width: 100%;
+}
+.poker-num-box{
+  display: flex;
+}
+.poker-num {
+  color: #fff;
+  background-color: #000;
+  width: 54px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.poker-num.red{
+  background-color: red;
+}
+.poker-num-box input{
+  background-color: transparent;
+  max-width: 70px;
+}
+.poker-color-box{
+  display: flex;
+  gap: 5px;
+}
+.poker-color-box{
+  display: flex;
+  grid-area: 5px;
+  // margin: 0 auto;
+}
+.table-color-box .color-box-name{
+    background-color: #000;
+    color: #fff;
+}
+.table-color-box .color-box-name.red{
+  background-color: red;
+}
+.table-top-heading{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.zero-num{
+  background-color: green;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.table-top-left p{
+  color: #fff;
+}
+.table-top-left p span{
+  color: #fff;
+}
+.table-top-center{
+  display: flex;
+  align-items: center;
+}
+.table-top-center input{
+  width: 50px;
+}
+.table-top-right label{
+  width: 50px;
+  color: #fff;
+}
+.table-color-box input{
+  border: 1px solid #fff;
+}

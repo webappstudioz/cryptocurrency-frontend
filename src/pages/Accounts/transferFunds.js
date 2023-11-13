@@ -1,530 +1,558 @@
-import React, { useState, useEffect, useRef } from "react"
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  CardBody,
-  Label,
-  Input,
-  Form,
-} from "reactstrap"
-
+import React, { useState, useEffect } from "react"
+import { Row, Col, Card, CardBody, Input, FormFeedback, Form } from "reactstrap"
 // Formik Validation
 import * as Yup from "yup"
 import { useFormik } from "formik"
+//redux
+import { useDispatch } from "react-redux"
 import { withRouter } from "react-router-dom"
-
-//Import Breadcrumb
+import { isUserUpdated } from "../../store/auth/userdetails/actions"
+import rederror from "../../assets/images/redvalidationicon/rederror.jpg"
 import Breadcrumb from "../../components/Common/Breadcrumb"
-import paypal from "../../assets/images/paypal.svg"
-import razor from "../../assets/images/razor.svg"
-// import stripe from "../../assets/images/stripe.svg"
-import cardLogo from "../../assets/images/ccard-logos-set.png"
-import usd from "../../assets/images/usd.svg"
-import wise from "../../assets/images/wise.svg"
-import { setPageTitle } from "../../helpers/api_helper_rs"
-import {
-  getPaymentMethodList,
-  loginData,
-  addWalletAmount,
-  sendInvoiceMail,
-} from "../Authentication/store/apiServices"
-// import rederror from "../../assets/images/redvalidationicon/rederror.jpg"
-import { customRegex } from "../../helpers/validation_helpers"
-import { toast } from "react-toastify"
-import { SETTINGS } from "../../constants/api/api_path"
-// import { Elements } from "@stripe/react-stripe-js"
-// import { loadStripe } from "@stripe/stripe-js/pure"
-// import CheckoutForm from "../Stripe/CheckoutForm"
-import { useHistory } from "react-router-dom"
-// import { sendStripeDetailsBack, getSavedCards } from "../Service/store/apiService"
-import TextLoader from "../../components/textLoader"
-import RazorPayForm from "../Razorpay/RazorpayForm"
-import useRazorpay from "react-razorpay"
-// import { selectCardLogo } from "../../helpers/api_helper_rs"
-// import CreditCardLogo from "../../assets/images/credit-card-logo.jpg";
-import CreditCard from "../Stripe/CreditCard"
-import { getStoredCards } from "../../helpers/api_helper_rs"
-import PaymentModal from "../../components/Common/PaymentModal"
-import { useSelector } from "react-redux"
-import BankLogo from "../../assets/images/c2c/banklogo.png"
-import EthereumLogo from "../../assets/images/c2c/ethereum.png"
-import BitcoinLogo from "../../assets/images/c2c/bitcoinlogo.png"
-import TetherLogo from "../../assets/images/c2c/tetherlogo.png"
-const TransferFunds = props => {
-    const [loader, setLoader] = useState(false)
-    const [stripeCardHeight, setStripeCardHeight] = useState(0)
-    const [selectedMethod, setSelectedMethod] = useState()
-    const [selectedAmount, setSelectedAmount] = useState(100)
-    const [spinner, setSpinner] = useState(false)
-    const [currency, setCurrency] = useState()
-    const [paypalBasicFormData, setPaypalBasicFormData] = useState()
-    const [loading, setLoading] = useState("")
-    const [openModal, setOpenModal] = useState(false)
 
-    const validation = useFormik({
-        //   // enableReinitialize : use this flag when initial values needs to be changed
-        enableReinitialize: true,
-    
-        initialValues: {
-          customAmount: "",
-        },
-        validationSchema: Yup.object({
-          customAmount: Yup.string()
-          .matches(customRegex?.amount, "Please valid amount"),
-        }),
-    
-        onSubmit: values => {
-          return
-          let amount = ""
-          values?.customAmount? amount = values?.customAmount : amount = selectedAmount
-          if (selectedMethod == "stripe" && amount) {
-            if (values?.customAmount) {
-              setstripecondition(true)
-              setSpinner(true)
-              setLoading(true)
-              setOpenModal(true)
-            } else if (selectedAmount != "custom") {
-              setstripecondition(true)
-              setSpinner(true)
-              setLoading(true)
-              setOpenModal(true)
-            }
-          } else {
-            if (values?.customAmount) {
-              HandleAddWalletAmount(values?.customAmount)
-            } else if (selectedAmount != "custom") {
-              HandleAddWalletAmount(selectedAmount)
-            }
-          }
-    
-          if (!values?.customAmount && selectedAmount === "custom") {
-            toast.error("Please select or enter an amount to wallet", {
+import {
+  getCountryList,
+  postClientProfileDetails,
+  postCountry,
+  getClientInfo,
+  userRole,
+  storeUserData,
+  loginData,
+  updateProfileSilent,
+} from "../../pages/Authentication/store/apiServices"
+import { Dropdown } from "semantic-ui-react"
+import TextLoader from "../../components/textLoader"
+import { toast } from "react-toastify"
+// import PermissionDenied from "./PermissionDenied"
+import { setPageTitle } from "../../helpers/api_helper_rs"
+import { FocusError } from 'focus-formik-error'
+
+const TransferFunds = props => {
+  const dispatch = useDispatch()
+  const [userData, setUserData] = useState()
+  const [domain, setdomain] = useState()
+  const [product, setproduct] = useState()
+  const [invoice, setinvoice] = useState()
+  const [general, setgeneral] = useState()
+  const [support, setsupport] = useState()
+  const [countryList, setcountryList] = useState()
+  const [stateList, setstateList] = useState()
+  const [selectedCountry, setselectedCountry] = useState()
+  const [selectedState, setselectedState] = useState()
+  const [countryError, setcountryError] = useState(true)
+  const [stateError, setstateError] = useState(false)
+  const [loader, setloader] = useState("")
+  const [role, setRole] = useState()
+  const [permissionDen, setPermissionDen] = useState(false)
+  const [inlineLoader, setinlineLoader] = useState(false)
+  const [countryname, setcountryname] = useState("")
+  const [statename, setstatename] = useState("")
+
+  useEffect(() => {
+    setPageTitle("My Account")
+    let roleinfo = userRole()
+    setRole(roleinfo)
+  }, [])
+  
+  const validation = useFormik({
+    // enableReinitialize : use this flag when initial values needs to be changed
+    enableReinitialize: true,
+    initialValues: {
+      firstName: userData?.first_name || "",
+      lastName: userData?.last_name || "",
+      email: userData?.email || "",
+      // companyName: userData?.company_name || "",
+      phoneNumber: userData?.phone_number || "",
+      // addressOne: userData?.address_one || "",
+      // addressTwo: userData?.address_two || "",
+      city: userData?.city || "",
+      // zipCode: userData?.zip_code || "",
+      // TaxId: userData?.tax_id || "",
+    },
+    validationSchema: Yup.object({
+      firstName: Yup.string()
+        // .required("First name required.")
+        .matches(/^[A-Za-z]+$/, "Only albhabets are allowed."),
+      lastName: Yup.string()
+      // .required("Last name required.")
+      .matches(/^[A-Za-z]+$/,"Only albhabets are allowed"),
+      // companyName: Yup.string(),
+      phoneNumber: Yup.string()
+        .matches(/^([+]\d{2})?\d{10}$/, "Please enter valid Phone number.")
+        .required("Phone number is required."),
+      // TaxId: Yup.string(),
+      // addressOne: Yup.string().required("Address 1 is required."),
+      city: Yup.string().required("City is required."),
+      // zipCode: Yup.string().required("Zip code is required."),
+    }),
+    onSubmit: async values => {
+      return
+      if (selectedCountry != undefined && selectedCountry != null && selectedCountry.length > 1) {
+        // setcountryError(false)
+      } else {
+        // setcountryError(true)
+      }
+      // if (selectedState != undefined && selectedState != null && selectedState.length > 1) {
+      // } else {   }
+
+      let data = new URLSearchParams({
+        first_name: values.firstName,
+        last_name: values.lastName,
+        company_name: values.companyName,
+        phone_number: values.phoneNumber,
+        address_one: values.addressOne,
+        address_two: values.addressTwo,
+        city: values.city,
+        state_id: selectedState,
+        zip_code: values.zipCode,
+        country_id: selectedCountry,
+        general: general,
+        invoice: invoice,
+        support: support,
+        product: product,
+        domain: true,
+        tax_id: values.TaxId,
+      })
+
+      if (!stateError) {
+        try {
+          setloader(true)
+          let res = await postClientProfileDetails(data)
+          if (res) {
+            handleClientInfo()
+            setloader(false)
+            toast.success(res.data?.message, {
               position: toast.POSITION.TOP_RIGHT,
             })
-          }
-        },
-      })
-      
-    return (
-        <React.Fragment>
-        <div
-          className={
-            loader
-              ? "page-content payment  overlayerloader"
-              : "page-content payment"
-          }
-        >
-          <Container fluid>
-            <Breadcrumb title="Minible" breadcrumbItem="Transfer Funds" />
-  
-            <Row>
-              <Col lg="12">
-                <Form
-                  className="form-horizontal user-management"
-                  onSubmit={e => {
-                    e.preventDefault()
-                    validation.handleSubmit()
-                    return false
-                  }}
-                >
-                <Card>
-                    <CardBody>
-                        <div className="inner-content invite-user rd-group">
-                            <h6 className="font16  font-semibold">
-                                Select a Payment Method
-                            </h6>
-                            <div className="radio-btn">
-                                <Row>
-                                    <Col>
-                                        <div className="form-check form-check-inline mt-20">
-                                            <Input
-                                                type="radio"
-                                                id="tether"
-                                                name="paymentMethod"
-                                                className="form-check-input"
-                                                // value={method?.value}
-                                                // checked={method?.value === selectedMethod}
-                                                onChange={() => {}}
-                                                onClick={() => {
-                                                    // setSelectedMethod(method?.value)
-                                                }}
-                                                // disabled={spinner}
-                                            />
-                                            <Label
-                                                className="form-check-label"
-                                                htmlFor="tether"
-                                            >
-                                                <img src={TetherLogo} />
-                                                <p className="font-normal">Tether</p>
-                                            </Label>
-                                        </div>
-                                    </Col>
-                                    <Col>
-                                        <div className="form-check form-check-inline mt-20">
-                                            <Input
-                                                type="radio"
-                                                id="bitcoin"
-                                                name="paymentMethod"
-                                                className="form-check-input"
-                                                // value={method?.value}
-                                                // checked={method?.value === selectedMethod}
-                                                onChange={() => {}}
-                                                onClick={() => {
-                                                    // setSelectedMethod(method?.value)
-                                                }}
-                                                // disabled={spinner}
-                                            />
-                                            <Label
-                                                className="form-check-label"
-                                                htmlFor="bitcoin"
-                                            >
-                                                <img src={BitcoinLogo} />
-                                                <p className="font-normal">Bitcoin</p>
-                                            </Label>
-                                        </div>
-                                    </Col>
-                                    <Col>
-                                        <div className="form-check form-check-inline mt-20">
-                                            <Input
-                                                type="radio"
-                                                id="ethereum"
-                                                name="paymentMethod"
-                                                className="form-check-input"
-                                                // value={method?.value}
-                                                // checked={method?.value === selectedMethod}
-                                                onChange={() => {}}
-                                                onClick={() => {
-                                                    // setSelectedMethod(method?.value)
-                                                }}
-                                                // disabled={spinner}
-                                            />
-                                            <Label
-                                                className="form-check-label"
-                                                htmlFor="ethereum"
-                                            >
-                                                <img src={EthereumLogo} />
-                                                <p className="font-normal">Ethereum</p>
-                                            </Label>
-                                        </div>
-                                    </Col>
-                                    <Col>
-                                        <div className="form-check form-check-inline mt-20">
-                                            <Input
-                                                type="radio"
-                                                id="banks"
-                                                name="paymentMethod"
-                                                className="form-check-input"
-                                                // value={method?.value}
-                                                // checked={method?.value === selectedMethod}
-                                                onChange={() => {}}
-                                                onClick={() => {
-                                                    // setSelectedMethod(method?.value)
-                                                }}
-                                                // disabled={spinner}
-                                            />
-                                            <Label
-                                                className="form-check-label"
-                                                htmlFor="banks"
-                                            >
-                                                <img src={BankLogo} />
-                                                <p className="font-normal">India Local Banks</p>
-                                            </Label>
-                                        </div>
-                                    </Col>                                                                        
-                                </Row> 
-                            </div>   
-                        </div>  
-                    </CardBody>
-                </Card>
-                  <div
-                    className="slide"
-                    style={{
-                      // height: selectedMethod === "stripe" ? selectedCard === "add_new"? "auto" : "450px" : "0px",
-                      height: stripeCardHeight,
-                      overflow: "hidden",
-                      maxHeight: "450px",
-                      transition: "height 0.6s ease 0s",
-                      opacity: selectedMethod === "stripe" ? 1 : 0,
-                    }}
-                  >
-                    <Card className="m-10 stripe-form">
-                        <CardBody
-                        className="credit-card-scroll"
-                          style={{
-                            backgroundColor: "#fafafb",
-                            margin: "20px auto",
-                            overflowY: "auto" ,
-                            borderRadius: "12px",
-                            maxHeight: "400px",
-                          }}
-                        >
-                          {selectedMethod === "stripe" && <CreditCard 
-                            paymentMethods={paymentMethods}
-                            stripecondition={stripecondition}
-                            setstripecondition={setstripecondition}
-                            setSpinner={setSpinner}
-                            spinner={spinner}
-                            selectedMethod={selectedMethod}
-                            selectedAmount={selectedAmount}
-                            custompay={custompay}
-                            setOpenModal={setOpenModal}
-                            paymentId={""}
-                            setSelectedCard={setSelectedCard}
-                            page={"billing"}
-                            setLoading={setLoading}
-                          />}
-                     </CardBody>
-                      </Card>
-                  </div>
-                  <div
-                    className="slide"
-                    style={{
-                    //   height: selectedMethod === "banktransfer" ? "258px" : "0px",
-                      overflow: "hidden",
-                      transition: "height 0.3s ease",
-                    //   opacity: selectedMethod === "banktransfer" ? 1 : 0,
-                    }}
-                  >
-                  </div>
-                  <Card className="m-0  ">
-                    <CardBody>
-                      <div className="inner-content invite-user rd-group">
-                        <h6 className="font16  font-semibold">
-                          Choose Payment Amount
-                        </h6>
-                        <div className="radio-btn amount">
-                          <Row>
-                            <Col>
-                              <span>Payment method: Tether</span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col>
-                              <span>Minimum deposit amount: 50</span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col>
-                              <span>Address: TDGEKJ5586598970899787S</span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col>
-                              <div className="btn-group mt-30">
-                                <button
-                                  className="btn btn-primary w-100 waves-effect btn-save font-normal btnv1"
-                                  type="submit"
-                                  disabled={spinner}
-                                >
-                                  {spinner? <div className="ui active inline loader"></div> : "Copy Crypto Address"}
-                                </button>
-                              </div>
-                            </Col>
-                          </Row>
-                          <h6 className="font16  font-semibold">
-                            Import to know
-                          </h6>
-                          <div>
-                            <span>The minimum deposit amount is 50t. All deposit below the limit will be lost.</span>
-                          </div>
-                          <div>
-                            <span>Carefully check the address. The transaction will be lost if the address is incorrect.</span>
-                          </div>
-                          <h6 className="font16  font-semibold">
-                            How it works
-                          </h6>
-                          <div>
-                            <span>Copy the address, then go to your crypto waller application, paste the address, specify the deposit amount, and complete the transfer</span>
-                          </div>
-                          <div>
-                            <span>Carefully check the address. The transaction will be lost if the address is incorrect.</span>
-                          </div>
-                          <Row>
-                            <Col>
-                              <div className="form-check form-check-inline mt-20">
-                                <Input
-                                  type="radio"
-                                  id="customRadioInline6"
-                                  name="customRadioInline2"
-                                  className="form-check-input"
-                                  value="100"
-                                  checked={selectedAmount === 100}
-                                  onClick={() => {
-                                    validation.resetForm({ values: "" }),
-                                      setSelectedAmount(100)
-                                  }}
-                                  onChange={() => {}}
-                                  disabled={spinner}
-                                />
-                                <Label
-                                  className="form-check-label"
-                                  htmlFor="customRadioInline6"
-                                >
-                                  <p className="font-normal">
-                                    {currency?.prefix}$100 USD {currency?.suffix}
-                                  </p>
-                                </Label>
-                              </div>
-                            </Col>
-                            <Col>
-                              <div className="form-check form-check-inline mt-20">
-                                <Input
-                                  type="radio"
-                                  id="customRadioInline7"
-                                  name="customRadioInline2"
-                                  className="form-check-input"
-                                  value="250"
-                                  checked={selectedAmount === 250}
-                                  onClick={() => {
-                                    validation.resetForm({ values: "" }),
-                                      setSelectedAmount(250)
-                                  }}
-                                  onChange={() => {}}
-                                  disabled={spinner}
-                                />
-                                <Label
-                                  className="form-check-label"
-                                  htmlFor="customRadioInline7"
-                                >
-                                  <p className="font-normal">
-                                    {currency?.prefix}$250 USD{currency?.suffix}{" "}
-                                  </p>
-                                </Label>
-                              </div>
-                            </Col>
-                            <Col>
-                              <div className="form-check form-check-inline mt-20">
-                                <Input
-                                  type="radio"
-                                  id="customRadioInline8"
-                                  name="customRadioInline2"
-                                  className="form-check-input"
-                                  value="500"
-                                  checked={selectedAmount === 500}
-                                  onClick={() => {
-                                    validation.resetForm({ values: "" }),
-                                      setSelectedAmount(500)
-                                  }}
-                                  onChange={() => {}}
-                                  disabled={spinner}
-                                />
-                                <Label
-                                  className="form-check-label"
-                                  htmlFor="customRadioInline8"
-                                >
-                                  <p className="font-normal">
-                                    {currency?.prefix}$500 USD {currency?.suffix}
-                                  </p>
-                                </Label>
-                              </div>
-                            </Col>
-                            <Col>
-                              <div className="form-check form-check-inline mt-20">
-                                <Input
-                                  type="radio"
-                                  id="customRadioInline9"
-                                  name="customRadioInline2"
-                                  className="form-check-input"
-                                  value="1000"
-                                  checked={selectedAmount === 1000}
-                                  onClick={() => {
-                                    validation.resetForm({ values: "" }),
-                                      setSelectedAmount(1000)
-                                  }}
-                                  onChange={() => {}}
-                                  disabled={spinner}
-                                />
-                                <Label
-                                  className="form-check-label"
-                                  htmlFor="customRadioInline9"
-                                >
-                                  <p className="font-normal">
-                                    {" "}
-                                    {currency?.prefix}$1000 USD {currency?.suffix}{" "}
-                                  </p>
-                                </Label>
-                              </div>
-                            </Col>
-                            <Col>
-                              <div className="test form-check form-check-inline mt-20 ">
-                                <span className="prefix">{currency?.prefix}$</span>
-                                {/* <div className="inner-input-box"> */}
-                                <Input
-                                  className="chose-payment"
-                                  value={validation.values.customAmount || ""}
-                                  placeholder="5000"
-                                  max="5000"
-                                  min="1"
-                                  onChange={e => {
-                                    validation.handleChange(e)
-                                    setcustompay(e.target.value)
-                                  }}
-                                  onBlur={(e) => {validation.handleBlur, custompay > 5000? validation.values.customAmount = 5000 :""}}
-                                  invalid={
-                                    validation.touched.customAmount &&
-                                    validation.errors.customAmount
-                                      ? true
-                                      : false
-                                  }
-                                  type="number"
-                                  name="customAmount"
-                                  onClick={() => {
-                                    setSelectedAmount("custom")
-                                  }}
-                                  disabled={spinner}
-                                />
-                                {/* </div> */}
-                                <span className="suffix">
-                                  {/* {" "} */}
-                                  {currency?.suffix}USD
-                                </span>
-                                {/* {validation.touched.customAmount &&
-                                  validation.errors.customAmount ? (
-                                    <>
-                                      <FormFeedback type="invalid">
-                                        <img
-                                          className="form-error-icon"
-                                          src={rederror}
-                                          alt=""
-                                          height={15}
-                                        />
-                                        {validation.errors.customAmount}
-                                      </FormFeedback>
-                                    </>
-                                  ) : null} */}
-                              </div>
-                              <span className="billing-max-amt">*Maximum amount: 5000</span>
-                            
-                            </Col>
-                          </Row>
-                        </div>
-                      </div>
-                    </CardBody>
-                  </Card>
-                  <div className="btn-group mt-30">
-                    <button
-                      className="btn btn-primary w-100 waves-effect waves-light btn-save font-normal btnv1"
-                      type="submit"
-                      disabled={spinner}
-                    >
-                      {spinner? <div className="ui active inline loader"></div> : "Add Fund"}
-                    </button>
-                  </div>
-                </Form>
-              </Col>
-            </Row>
-          </Container>
-          <div
-            style={{ display: "none" }}
-            dangerouslySetInnerHTML={{ __html: paypalBasicFormData }}
-          ></div>
-        </div>
-        <TextLoader loading={loading} loader={loader}/>
-        <PaymentModal openModal={openModal} message={"Payment"}/>
-      </React.Fragment>
-    )
-}
 
+            let data = loginData()
+            data.address_one = values.addressOne
+            data.address_two = values.addressTwo
+            data.city = values.city
+            data.zip_code = values.zipCode
+            data.state = statename
+            data.country = countryname
+            storeUserData(data)
+            updateProfileSilent()
+          }
+          
+        } catch (error) {
+            setloader(false)
+            toast.error(error?.response?.data?.message, {
+              position: toast.POSITION.TOP_RIGHT,
+            })
+        }
+      }
+    },
+  })
+
+  const getcountry = async () => {
+    try {
+      let res = await getCountryList()
+      let all = []
+      res.data.data.map(ele => {
+        all.push({
+          value: ele.name,
+          flag: (
+            <img value={ele.id} height={15} width={15} src={ele.country_flag} />
+          ),
+          text: ele.name,
+          value: ele.id,
+        })
+      })
+      setcountryList(all)
+    } catch (error) {
+      
+    }
+  }
+
+  const country = async (event,maindata) => {
+    try {
+      setinlineLoader(true)
+      let data = new URLSearchParams({
+        country_id: maindata.value,
+      })
+      let res = await postCountry(data)
+      let all = []
+      if (res) {
+        setinlineLoader(false)
+
+        res.data.data.map(ele => {
+          all.push({ text: ele.name, value: ele.id })
+        })
+        setstateList(all)
+        setselectedCountry(maindata.value)
+        setcountryError(false)
+      }
+    } catch (error) {
+      setinlineLoader(false)
+    }
+  }
+
+  const state = (event, maindata) => {
+    setselectedState(maindata.value)
+  }
+
+  useEffect(async () => {
+    getcountry()
+    if(role){
+    try {
+      setloader(true)
+      let userInfo = await handleClientInfo()
+      let user = userInfo
+      if (user) {
+        setloader(false)
+        setPermissionDen(false)
+        setgeneral(user.general)
+        setinvoice(user.invoice)
+        setdomain(user.domain)
+        setproduct(user.product)
+        setsupport(user.support)
+        if (user?.state_id != null && (user?.state_id).length > 0) {
+          setselectedState(user?.state_id)
+        } else {
+          setselectedState("n")
+        }
+        if (user?.country_id != null && (user?.country_id).length > 0) {
+          try {
+            setcountryError(false)
+            setselectedCountry(user.country_id)
+            let data = new URLSearchParams({
+              country_id: user.country_id,
+            })
+            let res = await postCountry(data)
+            let all = []
+            res.data.data.map(ele => {
+              all.push({ text: ele.name, value: ele.id })
+            })
+            setstateList(all)
+          } catch (error) {}
+        } else {
+          setselectedCountry("n")
+        }
+      }
+    } catch (err) {
+      setloader(false)
+      if (err?.response?.data?.status_code == 403) {
+        setPermissionDen(true)
+      }
+      if (err?.response?.data?.status_code != 401) {
+        setPermissionDen(true)
+        toast.error(err?.response?.data?.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        })
+      }
+    }}
+  }, [role])
+
+  const setEmailprefrence = (name, event) => {
+    if (name == "invoice") {
+      setinvoice(!invoice)
+    } else if (name == "general") {
+      setgeneral(!general)
+    } else if (name == "support") {
+      setsupport(!support)
+    } else if (name == "product") {
+      setproduct(!product)
+    } else if (name == "domain") {
+      setdomain(!domain)
+    }
+  }
+
+  const handleClientInfo = async() => {
+    try{
+      let res = await getClientInfo()
+      if (role == "client") {
+        dispatch(isUserUpdated(res?.data?.data))
+        storeUserData(res?.data?.data)
+      }
+      setUserData(res?.data?.data)
+      setPermissionDen(false)
+      setloader(false)
+      return res?.data?.data
+    }catch(error) {
+      setloader(false)
+      if(error?.response?.data?.status_code == 403){
+        setPermissionDen(true)
+      } 
+      toast.error(error?.response?.data?.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      })
+    }
+  }
+
+  return (
+    <React.Fragment>
+      <div
+        className={
+          loader
+            ? "page-content my-account overlayerloader"
+            : "page-content my-account"
+        }
+      >
+      <Breadcrumb title="Minible" breadcrumbItem="Transfer Funds" />
+        {!permissionDen ? (
+          <Form
+            className="form-horizontal floating-form my-account"
+            onSubmit={e => {
+              e.preventDefault()
+              validation.handleSubmit()
+              return false
+            }}
+          >
+            <Card>
+              <CardBody>
+                <div className="my-account-header">
+                  <h6 className="font16  font-semibold">
+                    Transfer To
+                  </h6>
+                </div>
+                <br/>
+                <Row>
+                <Col lg="6">
+                  <FocusError formik={validation} />
+                  <label>Transfer Id</label>
+                    <Input
+                      name="userName"
+                      className="mt-3 input-outline"
+                      placeholder="Transfer Id"
+                      type="text"
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      // disabled={true}
+                      value={validation.values.userName || ""}
+                      invalid={
+                        validation.touched.userName &&
+                        validation.errors.userName
+                          ? true
+                          : false
+                      }
+                    />
+                    {validation.touched.userName &&
+                    validation.errors.userName ? (
+                      <>
+                        <FormFeedback type="invalid">
+                          <img
+                            className="form-error-icon"
+                            src={rederror}
+                            alt=""
+                            height={15}
+                          />
+                          {validation.errors.userName}
+                        </FormFeedback>
+                      </>
+                    ) : null}
+                  </Col>
+                  </Row>
+                  <br/>
+                  <Row>
+                  <Col lg="6">
+                  <label>{"Account Holder's Name"}</label>
+                    <Input
+                      name="firstName"
+                      className="mt-3 input-outline"
+                      placeholder="Account Holder's Name"
+                      type="text"
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      value={validation.values.firstName || ""}
+                      invalid={
+                        validation.touched.firstName &&
+                        validation.errors.firstName
+                          ? true
+                          : false
+                      }
+                    />
+                    {validation.touched.firstName &&
+                    validation.errors.firstName ? (
+                      <>
+                        <FormFeedback type="invalid">
+                          <img
+                            className="form-error-icon"
+                            src={rederror}
+                            alt=""
+                            height={15}
+                          />
+                          {validation.errors.firstName}
+                        </FormFeedback>
+                      </>
+                    ) : null}
+                  </Col>
+                  </Row>
+                  <br/>
+                  <div className="my-account-header">
+                  <h6 className="font16  font-semibold">
+                    Transfer By
+                  </h6>
+                </div>
+                <br/>
+                <Row>
+                <Col lg="6">
+                  <FocusError formik={validation} />
+                  <label>Transfer Id</label>
+                    <Input
+                      name="userName"
+                      className="mt-3 input-outline"
+                      placeholder="User name"
+                      type="text"
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      readOnly
+                      value={validation.values.userName || "USX5474"}
+                      invalid={
+                        validation.touched.userName &&
+                        validation.errors.userName
+                          ? true
+                          : false
+                      }
+                    />
+                    {validation.touched.userName &&
+                    validation.errors.userName ? (
+                      <>
+                        <FormFeedback type="invalid">
+                          <img
+                            className="form-error-icon"
+                            src={rederror}
+                            alt=""
+                            height={15}
+                          />
+                          {validation.errors.userName}
+                        </FormFeedback>
+                      </>
+                    ) : null}
+                  </Col>
+                  </Row>
+                  <br/>
+                  <Row>
+                  <Col lg="6">
+                  <label>{"Account Holder's Name"}</label>
+                    <Input
+                      name="firstName"
+                      className="mt-3 input-outline"
+                      placeholder="Account Holder's Name"
+                      type="text"
+                      readOnly
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      value={validation.values.firstName || "C2C user"}
+                      invalid={
+                        validation.touched.firstName &&
+                        validation.errors.firstName
+                          ? true
+                          : false
+                      }
+                    />
+                    {validation.touched.firstName &&
+                    validation.errors.firstName ? (
+                      <>
+                        <FormFeedback type="invalid">
+                          <img
+                            className="form-error-icon"
+                            src={rederror}
+                            alt=""
+                            height={15}
+                          />
+                          {validation.errors.firstName}
+                        </FormFeedback>
+                      </>
+                    ) : null}
+                  </Col>
+                  </Row>
+                  <br/>
+                  <Row>
+                  <Col lg="6">
+                  <label>Ammount</label>
+                    <Input
+                      name="lastName"
+                      className="mt-3 input-outline"
+                      placeholder="Amount"
+                      type="text"
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      value={validation.values.lastName || ""}
+                      invalid={
+                        validation.touched.lastName &&
+                        validation.errors.lastName
+                          ? true
+                          : false
+                      }
+                    />
+                    {validation.touched.lastName &&
+                    validation.errors.lastName ? (
+                      <>
+                        <FormFeedback type="invalid">
+                          <img
+                            className="form-error-icon"
+                            src={rederror}
+                            alt=""
+                            height={15}
+                          />
+                          {validation.errors.lastName}
+                        </FormFeedback>
+                      </>
+                    ) : null}
+                  </Col>
+                  </Row>
+                  <br/>
+                  <Row>
+                  <Col lg="6">
+                  <label>Password</label>
+                    <Input
+                      name="lastName"
+                      className="mt-3 input-outline"
+                      placeholder="Password"
+                      type="text"
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      value={validation.values.lastName || ""}
+                      invalid={
+                        validation.touched.lastName &&
+                        validation.errors.lastName
+                          ? true
+                          : false
+                      }
+                    />
+                    {validation.touched.lastName &&
+                    validation.errors.lastName ? (
+                      <>
+                        <FormFeedback type="invalid">
+                          <img
+                            className="form-error-icon"
+                            src={rederror}
+                            alt=""
+                            height={15}
+                          />
+                          {validation.errors.lastName}
+                        </FormFeedback>
+                      </>
+                    ) : null}
+                  </Col>
+                  </Row>
+                </CardBody>
+            </Card>    
+            <div className="btn-group mt-30">
+              <button
+                className="btn btn-primary w-100 waves-effect waves-light btn-cancel m-0"
+                type="button"
+                onClick={() => validation.resetForm({ values: "" })}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn btn-primary w-100 waves-effect waves-light btn-save m-0"
+                type="submit"
+              >
+                Transfer Request
+              </button>
+            </div>
+          </Form>
+        ) : (
+          null
+          // <PermissionDenied pageName="my account" />
+        )}
+        <TextLoader loading={loader} loader={loader}/>
+      </div>
+    </React.Fragment>
+  )
+}
 export default withRouter(TransferFunds)
