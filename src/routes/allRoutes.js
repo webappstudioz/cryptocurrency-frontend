@@ -55,6 +55,12 @@ import DepositFunds from "../pages/Accounts/depositFunds"
 import WithdrawFunds from "../pages/Accounts/withdrawFunds"
 import TransferFunds from "../pages/Accounts/transferFunds"
 import PaymentHistory from "../pages/Accounts/paymentHistory"
+import Dashboard from "../pages/Authentication/Dashboard"
+import PlayAndWin from "../pages/Authentication/PlayAndWin"
+import AdminRegister from "../pages/Admin/AdminRegister"
+import AdminLogin from "../pages/Admin/AdminLogin"
+import UsersList from "../pages/Admin/UsersList"
+import AddAccounts from "../pages/Admin/AddAccounts"
 
 const unAuthrizedRoutes = [
   { path: "/announcments", component: AnnouncmentsList},
@@ -66,7 +72,7 @@ const unAuthrizedRoutes = [
 ]
 
 const userRoutes = [
-  { path: "/dashboard", component: ServiceList },
+  { path: "/dashboard", component: Dashboard },
   { path: "/services", component: ServiceList },
   { path: "/server-management/:id", component: ServerManagement },
   { path: "/invoice-detail/:id", component: InvoiceDetail },
@@ -109,10 +115,17 @@ const userRoutes = [
   { path: "/witdraw-funds", component: WithdrawFunds },
   { path: "/transfer-funds", component: TransferFunds },
   { path: "/payment-history", component: PaymentHistory },
+  { path: "/playandwin", component: PlayAndWin },
+  { path: "/users-list", component: UsersList },
 
   // this route should be at the end of all other routes
   { path: "/", exact: true, component: () => <Redirect to="/login" /> },
   // { path: "**", component: ServiceList}
+]
+
+const adminRoutes = [
+  { path: "/users-list", component: UsersList },
+  { path: "/add-accounts", component: AddAccounts }
 ]
 
 const authRoutes = [
@@ -123,6 +136,9 @@ const authRoutes = [
   { path: "/email-verify", component: Emailverification },
   { path: "/reset-password/:token", component: ResetPassword },
   { path: "/login-suspended", component: LoginSuspended },
+  { path: "/admin/register", component: AdminRegister },
+  { path: "/admin/login", component: AdminLogin },
+  
   // { path: "**", component: Login},
 ]
 
@@ -132,4 +148,5 @@ const userVerifyRoutes = [
   // { path: "**", component: Login},
 ]
 
-export { userRoutes, authRoutes, userVerifyRoutes, unAuthrizedRoutes }
+
+export { userRoutes, authRoutes, userVerifyRoutes, unAuthrizedRoutes, adminRoutes }

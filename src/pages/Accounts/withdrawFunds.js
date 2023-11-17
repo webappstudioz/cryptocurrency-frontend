@@ -8,7 +8,7 @@ import {
   Label,
   Input,
   Form,
-  FormFeedback
+  FormFeedback,
 } from "reactstrap"
 
 // Formik Validation
@@ -53,8 +53,7 @@ import BankLogo from "../../assets/images/c2c/banklogo.png"
 import EthereumLogo from "../../assets/images/c2c/ethereum.png"
 import BitcoinLogo from "../../assets/images/c2c/bitcoinlogo.png"
 import TetherLogo from "../../assets/images/c2c/tetherlogo.png"
-import {  } from "reactstrap"
-
+import { FocusError } from 'focus-formik-error'
 const WithdrawFunds = props => {
     const [loader, setLoader] = useState(false)
     const [stripeCardHeight, setStripeCardHeight] = useState(0)
@@ -305,7 +304,7 @@ const WithdrawFunds = props => {
                           </Row>
                           <Row>
                             <Col>
-                              <span>Minimum deposit amount: 50</span>
+                              <span>Minimum withdraw amount: 50</span>
                             </Col>
                           </Row>
                           <Row>
@@ -330,7 +329,7 @@ const WithdrawFunds = props => {
                             Import to know
                           </h6>
                           <div>
-                            <span>The minimum deposit amount is 50t. All deposit below the limit will be lost.</span>
+                            <span>The minimum withdraw amount is 50t. All withdraw below the limit will be lost.</span>
                           </div>
                           <div>
                             <span>Carefully check the address. The transaction will be lost if the address is incorrect.</span>
@@ -339,58 +338,61 @@ const WithdrawFunds = props => {
                             How it works
                           </h6>
                           <div>
-                            <span>Copy the address, then go to your crypto waller application, paste the address, specify the deposit amount, and complete the transfer</span>
+                            <span>Copy the address, then go to your crypto waller application, paste the address, specify the withdraw amount, and complete the transfer</span>
                           </div>
                           <div>
                             <span>Carefully check the address. The transaction will be lost if the address is incorrect.</span>
                           </div>
                           <Row>
-                          <Col >
-                              <Input
-                                name="doj"
-                                className="mt-3 input-outline"
-                                placeholder="Date of Joining"
-                                type="text"
-                                // disabled={true}
-                                // onChange={validation.handleChange}
-                                // onBlur={validation.handleBlur}
-                                // value={validation.values.doj || "10-07-2023"}
-                                // invalid={
-                                //   validation.touched.doj &&
-                                //   validation.errors.doj
-                                //     ? true
-                                //     : false
-                                // }
-                              />
-                              {/* {validation.touched.doj &&
-                              validation.errors.doj ? (
-                                <>
-                                  <FormFeedback type="invalid">
-                                    <img
-                                      className="form-error-icon"
-                                      src={rederror}
-                                      alt=""
-                                      height={15}
-                                    />
-                                    {validation.errors.doj}
-                                  </FormFeedback>
-                                </>
-                              ) : null} */}
-                            </Col>
-                            {/* <Col>
+                <Col lg="6">
+                  <FocusError formik={validation} />
+                    <Input
+                      name="userName"
+                      className="mt-3 input-outline"
+                      placeholder="User name"
+                      type="text"
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      disabled={true}
+                      value={validation.values.userName || "USX5474"}
+                      invalid={
+                        validation.touched.userName &&
+                        validation.errors.userName
+                          ? true
+                          : false
+                      }
+                    />
+                    {validation.touched.userName &&
+                    validation.errors.userName ? (
+                      <>
+                        <FormFeedback type="invalid">
+                          <img
+                            className="form-error-icon"
+                            src={rederror}
+                            alt=""
+                            height={15}
+                          />
+                          {validation.errors.userName}
+                        </FormFeedback>
+                      </>
+                    ) : null}
+                  </Col>
+                  </Row>
+                          <Row>
+                            <Col className="col-lg-6">
                               <div className="test form-check form-check-inline mt-20 ">
-                                <span className="prefix">{currency?.prefix}$</span>
+                                {/* <span className="prefix">{currency?.prefix}$</span> */}
                                 <Input
-                                  className="chose-payment"
-                                  value={validation.values.customAmount || ""}
-                                  placeholder="5000"
-                                  max="5000"
-                                  min="1"
+                                  className="form-control"
+                                  // value={validation.values.customAmount || ""}
+                                  placeholder="50"
+                                  // max="5000"
+                                  // min="1"
                                   onChange={e => {
                                     validation.handleChange(e)
                                     setcustompay(e.target.value)
                                   }}
-                                  onBlur={(e) => {validation.handleBlur, custompay > 5000? validation.values.customAmount = 5000 :""}}
+                                  // onBlur={(e) => {validation.handleBlur, custompay > 5000? validation.values.customAmount = 5000 :""}}
                                   invalid={
                                     validation.touched.customAmount &&
                                     validation.errors.customAmount
@@ -404,12 +406,12 @@ const WithdrawFunds = props => {
                                   }}
                                   disabled={spinner}
                                 />
-                                <span className="suffix">
+                                {/* <span className="suffix">
                                   {currency?.suffix}USD
-                                </span>
+                                </span> */}
                               </div>
-                              <span className="billing-max-amt">*Maximum amount: 5000</span>
-                            </Col> */}
+                              <span className="billing-max-amt">*Minimum amount: 50 USDT</span>
+                            </Col>
                           </Row>
                         </div>
                       </div>

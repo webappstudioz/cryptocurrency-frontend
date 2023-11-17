@@ -139,15 +139,17 @@ export async function del(url, config = {}) {
 
 export function encrypt(values) {
   if (values) {
-    let encrypted = CryptoJS.AES.encrypt(values, SETTINGS.ENC_KEY).toString()
-    return encrypted
+    // let encrypted = CryptoJS.AES.encrypt(values, SETTINGS.ENC_KEY).toString()
+    // return encrypted
+    return values
   }
 }
 
 export function decrypt(values) {
   if (values) {
-    let decrypted = CryptoJS.AES.decrypt(values, SETTINGS.ENC_KEY)
-    return decrypted.toString(CryptoJS.enc.Utf8)
+    // let decrypted = CryptoJS.AES.decrypt(values, SETTINGS.ENC_KEY)
+    // return decrypted.toString(CryptoJS.enc.Utf8)
+    return values
   }
 }
 

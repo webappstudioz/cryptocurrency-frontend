@@ -112,14 +112,14 @@ const SidebarContent = props => {
             </li>
 
             <li>
-              <Link to="#" className="waves-effect">
+              <Link to="/playandwin" className="waves-effect">
                 <img src={overview} alt="" />
                 <span>Play & Win</span>
               </Link>
             </li>
-            <li className="menu-title s-title sidebar-title-v2">
+            {/* <li className="menu-title s-title sidebar-title-v2">
               {props.t("Accounts")}
-            </li>
+            </li> */}
             <li>
               <Link to="/deposite-funds" className="waves-effect">
                 <img src={overview} alt="" />
@@ -144,30 +144,30 @@ const SidebarContent = props => {
                 <span>Payment History</span>
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link to="/billing" className="waves-effect">
                 <img src={billing} alt="" />
                 <span>{props.t("Add Funds")}</span>
               </Link>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <Link to="/" className="waves-effect">
                 <img src={invoice} alt="" />
                 <span>{props.t("Invite User")}</span>
               </Link>
-            </li>
-            <li className="menu-title s-title sidebar-title-v2">
+            </li> */}
+            {/* <li className="menu-title s-title sidebar-title-v2">
               {props.t("Partner")}
-            </li>
+            </li> */}
             <li>
               <Link to="#" className="waves-effect">
                 <img src={overview} alt="" />
                 <span>Partner</span>
               </Link>
             </li> 
-            <li className="menu-title s-title sidebar-title-v2">
+            {/* <li className="menu-title s-title sidebar-title-v2">
               {props.t("HELP")}
-            </li> 
+            </li>  */}
 
             {/* <li>
               <Link to="/announcment" className=" waves-effect">
