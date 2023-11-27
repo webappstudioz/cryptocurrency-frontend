@@ -300,7 +300,7 @@ function UsersList() {
   const columns = useMemo(
     () => [
       {
-        Header: "Invoice #",
+        Header: "S.No",
         accessor: "id",
         disableFilters: true,
         filterable: false,
@@ -309,7 +309,7 @@ function UsersList() {
         },
       },
       {
-        Header: "Invoice Date",
+        Header: "User Details",
         accessor: "date",
         disableGlobalFilter: true,
         disableSortBy: false, // if true the sortBy is disabled and remove sort icons
@@ -318,22 +318,22 @@ function UsersList() {
           return <CustomerName {...cellProps} />
         },
       },
-      {
-        Header: "Payment Method",
-        accessor: "paymentMethod",
-        filterable: true,
-        Cell: cellProps => {
-          return <CustomerStatus {...cellProps} />
-        },
-      },
-      {
-        Header: "Amount",
-        accessor: "subtotal",
-        filterable: true,
-        Cell: cellProps => {
-          return <Email {...cellProps} />
-        },
-      },
+      // {
+      //   Header: "Payment Method",
+      //   accessor: "paymentMethod",
+      //   filterable: true,
+      //   Cell: cellProps => {
+      //     return <CustomerStatus {...cellProps} />
+      //   },
+      // },
+      // {
+      //   Header: "Amount",
+      //   accessor: "subtotal",
+      //   filterable: true,
+      //   Cell: cellProps => {
+      //     return <Email {...cellProps} />
+      //   },
+      // },
       {
         Header: "Status",
         accessor: "status",
@@ -369,7 +369,7 @@ function UsersList() {
             <h2>
               {" "}
               {/* <strong>Invoices ✨</strong> */}
-              <strong>Payment History</strong>
+              <strong>Users List</strong>
             </h2>
             {!permissionDen && (
               <div className="dropdown-group">
@@ -404,39 +404,6 @@ function UsersList() {
                           </label>
                         </div>
                       </li>
-                      {/* <li>
-                        <div className="form-check">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            id="Unpaid"
-                            onChange={() => {}}
-                            checked={checkboxValues["Unpaid"]}
-                            onClick={handleCheckboxChange}
-                          />
-                          <label className="form-check-label" htmlFor="Unpaid">
-                            Unpaid
-                          </label>
-                        </div>
-                      </li> */}
-                      {/* <li>
-                        <div className="form-check">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            id="Refunded"
-                            onChange={() => {}}
-                            checked={checkboxValues["Refunded"]}
-                            onClick={handleCheckboxChange}
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="Refunded"
-                          >
-                            Refunded
-                          </label>
-                        </div>
-                      </li> */}
                       <li>
                         <div className="form-check">
                           <input
@@ -455,36 +422,6 @@ function UsersList() {
                           </label>
                         </div>
                       </li>
-                      {/* <li>
-                        <div className="form-check">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            id="Draft"
-                            onChange={() => {}}
-                            checked={checkboxValues["Draft"]}
-                            onClick={handleCheckboxChange}
-                          />
-                          <label className="form-check-label" htmlFor="Draft">
-                            Draft
-                          </label>
-                        </div>
-                      </li> */}
-                      {/* <li>
-                        <div className="form-check">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            id="Overdue"
-                            onChange={() => {}}
-                            checked={checkboxValues["Overdue"]}
-                            onClick={handleCheckboxChange}
-                          />
-                          <label className="form-check-label" htmlFor="Overdue">
-                            Overdue
-                          </label>
-                        </div>
-                      </li> */}
                       <li>
                         <div className="form-check">
                           <input
@@ -503,25 +440,6 @@ function UsersList() {
                           </label>
                         </div>
                       </li>
-                      {/* <li>
-                        <div className="form-check">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            id="Collections"
-                            onChange={() => {}}
-                            checked={checkboxValues["Collections"]}
-                            onClick={handleCheckboxChange}
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="Collections"
-                          >
-                            Collections
-                          </label>
-                        </div>
-                      </li> */}
-
                       <li className="btn-groups">
                         <div className="inner-btn-group">
                           <button

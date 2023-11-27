@@ -84,7 +84,7 @@ const ProfileMenuHeader = props => {
 
         <DropdownMenu className="dropdown-menu-end" style={{ margin: 0 }}>
           <DropdownItem /*tag="a"*/  className="profile-header">
-            <Link to="/my-account" className="dropdown-item">
+            <Link to="/my-profile" className="dropdown-item">
             {/* <Link to="/" className="dropdown-item"> */}
               {" "}   
               My Account{" "}
@@ -107,7 +107,7 @@ const ProfileMenuHeader = props => {
             </Link>
           </DropdownItem> }
           <DropdownItem /* tag="a"*/ >   
-            <Link to="/change-password" className="dropdown-item">       
+            <Link to="/changepassword" className="dropdown-item">       
               Change Password     
             </Link>      
           </DropdownItem>

@@ -27,6 +27,8 @@ function* loginUser({ payload: { user, history, invoiceId } }) {
       }
       const response = yield call(postJwtLoginNew, data, config)
       if (response) {
+        console.log("res", response)
+        return
         yield put(loginSuccess(response))
         if (user.rememberMe) {
           let userEnc = encrypt(JSON.stringify(user))
@@ -74,6 +76,9 @@ function* loginUser({ payload: { user, history, invoiceId } }) {
       }
     }
   } catch (error) {
+    console.log("res", error)
+    
+    return
     toast.error(error?.response?.data?.message, {
       position: toast.POSITION.TOP_RIGHT,
     })

@@ -81,10 +81,10 @@ const Login = props => {
     }),
 
     onSubmit: async values => {
-      props.history.push("/dashboard")
+      // props.history.push("/dashboard")
       // setSpinner(true)
       // setAction(true)
-      // dispatch(loginUser(values, props.history, "mainlogin", invoiceId))
+      dispatch(loginUser(values, props.history))
     },
   })
 
@@ -178,11 +178,19 @@ const Login = props => {
         <Container fluid>
           <Row>
             <Col lg={6} className="left-panel">
+              {/* <div className="slide-content">
+              <div className="inner-content">
+                <h3 className="text-white">IPv4 Management</h3>
+                <p className="text-white">
+                <input type="text" name="zoneOne" value="19" className="form-control"/>
+                </p>
+              </div>
+              </div> */}
               {/* <img src={logoGreen} /> */}
             {/* <Link to="/productlist"><img src={logo} alt="" /> </Link> */}
-              {/* <div className="slide-content"> */}
-                {/* <Slider {...settings}>
-                  <div>
+              {/* <div className="slide-content">  */}
+                {/* <Slider {...settings}> */}
+                  {/* <div>
                     <img src={mockup} alt="" />
                     <div className="inner-content">
                       <h3 className="text-white">IPv4 Management</h3>
@@ -192,8 +200,8 @@ const Login = props => {
                         instantly.
                       </p>
                     </div>
-                  </div>
-                  <div>
+                  </div> */}
+                  {/* <div>
                     <img src={mockup} alt="" />
                     <div className="inner-content">
                       <h3 className="text-white">IPv4 Management</h3>
@@ -203,8 +211,8 @@ const Login = props => {
                         instantly.
                       </p>
                     </div>
-                  </div>
-                  <div>
+                  </div> */}
+                  {/* <div>
                     <img src={mockup} alt="" />
                     <div className="inner-content">
                       <h3 className="text-white">IPv4 Management</h3>
@@ -214,9 +222,29 @@ const Login = props => {
                         instantly.
                       </p>
                     </div>
-                  </div>
-                </Slider> */}
-              {/* </div> */}
+                  </div> */}
+                {/* </Slider> */}
+               {/* </div>  */}
+               <div className="results-login-page">
+                <Row>
+                  <Col lg={3}>
+                    <label>Zone One</label>
+                    <input type="text" className="form-control" name="zoneOne" />
+                  </Col>
+                  <Col lg={3}>
+                    <label>Zone Two</label>
+                    <input type="text" className="form-control" name="zoneOne" />
+                  </Col>
+                  <Col lg={3}>
+                    <label>Zone Three</label>
+                    <input type="text" className="form-control" name="zoneOne" />
+                  </Col>
+                  <Col lg={3}>
+                    <label>Zone Four</label>
+                    <input type="text" className="form-control" name="zoneOne" />
+                  </Col>
+                </Row>
+               </div>
             </Col>
             <Col lg={6}>
               <div className="right_content">

@@ -60,7 +60,9 @@ import PlayAndWin from "../pages/Authentication/PlayAndWin"
 import AdminRegister from "../pages/Admin/AdminRegister"
 import AdminLogin from "../pages/Admin/AdminLogin"
 import UsersList from "../pages/Admin/UsersList"
-import AddAccounts from "../pages/Admin/AddAccounts"
+import AddAccount from "../pages/Admin/AddAccount"
+import AdminMyAccount from "../pages/Admin/AdminMyAccount"
+import AdminChangePassword from "../pages/Admin/AdminChangePassword"
 
 const unAuthrizedRoutes = [
   { path: "/announcments", component: AnnouncmentsList},
@@ -116,7 +118,7 @@ const userRoutes = [
   { path: "/transfer-funds", component: TransferFunds },
   { path: "/payment-history", component: PaymentHistory },
   { path: "/playandwin", component: PlayAndWin },
-  { path: "/users-list", component: UsersList },
+  // { path: "/users-list", component: UsersList },
 
   // this route should be at the end of all other routes
   { path: "/", exact: true, component: () => <Redirect to="/login" /> },
@@ -125,7 +127,11 @@ const userRoutes = [
 
 const adminRoutes = [
   { path: "/users-list", component: UsersList },
-  { path: "/add-accounts", component: AddAccounts }
+  { path: "/add-accounts", component: AddAccount },
+  { path: "/my-profile", component: AdminMyAccount },
+  { path: "/changepassword", component: AdminChangePassword },
+  { path: "/admin-payment-history", component: PaymentHistory },
+  // { path: "/users-list1", component: UsersList },
 ]
 
 const authRoutes = [

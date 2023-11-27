@@ -6,6 +6,7 @@ import copy from "copy-to-clipboard";
 import { toast } from "react-toastify";
 import { FormatDate } from "../../helpers/api_helper_rs";
 import { loginData } from "../Authentication/store/apiServices";
+import RouletteWheel from "../../components/RouletteWheel";
 
 const PlayandWin = (props) => {
     return (
@@ -40,8 +41,9 @@ const PlayandWin = (props) => {
         <div className="casino-table-main">
             <div className="row align-items-center g-4">
                 <div className="col-md-5">
-                    <div className="poker-wheel-box">
-                    </div>
+                    {/* <div className="poker-wheel-box"> */}
+                    <RouletteWheel/>
+                    {/* </div> */}
                 </div>
                 <div className="col-md-7">
                     <div className="poker-number-table-box">
@@ -73,7 +75,7 @@ const PlayandWin = (props) => {
                                         <div className="poker-num red">
                                             1
                                         </div>
-                                        <input type="text"  ></input>
+                                        <input type="text"></input>
                                     </div>
                                 </td>
                                 <td>

@@ -126,5 +126,8 @@
   },
   "devDependencies": {
     "redux-devtools": "^3.7.0"
+  },
+  "volta": {
+    "node": "16.20.1"
   }
 }
