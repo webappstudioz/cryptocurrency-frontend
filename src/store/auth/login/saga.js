@@ -27,8 +27,6 @@ function* loginUser({ payload: { user, history, invoiceId } }) {
       }
       const response = yield call(postJwtLoginNew, data, config)
       if (response) {
-        console.log("res", response)
-        return
         yield put(loginSuccess(response))
         if (user.rememberMe) {
           let userEnc = encrypt(JSON.stringify(user))
@@ -40,9 +38,9 @@ function* loginUser({ payload: { user, history, invoiceId } }) {
           delete_cookie(SETTINGS.TOKENKEY)
         }
         let info = response?.data?.data
-        if(info?.currency){
-          bake_cookie(SETTINGS.CURRENCY, info?.currency?.id)
-        } 
+        // if(info?.currency){
+        //   bake_cookie(SETTINGS.CURRENCY, info?.currency?.id)
+        // } 
 
         if (info?.is_verified === false) {
             toast.success(response?.data?.message, {
@@ -51,34 +49,34 @@ function* loginUser({ payload: { user, history, invoiceId } }) {
             // let encrytInfo = encrypt(JSON.stringify(info)) // in starting we store user token and email in localstorge in encrypted form.
             // localStorage.setItem("jwt", JSON.stringify(encrytInfo))
             history.push({pathname:'/Verification', state:{email: info?.email, token: info?.token}}) // now we will send the token and email in state.
-        } else if (info?.two_factor) {
-            // let encInfo = encrypt(JSON.stringify(info?.token))
-            // localStorage.setItem("jwt", JSON.stringify(encInfo))
-            toast.success(response?.data?.message, {
-              position: toast.POSITION.TOP_RIGHT,
-            })
-            invoiceId? 
-            history.push({pathname: "/two-fa", state:{
-              invoiceId: invoiceId
-            }}) : 
-            history.push({pathname: "/two-fa", state:{
-              token: info?.token
-            }})
-        } else {
+        } 
+        // else if (info?.two_factor) {
+        //     // let encInfo = encrypt(JSON.stringify(info?.token))
+        //     // localStorage.setItem("jwt", JSON.stringify(encInfo))
+        //     toast.success(response?.data?.message, {
+        //       position: toast.POSITION.TOP_RIGHT,
+        //     })
+        //     invoiceId? 
+        //     history.push({pathname: "/two-fa", state:{
+        //       invoiceId: invoiceId
+        //     }}) : 
+        //     history.push({pathname: "/two-fa", state:{
+        //       token: info?.token
+        //     }})
+        // } 
+        else {
             toast.success(response?.data?.message, {
               position: toast.POSITION.TOP_RIGHT,
             })
             storeLoginTime();
             storeUserData(response?.data?.data)
-            storeAuthToken(response?.data?.data?.token)
-            invoiceId? history.push(`/invoice-detail/${invoiceId}`) : history.push("/dashboard")
+            storeAuthToken(response?.data?.data?.bearer)
+            // invoiceId? history.push(`/invoice-detail/${invoiceId}`) : 
+            history.push("/dashboard")
         }
       }
     }
   } catch (error) {
-    console.log("res", error)
-    
-    return
     toast.error(error?.response?.data?.message, {
       position: toast.POSITION.TOP_RIGHT,
     })

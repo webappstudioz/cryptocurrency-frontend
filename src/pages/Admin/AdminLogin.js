@@ -81,10 +81,10 @@ const AdminLogin = props => {
     }),
 
     onSubmit: async values => {
-      props.history.push("/dashboard")
+      // props.history.push("/dashboard")
       // setSpinner(true)
       // setAction(true)
-      // dispatch(loginUser(values, props.history, "mainlogin", invoiceId))
+      dispatch(loginUser(values, props.history))
     },
   })
 

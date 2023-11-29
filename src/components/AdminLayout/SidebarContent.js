@@ -131,6 +131,12 @@ const SidebarContent = (props) => {
               {props.t("Pages")}
             </li> */}
              <li>
+              <Link to="/admin/results" className="waves-effect">
+                {/* <img src={withdrow} alt="" /> */}
+                <span>Store Results</span>
+              </Link>
+            </li>
+             <li>
               <Link to="/add-accounts" className="waves-effect">
                 {/* <img src={withdrow} alt="" /> */}
                 <span>Add Accounts</span>

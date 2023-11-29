@@ -1,3 +1,4 @@
+import { SETTINGS } from "../../../constants/api/api_path"
 import {
   postNew,
   getNew,
@@ -102,10 +103,9 @@ export const userRole = () => {
 }
 
 export const loginData = () => {
-  let auth = localStorage.getItem("authUser")
+  let auth = localStorage.getItem(SETTINGS.AUTHUSER)
   if (auth) {
-    // let res = decrypt(JSON.parse(auth))
-    let res = auth
+    let res = decrypt(JSON.parse(auth))
     if (res) {
       let info = JSON.parse(res)
       return info
@@ -276,12 +276,12 @@ export const getSupportPin = async() => {
 
 export const storeUserData = (data) => {
   let encInfo = encrypt(JSON.stringify(data))
-  localStorage.setItem("authUser", JSON.stringify(encInfo))
+  localStorage.setItem(SETTINGS.AUTHUSER, JSON.stringify(encInfo))
   return true
 }
 
 export const storeAuthToken = (data) => {
-  localStorage.setItem("authToken",data)
+  localStorage.setItem(SETTINGS.AUTHTOKEN, data)
   return true
 }
 
@@ -360,4 +360,16 @@ export const updateProfileSilent = async() => {
 //operating system installation for leaseweb
 export const installOperatingSystem = async(data) => {
   return await postNew(url.OS_INSTALL,data)
+}
+
+export const getTimeZones = async() => {
+  return await getNew(url.TIMEZONES)
+}
+
+export const storeGameResults = async(data) => {
+  return await postNew(url.STOREGAMERESULTS, data)
+}
+
+export const getGameResults = async() => {
+  return await getNew(url.GETGAMERESULTS)
 }

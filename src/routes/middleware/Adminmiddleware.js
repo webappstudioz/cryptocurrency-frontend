@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Route, Redirect } from "react-router-dom";
 import { loginData } from "../../pages/Authentication/store/apiServices";
+import { SETTINGS } from "../../constants/api/api_path";
 
 const Adminmiddleware = ({
   component: Component,
@@ -12,7 +13,9 @@ const Adminmiddleware = ({
 <Route
     {...rest}
     render={props => {
+      // console.log("authtoken",localStorage.getItem(SETTINGS.AUTHTOKEN))
     // if(localStorage.getItem("clientAuth")){
+      if(localStorage.getItem(SETTINGS.AUTHTOKEN)){
         return (
             <Layout>
                 <Component {...props} />
@@ -24,13 +27,13 @@ const Adminmiddleware = ({
     //         to={{ pathname: "/productlist"}}
     //         />
     //     );
-    // }else{
-    //     return (
-    //         <Redirect
-    //         to={{ pathname: "/login"}}
-    //         />
-    //     );
-    // }
+    }else{
+        return (
+            <Redirect
+            to={{ pathname: "/login"}}
+            />
+        );
+    }
     }}
   />
 );

@@ -25,6 +25,8 @@
 
 
 export const CONFIGURATIONS = {
+        AUTHTOKEN: "wr564w6et54sdf3q",
+        AUTHUSER: "ku24147e688akufas",
         AUTH: "ksgriwug",
         ENC_KEY: 'WFsQ1JN',
         COOKIE_KEY: 'REm@7BER',

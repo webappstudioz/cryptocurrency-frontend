@@ -40,7 +40,7 @@ axios.interceptors.request.use(function (config) {
   // }
   // return config
 
-  let token = localStorage.getItem("authToken")
+  let token = localStorage.getItem(SETTINGS.AUTHTOKEN)
   if (token) {
     config["headers"]["common"]["Authorization"] = `Bearer ${token}`
   }
@@ -139,17 +139,15 @@ export async function del(url, config = {}) {
 
 export function encrypt(values) {
   if (values) {
-    // let encrypted = CryptoJS.AES.encrypt(values, SETTINGS.ENC_KEY).toString()
-    // return encrypted
-    return values
+    let encrypted = CryptoJS.AES.encrypt(values, SETTINGS.ENC_KEY).toString()
+    return encrypted
   }
 }
 
 export function decrypt(values) {
   if (values) {
-    // let decrypted = CryptoJS.AES.decrypt(values, SETTINGS.ENC_KEY)
-    // return decrypted.toString(CryptoJS.enc.Utf8)
-    return values
+    let decrypted = CryptoJS.AES.decrypt(values, SETTINGS.ENC_KEY)
+    return decrypted.toString(CryptoJS.enc.Utf8)
   }
 }
 

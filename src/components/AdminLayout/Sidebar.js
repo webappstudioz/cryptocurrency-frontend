@@ -14,17 +14,19 @@ import BillingAddressModal from "../Common/billingAdressModal";
 import ProgressBar from "../progressBar";
 import { loginData } from "../../pages/Authentication/store/apiServices";
 import { storeUserData } from "../../pages/Authentication/store/apiServices";
+import sidebarlogoG from "../../assets/images/c2c/sidebarlogoG.jpg"
+
 const Sidebar = props => {
   const [loading, setLoading] = useState("")
   const [openModal, setOpenModal] = useState(false)
   const [role, setRole] = useState()
   useEffect(() => {
-    let info = loginData()
-    // console.log("role", info?.role)
-    setRole("Admin")
-    if(info?.role === "client"){
-      info?.profile_completed === 0? setOpenModal(true) : setOpenModal(false)
-    }
+    // let info = loginData()
+    // console.log("role", info.role)
+    // setRole(info.role)
+    // if(info?.role === "client"){
+    //   info?.profile_completed === 0? setOpenModal(true) : setOpenModal(false)
+    // }
   },[])
 
   // useEffect(()=>{
@@ -46,19 +48,19 @@ const Sidebar = props => {
         <div className="navbar-brand-box">
           <Link to="/dashboard" className="logo logo-dark">
             <span className="logo-sm">
-              <img src={logoSm} alt="" height="22" />
+              <img src={sidebarlogoG} alt="" height="22" />
             </span>
             <span className="logo-lg">
-              <img src={logoDark} alt="" height="35" />
+              <img src={sidebarlogoG} alt="" height="35" />
             </span>
           </Link>
 
           <Link to="/" className="logo logo-light">
             <span className="logo-sm">
-              <img src={logoSm} alt="" height="22" />
+              <img src={sidebarlogoG} alt="" height="22" />
             </span>
             <span className="logo-lg">
-              <img src={logoDark} alt="" height="35" />
+              <img src={sidebarlogoG} alt="" height="35" />
             </span>
           </Link>
         </div>
@@ -70,8 +72,9 @@ const Sidebar = props => {
           <i className="fa fa-fw fa-bars"></i>
         </button>
         <div className="sidebar-menu-scroll">
-        <SidebarContent role={role}/> 
-         {openModal && <BillingAddressModal setLoading={setLoading} openModal={openModal} setOpenModal={setOpenModal}/>}
+        {/* <SidebarContent role={role}/>  */}
+        <SidebarContent /> 
+         {/* {openModal && <BillingAddressModal setLoading={setLoading} openModal={openModal} setOpenModal={setOpenModal}/>} */}
           {/* {props.type !== "condensed" ? <SidebarContent /> : <SidebarContent />} */}
         </div>
       </div>

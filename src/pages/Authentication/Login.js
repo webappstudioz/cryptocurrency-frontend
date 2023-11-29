@@ -39,6 +39,7 @@ import { decrypt, setPageTitle } from "../../helpers/api_helper_rs"
 import { read_cookie } from "sfcookies"
 import { SETTINGS } from "../../constants/api/api_path"
 import TextLoader from "../../components/textLoader"
+import { getGameResults } from "./store/apiServices"
 
 var settings = {
   dots: true,
@@ -60,9 +61,27 @@ const Login = props => {
   const location = useLocation()
   const invoiceId = location?.state?.invoiceid
  
+  const finalResults = [
+    {timeZone: 1, winner: 8},
+    {timeZone: 2, winner: 19},
+    {timeZone: 3, winner: 25},
+    {timeZone: 4, winner: 36},
+  ]
+
   useEffect(() =>{
     setPageTitle("Login")
+    getGameResults()
   },[])
+
+  const getResults = async() => {
+    try{
+      let res = getGameResults()
+      console.log("res",res)
+    }catch(error){
+      console.log("error",error)
+    }
+  }
+
   const validation = useFormik({
     enableReinitialize: true,
 
@@ -73,10 +92,10 @@ const Login = props => {
 
     validationSchema: Yup.object({
       email: Yup.string()
-        // .required("Please enter your email address")
+        .required("Please enter your email address")
         .matches(customRegex.email, "Please enter a valid email address"),
       password: Yup.string()
-        // .required("Please Enter Your Password")
+        .required("Please Enter Your Password")
         .min(6, "Please Enter Valid Password"),
     }),
 
@@ -178,6 +197,11 @@ const Login = props => {
         <Container fluid>
           <Row>
             <Col lg={6} className="left-panel">
+            <div className="slide-content">
+              <div className="inner-content">
+                <h3 className="text-white">Comming Soon</h3>
+              </div>
+              </div>
               {/* <div className="slide-content">
               <div className="inner-content">
                 <h3 className="text-white">IPv4 Management</h3>
@@ -227,7 +251,17 @@ const Login = props => {
                {/* </div>  */}
                <div className="results-login-page">
                 <Row>
-                  <Col lg={3}>
+                  {finalResults.map((result, index) => {
+                    return (
+                    <div key={index}>
+                      <Col lg={3}>
+                        <label>{result?.timeZone}</label>
+                        <input type="text" className="form-control" styele={{"backgorundColor": "red"}} name="zoneOne" defaultValue={result?.winner}/>
+                      </Col>
+                    </div>
+                  )
+                  })}
+                  {/* <Col lg={3}>
                     <label>Zone One</label>
                     <input type="text" className="form-control" name="zoneOne" />
                   </Col>
@@ -242,7 +276,7 @@ const Login = props => {
                   <Col lg={3}>
                     <label>Zone Four</label>
                     <input type="text" className="form-control" name="zoneOne" />
-                  </Col>
+                  </Col> */}
                 </Row>
                </div>
             </Col>
@@ -380,7 +414,8 @@ const Login = props => {
                       </label>
                       <div className="float-end">
                         <Link
-                          onClick={(e) => {spinner? e.preventDefault() : null}}
+                          // onClick={(e) => {spinner? e.preventDefault() : null}}
+                          onClick={(e) => {e.preventDefault()}}
                           to="/forgot-password"
                           className="text-muted font-normal"
                         >
@@ -393,7 +428,8 @@ const Login = props => {
                       <button
                         className="btn btn-primary w-100 waves-effect waves-light"
                         type="submit"
-                        disabled={reduxData?.spinner || reduxData?.loading || spinner}
+                        // disabled={reduxData?.spinner || reduxData?.loading || spinner}
+                        disabled={true}
                       >
                         {spinner? <div className="ui active inline loader"></div> : "Sign In"}
                       </button>
@@ -405,7 +441,8 @@ const Login = props => {
                       <p className="mb-0 text-muted font-normal">
                         Not registered yet?{" "}
                         <Link
-                          onClick={(e) => {spinner? e.preventDefault() : null}}
+                          // onClick={(e) => {spinner? e.preventDefault() : null}}
+                          onClick={(e) => {e.preventDefault()}}
                           to="/register"
                           className="fw-medium text-primary font-normal"
                         >

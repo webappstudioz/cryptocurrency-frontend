@@ -63,6 +63,7 @@ import UsersList from "../pages/Admin/UsersList"
 import AddAccount from "../pages/Admin/AddAccount"
 import AdminMyAccount from "../pages/Admin/AdminMyAccount"
 import AdminChangePassword from "../pages/Admin/AdminChangePassword"
+import StoreResulst from "../pages/Admin/StoreResulst"
 
 const unAuthrizedRoutes = [
   { path: "/announcments", component: AnnouncmentsList},
@@ -131,7 +132,7 @@ const adminRoutes = [
   { path: "/my-profile", component: AdminMyAccount },
   { path: "/changepassword", component: AdminChangePassword },
   { path: "/admin-payment-history", component: PaymentHistory },
-  // { path: "/users-list1", component: UsersList },
+  { path: "/admin/results", component: StoreResulst },
 ]
 
 const authRoutes = [

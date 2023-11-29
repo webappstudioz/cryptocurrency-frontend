@@ -31,6 +31,7 @@
     "bootstrap-switch-button-react": "^1.2.0",
     "chartist": "^0.11.4",
     "copy-to-clipboard": "^3.3.3",
+    "cors": "^2.8.5",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
     "echarts": "^4.9.0",

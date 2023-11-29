@@ -12,6 +12,11 @@ export const RESEND_PASS_LINK = "/resend/password/"
 export const POST_FAKE_JWT_PASSWORD_FORGET = "/jwt-forget-pwd"
 export const SOCIAL_LOGIN = "/social-login"
 
+
+//
+export const TIMEZONES = "/get/time/zone"
+export const STOREGAMERESULTS = "/store/time/zone"
+export const GETGAMERESULTS = "/store/time/zone"
 //PROFILE
 export const CHECKUSER = "/silent-check"
 export const SIGNUP_SILENT= "/silent-signup"
