@@ -13,9 +13,10 @@ const Adminmiddleware = ({
 <Route
     {...rest}
     render={props => {
-      // console.log("authtoken",localStorage.getItem(SETTINGS.AUTHTOKEN))
-    // if(localStorage.getItem("clientAuth")){
-      if(localStorage.getItem(SETTINGS.AUTHTOKEN)){
+      let logInfo = loginData()
+   
+      // if(localStorage.getItem("clientAuth")){
+      if(localStorage.getItem(SETTINGS.AUTHTOKEN) && logInfo.role === "Admin"){
         return (
             <Layout>
                 <Component {...props} />

@@ -15,6 +15,9 @@ const Logout = props => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    localStorage.clear()
+  },[])
+  useEffect(() => {
     dispatch(loginSuccess())
     dispatch(userNotUpdated())
     dispatch(removeNotifications())

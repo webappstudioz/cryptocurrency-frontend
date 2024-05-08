@@ -34,7 +34,7 @@ import { gapi } from "gapi-script"
 import { customRegex } from "../../helpers/validation_helpers"
 import TextLoader from "../../components/textLoader"
 import rederror from "../../assets/images/redvalidationicon/rederror.jpg"
-import { verifyUserInvite,  getCountryList, getGstCountries } from "../Authentication/store/apiServices"
+import { verifyUserInvite, getCountryList, getGstCountries } from "../Authentication/store/apiServices"
 import { toast } from "react-toastify"
 import { setPageTitle } from "../../helpers/api_helper_rs"
 var settings = {
@@ -47,7 +47,7 @@ var settings = {
 }
 
 const Register = props => {
-	const phoneInputRef = useRef(null);
+  const phoneInputRef = useRef(null);
   const [passwordInputType, setPasswordInputType] = useState(true)
   const [loader, setLoader] = useState(false)
   const [inviteInfo, setInviteInfo] = useState("")
@@ -59,15 +59,15 @@ const Register = props => {
   const [gstCountry, setGstCountry] = useState(false)
   const dispatch = useDispatch()
   let navigate = useHistory()
-	const [selectedPhoneCode, setSelectedPhoneCode] = useState()
-	const [selectedCountryCode, setSelectedCountryCode] = useState()
+  const [selectedPhoneCode, setSelectedPhoneCode] = useState()
+  const [selectedCountryCode, setSelectedCountryCode] = useState()
 
 
-  useEffect(() =>{
+  useEffect(() => {
     setPageTitle("Registration")
     // getcountry()
     // getGstCountriesList()
-  },[])
+  }, [])
 
   const getcountry = async () => {
     try {
@@ -86,7 +86,7 @@ const Register = props => {
       })
       setcountryList(all)
     } catch (error) {
-     
+
     }
   }
 
@@ -94,7 +94,7 @@ const Register = props => {
     try {
       let res = await getGstCountries()
       setGstCountries(res?.data?.data)
-    }catch(error){
+    } catch (error) {
 
     }
   }
@@ -107,7 +107,7 @@ const Register = props => {
       email: inviteInfo?.email || "",
       name: "",
       password: "",
-			phoneNumber: "",      
+      phoneNumber: "",
       country: "",
       referralCode: "",
       termConditions: false,
@@ -115,41 +115,42 @@ const Register = props => {
     },
     validationSchema: () => {
 
-    
-    let schema  = Yup.object().shape({
-      email: Yup.string()
-        // .required("Please enter your email ")
-        .matches(customRegex.email, "Please enter a valid email "),
-      name: Yup.string()
-        // .required("Please enter your name")
-        .matches(customRegex.userName, "Please enter alphabets only")
-        .matches(customRegex.spaces, "space not allowed")
-        .min(3, "User name must be minimum 3 characters long")
-        .max(15, "User name must be maximum 15 characters long"),
-      password: Yup.string()
-        // .required("Please enter your password")
-        .min(8, "Password must be 8 characters at least")
-        .matches(
-          customRegex.password,
-          "Please enter atleast one uppercase letter, one lowercase letter, one digit and one special character"
-        ),
-      phoneNumber: Yup.string()
-        // .required("Please enter your phone number.")
-        .matches(customRegex.phoneNumber, "Please enter a valid phone number."),  
-      termConditions: Yup.bool()
-      // .oneOf(
-      //   [true],
-      //   "You must accept the terms and conditions"
-      // ),
-    })
 
-    if(!inviteInfo){
-      schema = schema.shape({country: Yup.string()
-      // .required('Please select your country'),
+      let schema = Yup.object().shape({
+        email: Yup.string()
+          // .required("Please enter your email ")
+          .matches(customRegex.email, "Please enter a valid email "),
+        name: Yup.string()
+          // .required("Please enter your name")
+          .matches(customRegex.userName, "Please enter alphabets only")
+          .matches(customRegex.spaces, "space not allowed")
+          .min(3, "User name must be minimum 3 characters long")
+          .max(15, "User name must be maximum 15 characters long"),
+        password: Yup.string()
+          // .required("Please enter your password")
+          .min(8, "Password must be 8 characters at least")
+          .matches(
+            customRegex.password,
+            "Please enter atleast one uppercase letter, one lowercase letter, one digit and one special character"
+          ),
+        phoneNumber: Yup.string()
+          // .required("Please enter your phone number.")
+          .matches(customRegex.phoneNumber, "Please enter a valid phone number."),
+        termConditions: Yup.bool()
+        // .oneOf(
+        //   [true],
+        //   "You must accept the terms and conditions"
+        // ),
       })
-    }
-    return schema 
-  },
+
+      if (!inviteInfo) {
+        schema = schema.shape({
+          country: Yup.string()
+          // .required('Please select your country'),
+        })
+      }
+      return schema
+    },
     onSubmit: (values) => {
       navigate.push("/Verification")
       return
@@ -161,13 +162,13 @@ const Register = props => {
         first_name: values.name,
         is_agree: terms,
       })
-      if(!inviteInfo){
+      if (!inviteInfo) {
         data.append('country_id', values.country);
       }
-      if(inviteToken){
+      if (inviteToken) {
         data.append('token', inviteToken)
       }
-      if(values.gst){
+      if (values.gst) {
         data.append('gst_enabled', values.gst)
       }
       setSpinner(true)
@@ -178,33 +179,33 @@ const Register = props => {
 
   const handleDropdownChange = (_, { value }) => {
     countryList.map((country) => {
-      if(value === country?.value)
-        gstCountries.includes(country?.short_code)? setGstCountry(true) : setGstCountry(false)
-      })
+      if (value === country?.value)
+        gstCountries.includes(country?.short_code) ? setGstCountry(true) : setGstCountry(false)
+    })
     validation.setFieldValue('country', value);
   };
 
   const reduxData = useSelector(state => state?.Account)
- 
+
   useEffect(() => {
     setLoader(reduxData?.loading)
     setSpinner(reduxData?.spinner)
-    if(reduxData?.registrationError || reduxData?.user){
-      !reduxData?.spinner? setAction(false) : null
-      !reduxData?.loading? setAction(false) : null
+    if (reduxData?.registrationError || reduxData?.user) {
+      !reduxData?.spinner ? setAction(false) : null
+      !reduxData?.loading ? setAction(false) : null
     }
-  },[reduxData])
+  }, [reduxData])
 
   const responseGoogle = response => {
     if (response) {
       var data = new URLSearchParams({
-          first_name:response?.profileObj?.givenName,
-          last_name:response?.profileObj?.familyName,
-          email:response?.profileObj?.email,
-          social_id:response?.profileObj?.googleId,
-          imageUrl:response?.profileObj?.imageUrl,
-          social_type:"google",
-        })
+        first_name: response?.profileObj?.givenName,
+        last_name: response?.profileObj?.familyName,
+        email: response?.profileObj?.email,
+        social_id: response?.profileObj?.googleId,
+        imageUrl: response?.profileObj?.imageUrl,
+        social_type: "google",
+      })
       setLoader(true)
       setAction(true)
       dispatch(registerSocial(data, navigate))
@@ -265,36 +266,36 @@ const Register = props => {
     const inputElement = phoneInputRef.current;
     if (inputElement) {
       const iti = intlTelInput(inputElement, {
-      separateDialCode: true,
-      initialCountry: selectedCountryCode,
-      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js"
-      
+        separateDialCode: true,
+        initialCountry: selectedCountryCode,
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js"
+
       });
-    
+
       inputElement?.addEventListener("countrychange", function () {
-      const selectedCountryData = iti.getSelectedCountryData();
-      setSelectedPhoneCode(selectedCountryData)
+        const selectedCountryData = iti.getSelectedCountryData();
+        setSelectedPhoneCode(selectedCountryData)
       });
-      
+
       // Clean up by destroying the intlTelInput instance when the component unmounts
       return () => {
-      iti.destroy();
+        iti.destroy();
       };
     }
-    }, [phoneInputRef?.current, selectedCountryCode]);
+  }, [phoneInputRef?.current, selectedCountryCode]);
 
-    useEffect(() => {
-      countryList?.map((country) => {
-        if(validation?.values?.country === country.value){
-          setSelectedCountryCode(country?.short_code?.toLowerCase())
-        }
-      })
-    },[
-      selectedPhoneCode, 
-      selectedCountryCode, 
-      countryList,
-      validation?.values?.country
-    ])
+  useEffect(() => {
+    countryList?.map((country) => {
+      if (validation?.values?.country === country.value) {
+        setSelectedCountryCode(country?.short_code?.toLowerCase())
+      }
+    })
+  }, [
+    selectedPhoneCode,
+    selectedCountryCode,
+    countryList,
+    validation?.values?.country
+  ])
   return (
     <React.Fragment>
       <div
@@ -409,13 +410,13 @@ const Register = props => {
                         value={validation.values.name || ""}
                         invalid={
                           validation.touched.name &&
-                          validation.errors.name
+                            validation.errors.name
                             ? true
                             : false
                         }
                       />
                       {validation.touched.name &&
-                      validation.errors.name ? (
+                        validation.errors.name ? (
                         <>
                           <FormFeedback type="invalid">
                             <img
@@ -476,7 +477,7 @@ const Register = props => {
                         onBlur={validation.handleBlur}
                         invalid={
                           validation.touched.password &&
-                          validation.errors.password
+                            validation.errors.password
                             ? true
                             : false
                         }
@@ -492,7 +493,7 @@ const Register = props => {
                         />
                       </div>
                       {validation.touched.password &&
-                      validation.errors.password ? (
+                        validation.errors.password ? (
                         <>
                           <FormFeedback type="invalid">
                             <img
@@ -509,75 +510,75 @@ const Register = props => {
                       <img className="form-icon" src={lock} alt="" />
                     </div>
                     <div className="form-group">
-										<Input
-											type="tel"
-											id="phone"
-											name="phoneNumber"
-											className="form-control"
-											placeholder="Phone Number"
-											innerRef={phoneInputRef}
-											onChange={(e) => {
-												const inputValue = e.target.value;
-												if (inputValue.startsWith(`+${selectedPhoneCode?.dialCode}`)) {
-												   // Remove the dial code from the input value
-													const phoneNumberWithoutDialCode = inputValue.substring(`+${selectedPhoneCode?.dialCode}`.length);
-													// Update the form field value using formik's handleChange
-													validation.handleChange({
-														target: {
-															name: "phoneNumber",
-															value: phoneNumberWithoutDialCode,
-														},
-													});
-												// }
-												} else {
-													// Handle other changes (e.g., non-dial code input)
-													validation.handleChange(e);
-												}
-											}}
-											onBlur={validation.handleBlur}
-											value={validation.values.phoneNumber || ""}
-											invalid={
-												validation.touched.phoneNumber &&
-													validation.errors.phoneNumber
-													? true
-													: false
-											}
-										/>
-										{validation.touched.phoneNumber &&
-											validation.errors.phoneNumber ? (
-											<>
-												<FormFeedback type="invalid" className="info-modal">
-													<img
-														className="form-error-icon"
-														src={rederror}
-														alt=""
-														height={15}
-													/>
-													{validation.errors.phoneNumber}
-												</FormFeedback>
-											</>
-										) : null}
-										<div id="flag-container"></div>
-									</div>
+                      <Input
+                        type="tel"
+                        id="phone"
+                        name="phoneNumber"
+                        className="form-control"
+                        placeholder="Phone Number"
+                        innerRef={phoneInputRef}
+                        onChange={(e) => {
+                          const inputValue = e.target.value;
+                          if (inputValue.startsWith(`+${selectedPhoneCode?.dialCode}`)) {
+                            // Remove the dial code from the input value
+                            const phoneNumberWithoutDialCode = inputValue.substring(`+${selectedPhoneCode?.dialCode}`.length);
+                            // Update the form field value using formik's handleChange
+                            validation.handleChange({
+                              target: {
+                                name: "phoneNumber",
+                                value: phoneNumberWithoutDialCode,
+                              },
+                            });
+                            // }
+                          } else {
+                            // Handle other changes (e.g., non-dial code input)
+                            validation.handleChange(e);
+                          }
+                        }}
+                        onBlur={validation.handleBlur}
+                        value={validation.values.phoneNumber || ""}
+                        invalid={
+                          validation.touched.phoneNumber &&
+                            validation.errors.phoneNumber
+                            ? true
+                            : false
+                        }
+                      />
+                      {validation.touched.phoneNumber &&
+                        validation.errors.phoneNumber ? (
+                        <>
+                          <FormFeedback type="invalid" className="info-modal">
+                            <img
+                              className="form-error-icon"
+                              src={rederror}
+                              alt=""
+                              height={15}
+                            />
+                            {validation.errors.phoneNumber}
+                          </FormFeedback>
+                        </>
+                      ) : null}
+                      <div id="flag-container"></div>
+                    </div>
                     {!inviteInfo && <div className="mb-3 form-g position-relative">
-                    <Dropdown
-                      id="country"
-                      name="country"
-                      placeholder="Select Country"
-                      fluid
-                      search
-                      className={(validation.touched.country && validation.errors.country)? "input-outline is-invalid" : "input-outline"}
-                      value={validation?.values?.country || ""}
-                      onChange={handleDropdownChange}
-                      onBlur={validation.handleBlur}
-                      options={countryList}
-                      invalid={
-                        validation.touched.country &&
-                        validation.errors.country
-                          ? "true"
-                          : "false"
-                      }
-                    />
+                      <Dropdown
+                        id="country"
+                        name="country"
+                        placeholder="Select Country"
+                        fluid
+                        search
+                        className={(validation.touched.country && validation.errors.country) ? "input-outline is-invalid" : "input-outline"}
+                        value={validation?.values?.country || ""}
+                        onChange={handleDropdownChange}
+                        onBlur={validation.handleBlur}
+                        options={countryList}
+                        invalid={
+                          validation.touched.country &&
+                            validation.errors.country
+                            ? "true"
+                            : "false"
+                        }
+                      />
                       {validation.touched.country && validation.errors.country ? (
                         <>
                           <FormFeedback type="invalid">
@@ -604,13 +605,13 @@ const Register = props => {
                         value={validation.values.referralCode || ""}
                         invalid={
                           validation.touched.referralCode &&
-                          validation.errors.referralCode
+                            validation.errors.referralCode
                             ? true
                             : false
                         }
                       />
                       {validation.touched.referralCode &&
-                      validation.errors.referralCode ? (
+                        validation.errors.referralCode ? (
                         <>
                           <FormFeedback type="invalid">
                             <img
@@ -637,10 +638,10 @@ const Register = props => {
                         value={validation.values.gst || ""}
                       />
                       <label htmlFor="enable-gst">
-                          {" "}
-                          Pay with GST
+                        {" "}
+                        Pay with GST
                       </label>
-                      </div>}
+                    </div>}
                     <div className="form-check">
                       <Input
                         disabled={spinner}
@@ -653,20 +654,20 @@ const Register = props => {
                         value={validation.values.termConditions || ""}
                         invalid={
                           validation.touched.termConditions &&
-                          validation.errors.termConditions
+                            validation.errors.termConditions
                             ? true
                             : false
                         }
                       />
                       <label htmlFor="auth-terms-condition-check">
                         <span>I agree to the</span>
-                        <a className="text-primary" style={{cursor:'pointer'}}>
+                        <a className="text-primary" style={{ cursor: 'pointer' }}>
                           {" "}
                           Terms & Conditions
                         </a>
                       </label>
                       {validation.touched.termConditions &&
-                      validation.errors.termConditions ? (
+                        validation.errors.termConditions ? (
                         <>
                           <FormFeedback type="invalid" className="terms_conditions">
                             <img
@@ -687,14 +688,14 @@ const Register = props => {
                         type="submit"
                         disabled={reduxData?.spinner || reduxData?.loading || spinner}
                       >
-                        {spinner? <div className="ui active inline loader"></div> : "Sign Up"}
+                        {spinner ? <div className="ui active inline loader"></div> : "Sign Up"}
                       </button>
                     </div>
 
                     <div className="mt-4 text-center">
                       <p className="text-muted mb-0 font-normal">
                         Already have an account ?{" "}
-                        <Link onClick={(e) => {spinner? e?.preventDefault() : null }} to="/login" className="fw-medium text-primary">
+                        <Link onClick={(e) => { spinner ? e?.preventDefault() : null }} to="/login" className="fw-medium text-primary">
                           {" "}
                           Sign In
                         </Link>
@@ -706,7 +707,7 @@ const Register = props => {
             </Col>
           </Row>
         </Container>
-         <TextLoader loader={loader} loading={action}/>
+        <TextLoader loader={loader} loading={action} />
       </div>
     </React.Fragment>
   )

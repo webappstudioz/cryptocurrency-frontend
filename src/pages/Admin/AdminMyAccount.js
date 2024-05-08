@@ -70,23 +70,26 @@ const AdminMyAccount = props => {
       firstName: userDetail?.first_name || "",
       lastName: userDetail?.last_name || "",
       email: userDetail?.email || "",
-      phoneNumber: userDetail?.phoneNumber || "",
+      phoneNumber: userDetail?.phone_number || "",
       securityKey: "",
     },
     validationSchema: Yup.object({
       firstName: Yup.string()
-        .required("Please enter your first name.")
+        .required("Enter your first name.")
         .matches(customRegex.name, "Only albhabets are allowed.")
         .min(3, "First name must be minimum 3 characters long")
         .max(20, "First name must be maximum 20 characters long"),
       lastName: Yup.string()
-        .required("Please enter your last name.")
+        .required("Enter your last name.")
         .matches(customRegex.name, "Only albhabets are allowed.")
         .min(3, "Last name must be minimum 3 characters long")
         .max(20, "Last name must be maximum 20 characters long"),
       phoneNumber: Yup.string()
-        .matches(customRegex.phoneNumber, "Please enter valid Phone number.")
+        .matches(customRegex.phoneNumber, "Enter valid Phone number.")
         .required("Phone number is required."),
+      email: Yup.string()
+        .matches(customRegex.email, "Enter valid Phone number.")
+        .required("Email number is required."),
       securityKey: Yup.string()
         .required("Security key is required.")
     }),
@@ -97,6 +100,8 @@ const AdminMyAccount = props => {
           first_name: values?.firstName,
           last_name: values?.lastName,
           email: values?.email,
+          phone_number: values.phoneNumber,
+          security_key: values.securityKey
         })
         let result = await postUserProfileDetails(data)
         if (result) {
@@ -110,6 +115,7 @@ const AdminMyAccount = props => {
       } catch (error) {
         setloader(false)
         setloading(false)
+        console.log("error",error)
         toast.error(error?.response?.data?.message, {
           position: toast.POSITION.TOP_RIGHT,
         })
@@ -227,10 +233,31 @@ const AdminMyAccount = props => {
                           name="email"
                           className="mt-3"
                           placeholder="Email"
-                          type="email"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
                           value={validation.values.email || ""}
-                          readOnly
+                          invalid={
+                            validation.touched.email &&
+                            validation.errors.email
+                              ? true
+                              : false
+                          }
                         />
+                        {validation.touched.email &&
+                        validation.errors.email ? (
+                          <>
+                            <FormFeedback type="invalid">
+                              <img
+                                className="form-error-icon"
+                                src={rederror}
+                                alt=""
+                                height={15}
+                              />
+                              {validation.errors.email}
+                            </FormFeedback>
+                          </>
+                        ) : null}
                       </Col>
                       <Col lg="6">
                     <Input
@@ -263,6 +290,37 @@ const AdminMyAccount = props => {
                       </>
                     ) : null}
                   </Col>
+                  <Col lg="6">
+                        <Input
+                          name="securityKey"
+                          className="mt-3"
+                          placeholder="Security Key"
+                          type="text"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.securityKey || ""}
+                          invalid={
+                            validation.touched.securityKey &&
+                            validation.errors.securityKey
+                              ? true
+                              : false
+                          }
+                        />
+                        {validation.touched.securityKey &&
+                        validation.errors.securityKey ? (
+                          <>
+                            <FormFeedback type="invalid">
+                              <img
+                                className="form-error-icon"
+                                src={rederror}
+                                alt=""
+                                height={15}
+                              />
+                              {validation.errors.securityKey}
+                            </FormFeedback>
+                          </>
+                        ) : null}
+                      </Col>
                     </Row>
                   </CardBody>
                 </Card>

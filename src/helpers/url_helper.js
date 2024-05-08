@@ -16,16 +16,21 @@ export const SOCIAL_LOGIN = "/social-login"
 //
 export const TIMEZONES = "/timezone/list"
 export const STOREGAMERESULTS = "/store/results"
-export const GETGAMERESULTS = "/store/time/zone"
+export const GETGAMERESULTS = "/get/game/results"
+
+//
+export const GET_USER_INFO = "/get/profile"
+export const POST_USER_INFO = "/update/profile"
+
+//unused
 //PROFILE
 export const CHECKUSER = "/silent-check"
 export const SIGNUP_SILENT= "/silent-signup"
 export const WEDGITSINFO = "/dashboard"
 export const CHANGE_PASSWORD = "/profile/change-password"
 export const GET_CLIENT_INFO = "/profile/profile-details"
-export const GET_USER_INFO = "/user/profile/detail"
+
 export const POST_CLIENT_INFO = "/profile/update-profile"
-export const POST_USER_INFO = "/user/profile/update"
 export const GET_COUNTRY = "/get/countries"
 export const GST_COUNTRIES = "/get/gst-countries"
 export const POST_COUNTRY = "/get/states" 

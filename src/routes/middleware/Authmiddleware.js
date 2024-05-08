@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Route, Redirect } from "react-router-dom";
 import { loginData } from "../../pages/Authentication/store/apiServices";
+import { SETTINGS } from "../../constants/api/api_path";
 
 const Authmiddleware = ({
   component: Component,
@@ -12,16 +13,18 @@ const Authmiddleware = ({
   <Route
     {...rest}
     render={props => {
-      let pathname = "";
-      let id = "";
+      console.log("AUTHTOKEN", localStorage.getItem(SETTINGS.AUTHTOKEN))
+      // let pathname = "";
+      // let id = "";
       let info = loginData()
-     if(!localStorage.getItem("authUser")){
+      console.log("info", info?.role)
+    //  if(!localStorage.getItem("authUser")){
 
-     let url = window.location.pathname
-      url = url.split('/')
-       pathname = url[1]
-       id = url[2]
-     }
+    //  let url = window.location.pathname
+    //   url = url.split('/')
+    //    pathname = url[1]
+    //    id = url[2]
+    //  }
 
       
       // if(pathname === 'invoice-detail' && id && !localStorage.getItem("authUser")){
@@ -52,12 +55,25 @@ const Authmiddleware = ({
       //     />
       //   );
       // }
-   
+    if(localStorage.getItem(SETTINGS.AUTHTOKEN) && info?.role === "User"){
       return (
-        <Layout>
-          <Component {...props} />
-        </Layout>
+            <Redirect
+              to={{ pathname: "/dashboard"}}
+            />
+          );
+     }else if(localStorage.getItem(SETTINGS.AUTHTOKEN) && info?.role === "Admin"){
+      return (
+        <Redirect
+          to={{ pathname: "/admin/results"}}
+        />
       );
+     }
+
+     return (
+      <Layout>
+        <Component {...props} />
+      </Layout>
+    );
     }}
   />
 );

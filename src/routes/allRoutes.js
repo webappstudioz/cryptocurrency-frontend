@@ -118,7 +118,7 @@ const userRoutes = [
   { path: "/witdraw-funds", component: WithdrawFunds },
   { path: "/transfer-funds", component: TransferFunds },
   { path: "/payment-history", component: PaymentHistory },
-  { path: "/playandwin", component: PlayAndWin },
+  // { path: "/playandwin", component: PlayAndWin },
   // { path: "/users-list", component: UsersList },
 
   // this route should be at the end of all other routes
@@ -127,6 +127,7 @@ const userRoutes = [
 ]
 
 const adminRoutes = [
+  { path: "/playandwin", component: PlayAndWin },
   { path: "/users-list", component: UsersList },
   { path: "/add-accounts", component: AddAccount },
   { path: "/my-profile", component: AdminMyAccount },

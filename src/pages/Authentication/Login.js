@@ -57,26 +57,31 @@ const Login = props => {
   const [loader, setLoader] = useState(false)
   const [spinner, setSpinner] = useState(false)
   const [action, setAction] = useState("")
+  const [gameResults, setGameResults] = useState("")
   const dispatch = useDispatch()
   const location = useLocation()
   const invoiceId = location?.state?.invoiceid
  
   const finalResults = [
-    {timeZone: 1, winner: 8},
-    {timeZone: 2, winner: 19},
-    {timeZone: 3, winner: 25},
-    {timeZone: 4, winner: 36},
+    {time_zone: 1, winning_Number: 8},
+    {time_zone: 2, winning_Number: 19},
+    {time_zone: 3, winning_Number: 25},
+    {time_zone: 4, winning_Number: 36},
   ]
+
+  const redNumbers = ["1","2","3","4","5","6","7","8","9","10","11","12","13","26","27","28","29","30","31"]
+  const blackNumbers = ["0","14","15","16","17","18","19","20","21","22","23","24","25","32","33","34","35"]
 
   useEffect(() =>{
     setPageTitle("Login")
-    getGameResults()
+    getResults()
   },[])
 
   const getResults = async() => {
     try{
-      let res = getGameResults()
-      console.log("res",res)
+      let res = await getGameResults()
+      let info = res?.data?.data
+      setGameResults(info)
     }catch(error){
       console.log("error",error)
     }
@@ -86,24 +91,24 @@ const Login = props => {
     enableReinitialize: true,
 
     initialValues: {
-      email: userInfo?.email || "",
+      username: userInfo?.username || "",
       password: userInfo?.password || "",
     },
 
     validationSchema: Yup.object({
-      email: Yup.string()
-        .required("Please enter your email address")
-        .matches(customRegex.email, "Please enter a valid email address"),
+      username: Yup.string()
+        .required("Enter username or email.")
+        .matches(customRegex.email, "Enter a valid username or email."),
       password: Yup.string()
-        .required("Please Enter Your Password")
-        .min(6, "Please Enter Valid Password"),
+        .required("Password is required")
+        .min(6, "Enter Valid Password"),
     }),
 
     onSubmit: async values => {
       // props.history.push("/dashboard")
-      // setSpinner(true)
-      // setAction(true)
-      dispatch(loginUser(values, props.history))
+      setSpinner(true)
+      setAction(true)
+      // dispatch(loginUser(values, props.history))
     },
   })
 
@@ -250,17 +255,24 @@ const Login = props => {
                 {/* </Slider> */}
                {/* </div>  */}
                <div className="results-login-page">
-                <Row>
-                  {finalResults.map((result, index) => {
+                <div className="login-left-wrapper">
+                  {gameResults? gameResults?.map((result, index) => {
+                    console.log("red",redNumbers.includes(result?.winning_Number))
                     return (
-                    <div key={index}>
-                      <Col lg={3}>
-                        <label>{result?.timeZone}</label>
-                        <input type="text" className="form-control" styele={{"backgorundColor": "red"}} name="zoneOne" defaultValue={result?.winner}/>
+                    <div className="login-left-input" key={index}>
+                      <Col lg={12}>
+                        <label>{result?.time_zone}</label>
+                        <input 
+                          type="text" 
+                          className={redNumbers?.includes(result?.winning_Number)? "form-control redNumber" : blackNumbers?.includes(result?.winning_Number)? "form-control blackNumber" : "form-control"} 
+                          name="zoneOne" 
+                          defaultValue={result?.winning_Number}
+                          disabled
+                          />
                       </Col>
                     </div>
                   )
-                  })}
+                  }) : null}
                   {/* <Col lg={3}>
                     <label>Zone One</label>
                     <input type="text" className="form-control" name="zoneOne" />
@@ -277,7 +289,7 @@ const Login = props => {
                     <label>Zone Four</label>
                     <input type="text" className="form-control" name="zoneOne" />
                   </Col> */}
-                </Row>
+                </div>
                </div>
             </Col>
             <Col lg={6}>
@@ -322,20 +334,20 @@ const Login = props => {
                   >
                     <div className="mb-3 form-g position-relative">
                       <Input
-                        name="email"
+                        name="username"
                         className="form-control input-outline"
-                        placeholder="Your Email"
+                        placeholder="Username/Email"
                         type="email"
                         onChange={validation.handleChange}
                         onBlur={validation.handleBlur}
-                        value={validation.values.email || ""}
+                        value={validation.values.username || ""}
                         invalid={
-                          validation.touched.email && validation.errors.email
+                          validation.touched.username && validation.errors.username
                             ? true
                             : false
                         }
                       />
-                      {validation.touched.email && validation.errors.email ? (
+                      {validation.touched.username && validation.errors.username ? (
                         <>
                           <FormFeedback type="invalid">
                             <img
@@ -344,7 +356,7 @@ const Login = props => {
                               alt=""
                               height={15}
                             />
-                            {validation.errors.email}
+                            {validation.errors.username}
                           </FormFeedback>
                         </>
                       ) : null}
@@ -414,8 +426,8 @@ const Login = props => {
                       </label>
                       <div className="float-end">
                         <Link
-                          // onClick={(e) => {spinner? e.preventDefault() : null}}
-                          onClick={(e) => {e.preventDefault()}}
+                          onClick={(e) => {spinner? e.preventDefault() : null}}
+                          // onClick={(e) => {e.preventDefault()}}
                           to="/forgot-password"
                           className="text-muted font-normal"
                         >
@@ -428,8 +440,8 @@ const Login = props => {
                       <button
                         className="btn btn-primary w-100 waves-effect waves-light"
                         type="submit"
-                        // disabled={reduxData?.spinner || reduxData?.loading || spinner}
-                        disabled={true}
+                        disabled={reduxData?.spinner || reduxData?.loading || spinner}
+                        // disabled={true}
                       >
                         {spinner? <div className="ui active inline loader"></div> : "Sign In"}
                       </button>
@@ -441,8 +453,8 @@ const Login = props => {
                       <p className="mb-0 text-muted font-normal">
                         Not registered yet?{" "}
                         <Link
-                          // onClick={(e) => {spinner? e.preventDefault() : null}}
-                          onClick={(e) => {e.preventDefault()}}
+                          onClick={(e) => {spinner? e.preventDefault() : null}}
+                          // onClick={(e) => {e.preventDefault()}}
                           to="/register"
                           className="fw-medium text-primary font-normal"
                         >
