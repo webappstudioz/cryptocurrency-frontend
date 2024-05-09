@@ -229,7 +229,6 @@ const AdminLogin = props => {
                     buttonText="Login with gooogle"
                     onSuccess={responseGoogle}
                     onFailure={err => {
-                      // console.log(err)
                     }}
                     render={renderProps => (
                       <button

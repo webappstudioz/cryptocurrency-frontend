@@ -115,7 +115,6 @@ const AdminMyAccount = props => {
       } catch (error) {
         setloader(false)
         setloading(false)
-        console.log("error",error)
         toast.error(error?.response?.data?.message, {
           position: toast.POSITION.TOP_RIGHT,
         })

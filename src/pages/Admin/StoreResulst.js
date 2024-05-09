@@ -94,7 +94,6 @@ const StoreResults = props => {
               setTimeZones(convertedArray)
         }
     }catch(error){
-        console.log("error",error)
         setLoader(false)
         setLoading(false)
     }
@@ -129,12 +128,10 @@ const StoreResults = props => {
 
             try{
                 let res = await storeGameResults(data)
-                console.log("res",res)
                 toast.success(res?.data?.message, {
                   position: toast.POSITION.TOP_RIGHT,
                 })
             }catch(error) {
-                console.log("error",error)
             }
 
         }

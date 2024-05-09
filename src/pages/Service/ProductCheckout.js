@@ -966,7 +966,6 @@ const ProductCheckout = (props) => {
                           {currency?.prefix}
                           {orderSummary?.sub_total} {currency?.suffix}
                         </span>
-                        {/* {console.log("subtotal", orderSummary?.sub_total)} */}
                       </li>
                       {orderSummary?.promo_code?.amount && (
                         <li>

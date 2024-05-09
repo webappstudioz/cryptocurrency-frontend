@@ -13,11 +13,9 @@ const Authmiddleware = ({
   <Route
     {...rest}
     render={props => {
-      console.log("AUTHTOKEN", localStorage.getItem(SETTINGS.AUTHTOKEN))
       // let pathname = "";
       // let id = "";
       let info = loginData()
-      console.log("info", info?.role)
     //  if(!localStorage.getItem("authUser")){
 
     //  let url = window.location.pathname

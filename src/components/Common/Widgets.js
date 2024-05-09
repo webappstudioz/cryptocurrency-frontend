@@ -46,7 +46,6 @@ export function WidAppServer(props) {
       //     toast.success("message",{position: toast.POSITION.TOP_RIGHT})
       //   }
       // }catch(error){
-      //   console.log("error", error)
       //   toast.error("message", {position: toast.POSITION.TOP_RIGHT,})
       // }
     }

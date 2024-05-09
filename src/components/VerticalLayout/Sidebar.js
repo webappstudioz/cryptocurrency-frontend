@@ -25,7 +25,6 @@ const Sidebar = props => {
   },[])
 
   useEffect(()=>{
-    // // console.log(info)
     // let data = loginData()
     // data.profile_completed = 0
     // storeUserData(data)

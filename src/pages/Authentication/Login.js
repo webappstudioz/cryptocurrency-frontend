@@ -83,7 +83,6 @@ const Login = props => {
       let info = res?.data?.data
       setGameResults(info)
     }catch(error){
-      console.log("error",error)
     }
   }
 
@@ -257,7 +256,6 @@ const Login = props => {
                <div className="results-login-page">
                 <div className="login-left-wrapper">
                   {gameResults? gameResults?.map((result, index) => {
-                    console.log("red",redNumbers.includes(result?.winning_Number))
                     return (
                     <div className="login-left-input" key={index}>
                       <Col lg={12}>
@@ -303,7 +301,6 @@ const Login = props => {
                     buttonText="Login with gooogle"
                     onSuccess={responseGoogle}
                     onFailure={err => {
-                      // console.log(err)
                     }}
                     render={renderProps => (
                       <button

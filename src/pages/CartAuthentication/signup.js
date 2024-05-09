@@ -208,7 +208,6 @@ const SignUp = props => {
           buttonText="Login with gooogle"
           onSuccess={responseGoogle}
           onFailure={err => {
-            // console.log("fail", err)
           }}
           render={renderProps => (
             <button

@@ -146,7 +146,6 @@ const handleCryptoScanner = (event) => {
             .matches(customRegex.ifscRegex, "Please enter valid ifsc code"),
     }),
     onSubmit: async values => {
-      console.log("values", values)
       return
       // setloader(true)
       try {
@@ -199,7 +198,6 @@ const handleCryptoScanner = (event) => {
           .max(50, "Account holder's name must be maximum 50 characters long"),
     }),
     onSubmit: async values => {
-      console.log("values", values)
       return
       setloader(true)
       try {

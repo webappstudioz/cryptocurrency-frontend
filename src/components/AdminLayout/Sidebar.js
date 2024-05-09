@@ -22,7 +22,6 @@ const Sidebar = props => {
   const [role, setRole] = useState()
   useEffect(() => {
     // let info = loginData()
-    // console.log("role", info.role)
     // setRole(info.role)
     // if(info?.role === "client"){
     //   info?.profile_completed === 0? setOpenModal(true) : setOpenModal(false)
@@ -30,7 +29,6 @@ const Sidebar = props => {
   },[])
 
   // useEffect(()=>{
-  //   // console.log(info)
   //   let data = loginData()
   //   data.profile_completed = 1
   //   storeUserData(data)
