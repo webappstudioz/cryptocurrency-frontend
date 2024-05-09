@@ -65,6 +65,20 @@ import AdminMyAccount from "../pages/Admin/AdminMyAccount"
 import AdminChangePassword from "../pages/Admin/AdminChangePassword"
 import StoreResulst from "../pages/Admin/StoreResulst"
 
+const authRoutes = [
+  { path: "/logout", component: Logout },
+  { path: "/login", component: Login },
+  { path: "/forgot-password", component: ForgetPwd },
+  { path: "/register", component: Register },
+  { path: "/email-verify", component: Emailverification },
+  { path: "/reset-password/:token", component: ResetPassword },
+  { path: "/login-suspended", component: LoginSuspended },
+  // { path: "/admin/register", component: AdminRegister },
+  // { path: "/admin/login", component: AdminLogin },
+  
+  // { path: "**", component: Login},
+]
+
 const unAuthrizedRoutes = [
   { path: "/announcments", component: AnnouncmentsList},
   { path: "/announcmentDetail/:id", component: AnnouncmentDetail },
@@ -105,8 +119,8 @@ const userRoutes = [
   { path: "/security-settings", component: SecuritySettings },
   { path: "/buy-product", component: BuyProduct },
   { path: "/add-to-cart1", component: AddToCart1 },
-  { path: "/support", component: Support },
-  { path: "/support-ticket/:id", component: SupportRequest },
+  // { path: "/support", component: Support },
+  // { path: "/support-ticket/:id", component: SupportRequest },
   { path: "/ticket-view", component: TicketView },
   { path: "/ticket-success", component: TicketSuccess },
   { path: "/announcment", component: AnnouncmentsList},
@@ -118,7 +132,7 @@ const userRoutes = [
   { path: "/witdraw-funds", component: WithdrawFunds },
   { path: "/transfer-funds", component: TransferFunds },
   { path: "/payment-history", component: PaymentHistory },
-  // { path: "/playandwin", component: PlayAndWin },
+  { path: "/playandwin", component: PlayAndWin },
   // { path: "/users-list", component: UsersList },
 
   // this route should be at the end of all other routes
@@ -127,27 +141,12 @@ const userRoutes = [
 ]
 
 const adminRoutes = [
-  { path: "/playandwin", component: PlayAndWin },
   { path: "/users-list", component: UsersList },
   { path: "/add-accounts", component: AddAccount },
   { path: "/my-profile", component: AdminMyAccount },
   { path: "/changepassword", component: AdminChangePassword },
   { path: "/admin-payment-history", component: PaymentHistory },
   { path: "/admin/results", component: StoreResulst },
-]
-
-const authRoutes = [
-  { path: "/logout", component: Logout },
-  { path: "/login", component: Login },
-  { path: "/forgot-password", component: ForgetPwd },
-  { path: "/register", component: Register },
-  { path: "/email-verify", component: Emailverification },
-  { path: "/reset-password/:token", component: ResetPassword },
-  { path: "/login-suspended", component: LoginSuspended },
-  { path: "/admin/register", component: AdminRegister },
-  { path: "/admin/login", component: AdminLogin },
-  
-  // { path: "**", component: Login},
 ]
 
 const userVerifyRoutes = [

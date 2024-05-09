@@ -181,12 +181,12 @@ const SidebarContent = props => {
                 <span>{props.t("Settings")}</span>
               </Link>
             </li> */}
-            <li>
+            {/* <li>
               <Link to={"/support"} className=" waves-effect">
                 <img src={support} alt="" />
                 <span>{props.t("Supports")}</span>
               </Link>
-            </li>
+            </li> */}
           </ul>
           {/* <div className="sidebar_footer px-3">
             <img src={sidebar} className="w-100" alt="" />

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Route, Redirect } from "react-router-dom";
 import { loginData } from "../../pages/Authentication/store/apiServices";
 import { SETTINGS } from "../../constants/api/api_path";
-
+import { authRoutes } from "../allRoutes";
 const Authmiddleware = ({
   component: Component,
   layout: Layout,
@@ -13,65 +13,40 @@ const Authmiddleware = ({
   <Route
     {...rest}
     render={props => {
-      // let pathname = "";
-      // let id = "";
+      let pathname = "";
+      let unProtectedRoutes = authRoutes?.map((route) => {
+        return route.path.replace("/", "")
+      })
+
+      unProtectedRoutes?.splice(0, 1)
+
       let info = loginData()
-    //  if(!localStorage.getItem("authUser")){
+      if (!localStorage.getItem("authUser")) {
 
-    //  let url = window.location.pathname
-    //   url = url.split('/')
-    //    pathname = url[1]
-    //    id = url[2]
-    //  }
+        let url = window.location.pathname
+        url = url.split('/')
+        pathname = url[1]
+      }
 
-      
-      // if(pathname === 'invoice-detail' && id && !localStorage.getItem("authUser")){
-      //   return (
-      //     <Redirect to={{
-      //       pathname: "/login",
-      //       state: {
-      //         invoiceid: id
-      //       }
-      //     }}/>
-      //   )
-      // } else if (isAuthProtected && !localStorage.getItem("authUser")) {
-      //   return (
-      //     <Redirect
-      //       to={{ pathname: "/productlist", state: { from: props.location } }}
-      //     />
-      //   );
-      // } else if(localStorage.getItem("authUser") && props?.location.pathname == "/login" ){
-      //   return (
-      //     <Redirect
-      //       to={{ pathname: "/dashboard"}}
-      //     />
-      //   );
-      // } else if(localStorage.getItem("authUser") && props?.location.pathname != "/dashboard" && info?.profile_completed === 0 && props?.location.pathname !="/product-checkout"){
-      //   return (
-      //     <Redirect
-      //       to={{ pathname: "/dashboard"}}
-      //     />
-      //   );
-      // }
-    if(localStorage.getItem(SETTINGS.AUTHTOKEN) && info?.role === "User"){
+      if (localStorage.getItem(SETTINGS.AUTHTOKEN) && info?.role === "User" && unProtectedRoutes.includes(pathname)) {
+        return (
+          <Redirect
+            to={{ pathname: "/dashboard" }}
+          />
+        );
+      } else if (localStorage.getItem(SETTINGS.AUTHTOKEN) && info?.role === "Admin" && unProtectedRoutes.includes(pathname)) {
+        return (
+          <Redirect
+            to={{ pathname: "/admin/results" }}
+          />
+        );
+      }
+
       return (
-            <Redirect
-              to={{ pathname: "/dashboard"}}
-            />
-          );
-     }else if(localStorage.getItem(SETTINGS.AUTHTOKEN) && info?.role === "Admin"){
-      return (
-        <Redirect
-          to={{ pathname: "/admin/results"}}
-        />
+        <Layout>
+          <Component {...props} />
+        </Layout>
       );
-     }
-
-     return (
-      <Layout>
-        <Component {...props} />
-      </Layout>
-    );
     }}
   />
 );

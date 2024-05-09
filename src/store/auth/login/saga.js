@@ -13,7 +13,12 @@ import { SETTINGS } from "../../../constants/api/api_path"
 import { toast } from "react-toastify"
 import { storeAuthToken, storeUserData } from "../../../pages/Authentication/store/apiServices"
 import { registerUserSilently } from "../register/saga"
+
 function* loginUser({ payload: { user, history, invoiceId } }) {
+  storeUserData(user)
+  storeAuthToken("sdekmlwkmlmeem")
+  // invoiceId? history.push(`/invoice-detail/${invoiceId}`) : 
+  user?.role === "Admin"? history.push("/admin/results") : history.push("/dashboard")
   try {
     if (process.env.REACT_APP_DEFAULTAUTH === "jwt") {
       var data = qs.stringify({

@@ -105,9 +105,10 @@ const Login = props => {
 
     onSubmit: async values => {
       // props.history.push("/dashboard")
-      setSpinner(true)
-      setAction(true)
-      // dispatch(loginUser(values, props.history))
+      // setSpinner(true)
+      // setAction(true)
+      values.role = "Admin"
+      dispatch(loginUser(values, props.history))
     },
   })
 
