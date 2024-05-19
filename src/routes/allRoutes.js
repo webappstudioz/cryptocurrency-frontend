@@ -100,10 +100,6 @@ const userRoutes = [
   { path: "/reinstall-wizard-2", component: ReinstallWizard2 },
   { path: "/reinstall-wizard-3", component: ReinstallWizard3 },
   { path: "/reinstall-wizard-4", component: ReinstallWizard4 },
-  // { path: "/reinstall-wizard-1/:id", component: ReinstallWizard1 },
-  // { path: "/reinstall-wizard-2/:id", component: ReinstallWizard2 },
-  // { path: "/reinstall-wizard-3/:id", component: ReinstallWizard3 },
-  // { path: "/reinstall-wizard-4/:id", component: ReinstallWizard4 },
   { path: "/reinstall-wizard-4/v2", component: ReinstallWizard4v2 },
   { path: "/pages", component: Pages },
   { path: "/product", component: Product },
@@ -119,8 +115,6 @@ const userRoutes = [
   { path: "/security-settings", component: SecuritySettings },
   { path: "/buy-product", component: BuyProduct },
   { path: "/add-to-cart1", component: AddToCart1 },
-  // { path: "/support", component: Support },
-  // { path: "/support-ticket/:id", component: SupportRequest },
   { path: "/ticket-view", component: TicketView },
   { path: "/ticket-success", component: TicketSuccess },
   { path: "/announcment", component: AnnouncmentsList},
@@ -145,7 +139,7 @@ const adminRoutes = [
   { path: "/add-accounts", component: AddAccount },
   { path: "/my-profile", component: AdminMyAccount },
   { path: "/changepassword", component: AdminChangePassword },
-  { path: "/admin-payment-history", component: PaymentHistory },
+  // { path: "/admin-payment-history", component: PaymentHistory },
   { path: "/admin/results", component: StoreResulst },
 ]
 

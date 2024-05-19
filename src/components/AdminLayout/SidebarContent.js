@@ -154,12 +154,12 @@ const SidebarContent = (props) => {
                 <span>Add Accounts</span>
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link to="/payment-history" className="waves-effect">
                 <img src={server} alt="" />
                 <span>Payment History</span>
               </Link>
-            </li>
+            </li> */}
             {/* <li>
               <Link to={{ oj: "l" }} className="waves-effect">
                 <img src={cloud} alt="" />
