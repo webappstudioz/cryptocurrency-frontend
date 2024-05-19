@@ -107,7 +107,7 @@ const Login = props => {
       // props.history.push("/dashboard")
       // setSpinner(true)
       // setAction(true)
-      values.role = "Admin"
+      values.role = "User"
       dispatch(loginUser(values, props.history))
     },
   })
