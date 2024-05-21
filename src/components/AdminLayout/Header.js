@@ -31,10 +31,10 @@ import {
 import { debounce } from "lodash"
 
 import {
-  checkUser,
-  syncInvoices,
+  // checkUser,
+  // syncInvoices,
   searchProducts,
-  syncUserJob,
+  // syncUserJob,
 } from "../../pages/Authentication/store/apiServices"
 import { isNotificationUpdated } from "../../store/auth/notification/action"
 import { SETTINGS } from "../../constants/api/api_path"
@@ -125,57 +125,58 @@ const Header = props => {
     }
   }, [notificationInfo])
 
-  useEffect(() => {
-    if (serviceData?.services) {
-      let checkuser = localStorage.getItem("checkuserstatus")
-      if (checkuser == undefined) {
-        // dispatch(isNotificationUpdated("unread")) //2
-        // syncInvoices() //1
-        checkUserStatus()
-      }
-    }
-  }, [serviceData])
+  // useEffect(() => {
+  //   if (serviceData?.services) {
+  //     let checkuser = localStorage.getItem("checkuserstatus")
+  //     if (checkuser == undefined) {
+  //       // dispatch(isNotificationUpdated("unread")) //2
+  //       // syncInvoices() //1
+  //       checkUserStatus()
+  //     }
+  //   }
+  // }, [serviceData])
 
-  const checkUserStatus = async () => {
-    localStorage.setItem("checkuserstatus", "done")
-    if(!registerUser){
-      try {
-        let res = await checkUser()
-        // syncAllServices()
-        dispatch(allServicesSync())
-        asyncData()
-        syncLWUserJob()
-      } catch (error) {
-        toast.error(error?.response?.data?.message, {
-          position: toast.POSITION.TOP_RIGHT,
-        })
-        clearCookiesAndStorage()
-        navigate.push(["/login"]);
-      }
-    }else{
-      asyncData()
-    }
-  }
+  // const checkUserStatus = async () => {
+  //   localStorage.setItem("checkuserstatus", "done")
+  //   if(!registerUser){
+  //     try {
+  //       let res = await checkUser()
+  //       // syncAllServices()
+  //       dispatch(allServicesSync())
+  //       asyncData()
+  //       syncLWUserJob()
+  //     } catch (error) {
+  //       toast.error(error?.response?.data?.message, {
+  //         position: toast.POSITION.TOP_RIGHT,
+  //       })
+  //       clearCookiesAndStorage()
+  //       navigate.push(["/login"]);
+  //     }
+  //   }else{
+  //     asyncData()
+  //   }
+  // }
 
-  useEffect(async() => {
-    if (notificationInfo?.updated) {
-      let savedCards = localStorage.getItem(SETTINGS?.SAVEDCARDS)
-      !savedCards ? await dispatch(getCards()) : ""
-    }
-  }, [notificationInfo?.updated])
+  // useEffect(async() => {
+  //   if (notificationInfo?.updated) {
+  //     let savedCards = localStorage.getItem(SETTINGS?.SAVEDCARDS)
+  //     !savedCards ? await dispatch(getCards()) : ""
+  //   }
+  // }, [notificationInfo?.updated])
 
-  const asyncData = () => {
-    dispatch(isNotificationUpdated("unread")) 
-    syncInvoices()
-  }
+  // const asyncData = () => {
+    // dispatch(isNotificationUpdated("unread")) 
+    // syncInvoices()
+  // }
 
 
-  const syncLWUserJob = async() => {
-    try{
-      // await syncUserJob()
-    }catch(error) {
-    }
-  }
+  // const syncLWUserJob = async() => {
+  //   try{
+  //     // await syncUserJob()
+  //   }catch(error) {
+  //   }
+  // }
+
   return (
     <React.Fragment>
       <header id="page-topbar">

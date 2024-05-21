@@ -9,54 +9,63 @@ import * as Yup from "yup"
 import { useFormik } from "formik"
 
 // action
-import { registerUser, apiError, registerSocial } from "../../store/actions"
+import { 
+  registerUser, 
+  // apiError, 
+  registerSocial 
+} from "../../store/actions"
 
 // Redux
 import { useSelector, useDispatch } from "react-redux"
 import { withRouter, Link, useHistory } from "react-router-dom"
 
 // import images
-import logo from "../../assets/images/Logo.svg"
+// import logo from "../../assets/images/Logo.svg"
 import showeye from "../../assets/images/showeye.svg"
 import hideeye from "../../assets/images/hideeye.svg"
-import google_i from "../../assets/images/super-g.svg"
-import registerMockup from "../../assets/images/register-mockup.png"
+// import google_i from "../../assets/images/super-g.svg"
+// import registerMockup from "../../assets/images/register-mockup.png"
 import email from "../../assets/images/email.svg"
 import lock from "../../assets/images/Lock.svg"
 import name from "../../assets/images/name.svg"
 
-import Slider from "react-slick"
-import "slick-carousel/slick/slick.css"
-import "slick-carousel/slick/slick-theme.css"
+// import Slider from "react-slick"
+// import "slick-carousel/slick/slick.css"
+// import "slick-carousel/slick/slick-theme.css"
 
-import GoogleLogin from "react-google-login"
+// import GoogleLogin from "react-google-login"
 import { gapi } from "gapi-script"
 import { customRegex } from "../../helpers/validation_helpers"
 import TextLoader from "../../components/textLoader"
 import rederror from "../../assets/images/redvalidationicon/rederror.jpg"
-import { verifyUserInvite, getCountryList, getGstCountries } from "../Authentication/store/apiServices"
-import { toast } from "react-toastify"
+import { 
+  // verifyUserInvite, 
+  getCountryList, 
+  // getGstCountries
+ } from "../Authentication/store/apiServices"
+// import { toast } from "react-toastify"
 import { setPageTitle } from "../../helpers/api_helper_rs"
-var settings = {
-  dots: true,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  arrows: false,
-}
+
+// var settings = {
+//   dots: true,
+//   infinite: true,
+//   speed: 500,
+//   slidesToShow: 1,
+//   slidesToScroll: 1,
+//   arrows: false,
+// }
 
 const Register = props => {
   const phoneInputRef = useRef(null);
   const [passwordInputType, setPasswordInputType] = useState(true)
   const [loader, setLoader] = useState(false)
-  const [inviteInfo, setInviteInfo] = useState("")
-  const [inviteToken, setInviteToken] = useState("")
+  // const [inviteInfo, setInviteInfo] = useState("")
+  // const [inviteToken, setInviteToken] = useState("")
   const [spinner, setSpinner] = useState(false)
   const [action, setAction] = useState("")
   const [countryList, setcountryList] = useState()
-  const [gstCountries, setGstCountries] = useState()
-  const [gstCountry, setGstCountry] = useState(false)
+  // const [gstCountries, setGstCountries] = useState()
+  // const [gstCountry, setGstCountry] = useState(false)
   const dispatch = useDispatch()
   let navigate = useHistory()
   const [selectedPhoneCode, setSelectedPhoneCode] = useState()
@@ -65,7 +74,7 @@ const Register = props => {
 
   useEffect(() => {
     setPageTitle("Registration")
-    // getcountry()
+    getcountry()
     // getGstCountriesList()
   }, [])
 
@@ -90,21 +99,22 @@ const Register = props => {
     }
   }
 
-  const getGstCountriesList = async () => {
-    try {
-      let res = await getGstCountries()
-      setGstCountries(res?.data?.data)
-    } catch (error) {
+  // const getGstCountriesList = async () => {
+  //   try {
+  //     let res = await getGstCountries()
+  //     setGstCountries(res?.data?.data)
+  //   } catch (error) {
 
-    }
-  }
+  //   }
+  // }
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
-      email: inviteInfo?.email || "",
+      // email: inviteInfo?.email || "",
+      email: "",
       name: "",
       password: "",
       phoneNumber: "",
@@ -114,74 +124,78 @@ const Register = props => {
       // gst:""
     },
     validationSchema: () => {
-
-
       let schema = Yup.object().shape({
         email: Yup.string()
-          // .required("Please enter your email ")
+          .required("Please enter your email ")
           .matches(customRegex.email, "Please enter a valid email "),
         name: Yup.string()
-          // .required("Please enter your name")
+          .required("Please enter your name")
           .matches(customRegex.userName, "Please enter alphabets only")
           .matches(customRegex.spaces, "space not allowed")
           .min(3, "User name must be minimum 3 characters long")
           .max(15, "User name must be maximum 15 characters long"),
         password: Yup.string()
-          // .required("Please enter your password")
+          .required("Please enter your password")
           .min(8, "Password must be 8 characters at least")
           .matches(
             customRegex.password,
             "Please enter atleast one uppercase letter, one lowercase letter, one digit and one special character"
           ),
         phoneNumber: Yup.string()
-          // .required("Please enter your phone number.")
+          .required("Please enter your phone number.")
           .matches(customRegex.phoneNumber, "Please enter a valid phone number."),
         termConditions: Yup.bool()
-        // .oneOf(
-        //   [true],
-        //   "You must accept the terms and conditions"
-        // ),
+        .oneOf(
+          [true],
+          "You must accept the terms and conditions"
+        ),
+        country: Yup.string()
+          .required('Please select your country'),
       })
 
-      if (!inviteInfo) {
-        schema = schema.shape({
-          country: Yup.string()
-          // .required('Please select your country'),
-        })
-      }
+      // if (!inviteInfo) {
+      //   schema = schema.shape({
+      //     country: Yup.string()
+      //     .required('Please select your country'),
+      //   })
+      // }
       return schema
     },
     onSubmit: (values) => {
-      navigate.push("/Verification")
-      return
+      const name = values?.name?.split(" ")
       let terms = 0
       values.termConditions ? (terms = 1) : (terms = 0)
       let data = new URLSearchParams({
-        email: values.email,
-        password: values.password,
-        first_name: values.name,
-        is_agree: terms,
+        first_name: name[0],
+        last_name: name[1],
+        phone_number: values?.phoneNumber,
+        email: values?.email,
+        country_id: values?.country,
+        password: values?.password,
+        confirm_password: values?.password,
+        term_condition: terms,
       })
-      if (!inviteInfo) {
-        data.append('country_id', values.country);
-      }
-      if (inviteToken) {
-        data.append('token', inviteToken)
-      }
-      if (values.gst) {
-        data.append('gst_enabled', values.gst)
-      }
+      // if (!inviteInfo) {
+      //   data.append('country_id', values.country);
+      // }
+      // if (inviteToken) {
+      //   data.append('token', inviteToken)
+      // }
+      // if (values.gst) {
+      //   data.append('gst_enabled', values.gst)
+      // }
       setSpinner(true)
       setAction(true)
-      dispatch(registerUser(data, props.history))
+      dispatch(registerUser(data, props?.history))
     },
   })
 
   const handleDropdownChange = (_, { value }) => {
-    countryList.map((country) => {
-      if (value === country?.value)
-        gstCountries.includes(country?.short_code) ? setGstCountry(true) : setGstCountry(false)
-    })
+    // countryList.map((country) => {
+    //   if (value === country?.value)
+    //     gstCountries.includes(country?.short_code) ? setGstCountry(true) : setGstCountry(false)
+    // })
+    console.log("value",value)
     validation.setFieldValue('country', value);
   };
 
@@ -225,14 +239,14 @@ const Register = props => {
   }, [])
 
   useEffect(() => {
-    let url = window.location.href
-    let n = url.lastIndexOf("/")
-    let token = url.substring(n + 1)
-    if (token != "register" && token != "invite") {
-      verifyInvitation(token)
-      setInviteToken(token)
-    }
-    dispatch(apiError(""))
+    // let url = window.location.href
+    // let n = url.lastIndexOf("/")
+    // let token = url.substring(n + 1)
+    // if (token != "register" && token != "invite") {
+    //   verifyInvitation(token)
+    //   setInviteToken(token)
+    // }
+    // dispatch(apiError(""))
     document.body.className = "authentication-bg"
     // remove classname when component will unmount
     return function cleanup() {
@@ -240,27 +254,27 @@ const Register = props => {
     }
   }, [dispatch])
 
-  const verifyInvitation = async token => {
-    setLoader(true)
-    setAction(true)
-    try {
-      let userToken = new URLSearchParams({
-        token: token,
-      })
-      let result = await verifyUserInvite(userToken)
-      if (result) {
-        setInviteInfo(result?.data?.data)
-      }
-      setLoader(false)
-      setAction(false)
-    } catch (error) {
-      toast.error(error?.response?.data?.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      })
-      setLoader(false)
-      setAction(false)
-    }
-  }
+  // const verifyInvitation = async token => {
+  //   setLoader(true)
+  //   setAction(true)
+  //   try {
+  //     let userToken = new URLSearchParams({
+  //       token: token,
+  //     })
+  //     let result = await verifyUserInvite(userToken)
+  //     if (result) {
+  //       setInviteInfo(result?.data?.data)
+  //     }
+  //     setLoader(false)
+  //     setAction(false)
+  //   } catch (error) {
+  //     toast.error(error?.response?.data?.message, {
+  //       position: toast.POSITION.TOP_RIGHT,
+  //     })
+  //     setLoader(false)
+  //     setAction(false)
+  //   }
+  // }
 
   useEffect(() => {
     const inputElement = phoneInputRef.current;
@@ -347,7 +361,7 @@ const Register = props => {
             <Col lg={6}>
               <div className="right_content">
                 <div className="text-center mt-2">
-                  {inviteInfo && (
+                  {/* {inviteInfo && (
                     <>
                       <h5>You have been invited to {inviteInfo?.invite_by}</h5>
                       <h2>
@@ -358,10 +372,10 @@ const Register = props => {
                         To accept the invite, please login or register below.
                       </h2>
                     </>
-                  )}
+                  )} */}
                   <h5 className="text-center">Create your account</h5>
-                  {!inviteInfo && (
-                    <>
+                  {/* {!inviteInfo && ( */}
+                    {/* <> */}
                       {/* <GoogleLogin
                         clientId="471779568255-ev1mm78t9g4tu4si9ms57n692qc0pnbu.apps.googleusercontent.com"
                         buttonText="Login with gooogle"
@@ -385,8 +399,8 @@ const Register = props => {
                           <span>OR</span>
                         </p>
                       </div> */}
-                    </>
-                  )}
+                    {/* </> */}
+                  {/* )} */}
                 </div>
                 <div className="ragister">
                   <Form
@@ -440,7 +454,8 @@ const Register = props => {
                         onChange={validation.handleChange}
                         onBlur={validation.handleBlur}
                         value={validation.values.email || ""}
-                        disabled={inviteInfo?.email ? true : false || spinner}
+                        // disabled={inviteInfo?.email ? true : false || spinner}
+                        disabled={spinner}
                         invalid={
                           validation.touched.email && validation.errors.email
                             ? true
@@ -559,7 +574,8 @@ const Register = props => {
                       ) : null}
                       <div id="flag-container"></div>
                     </div>
-                    {!inviteInfo && <div className="mb-3 form-g position-relative">
+                    {/* {!inviteInfo &&  */}
+                    <div className="mb-3 form-g position-relative">
                       <Dropdown
                         id="country"
                         name="country"
@@ -591,7 +607,8 @@ const Register = props => {
                           </FormFeedback>
                         </>
                       ) : null}
-                    </div>}
+                    </div>
+                    {/* } */}
                     <div className="mb-3 form-g position-relative">
                       <Input
                         disabled={spinner}
@@ -625,7 +642,7 @@ const Register = props => {
                       ) : null}
                       <img className="form-icon" src={name} alt="" />
                     </div>
-                    {gstCountry && <div className="form-check">
+                    {/* {gstCountry && <div className="form-check">
                       <Input
                         disabled={spinner}
                         type="checkbox"
@@ -640,7 +657,7 @@ const Register = props => {
                         {" "}
                         Pay with GST
                       </label>
-                    </div>}
+                    </div>} */}
                     <div className="form-check">
                       <Input
                         disabled={spinner}

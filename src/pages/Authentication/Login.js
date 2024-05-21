@@ -12,43 +12,46 @@ import * as Yup from "yup"
 import { useFormik } from "formik"
 
 //Social Media Imports
-import GoogleLogin from "react-google-login"
+// import GoogleLogin from "react-google-login"
 import { gapi } from "gapi-script"
 
 // actions
-import { loginUser, socialLogin } from "../../store/actions"
+import { 
+  loginUser, 
+  // socialLogin 
+} from "../../store/actions"
 
 // import images
-import logo from "../../assets/images/Logo.svg"
-import mockup from "../../assets/images/mockup.png"
+// import logo from "../../assets/images/Logo.svg"
+// import mockup from "../../assets/images/mockup.png"
 import rederror from "../../assets/images/redvalidationicon/rederror.jpg"
-import hand from "../../assets/images/hand.PNG"
-import logoGreen from "../../assets/images/c2c/logoGreen.jpg"
+// import hand from "../../assets/images/hand.PNG"
+// import logoGreen from "../../assets/images/c2c/logoGreen.jpg"
 import email from "../../assets/images/email.svg"
 import lock from "../../assets/images/Lock.svg"
-import google_i from "../../assets/images/super-g.svg"
+// import google_i from "../../assets/images/super-g.svg"
 import showeye from "../../assets/images/showeye.svg"
 import hideeye from "../../assets/images/hideeye.svg"
 
 //Import config
-import Slider from "react-slick"
-import "slick-carousel/slick/slick.css"
-import "slick-carousel/slick/slick-theme.css"
-import { customRegex } from "../../helpers/validation_helpers"
+// import Slider from "react-slick"
+// import "slick-carousel/slick/slick.css"
+// import "slick-carousel/slick/slick-theme.css"
+// import { customRegex } from "../../helpers/validation_helpers"
 import { decrypt, setPageTitle } from "../../helpers/api_helper_rs"
 import { read_cookie } from "sfcookies"
 import { SETTINGS } from "../../constants/api/api_path"
 import TextLoader from "../../components/textLoader"
 import { getGameResults } from "./store/apiServices"
 
-var settings = {
-  dots: true,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  arrows: false,
-}
+// var settings = {
+//   dots: true,
+//   infinite: true,
+//   speed: 500,
+//   slidesToShow: 1,
+//   slidesToScroll: 1,
+//   arrows: false,
+// }
 
 const Login = props => {
   const [passwordInputType, setPasswordInputType] = useState(true)
@@ -90,24 +93,20 @@ const Login = props => {
     enableReinitialize: true,
 
     initialValues: {
-      username: userInfo?.username || "",
+      email: userInfo?.email || "",
       password: userInfo?.password || "",
     },
 
     validationSchema: Yup.object({
-      username: Yup.string()
-        .required("Enter username or email.")
-        .matches(customRegex.email, "Enter a valid username or email."),
+      email: Yup.string()
+        .required("Enter username or email."),
+        // .matches(customRegex.email, "Enter a valid username or email."),
       password: Yup.string()
         .required("Password is required")
         .min(6, "Enter Valid Password"),
     }),
 
     onSubmit: async values => {
-      // props.history.push("/dashboard")
-      // setSpinner(true)
-      // setAction(true)
-      values.role = "User"
       dispatch(loginUser(values, props.history))
     },
   })
@@ -127,41 +126,41 @@ const Login = props => {
     }
   },[reduxData])
 
-  const signIn = (res, type) => {
-    if (type === "google" && res) {
-      var data = new URLSearchParams({
-        first_name: res?.profileObj?.givenName,
-        last_name: res?.profileObj?.familyName,
-        email: res?.profileObj?.email,
-        social_id: res?.googleId,
-        imageUrl: res?.profileObj?.imageUrl,
-        social_type: "google",
-      })
-      dispatch(socialLogin(data, props.history, type, invoiceId))
-    } else if (type === "facebook" && res) {
-      const postData = {
-        name: res.name,
-        email: res.email,
-        token: res.accessToken,
-        idToken: res.tokenId,
-      }
-      dispatch(socialLogin(postData, props.history, type))
-    }
-  }
+  // const signIn = (res, type) => {
+  //   if (type === "google" && res) {
+  //     var data = new URLSearchParams({
+  //       first_name: res?.profileObj?.givenName,
+  //       last_name: res?.profileObj?.familyName,
+  //       email: res?.profileObj?.email,
+  //       social_id: res?.googleId,
+  //       imageUrl: res?.profileObj?.imageUrl,
+  //       social_type: "google",
+  //     })
+  //     dispatch(socialLogin(data, props.history, type, invoiceId))
+  //   } else if (type === "facebook" && res) {
+  //     const postData = {
+  //       name: res.name,
+  //       email: res.email,
+  //       token: res.accessToken,
+  //       idToken: res.tokenId,
+  //     }
+  //     dispatch(socialLogin(postData, props.history, type))
+  //   }
+  // }
 
   //handleGoogleLoginResponse
-  const responseGoogle = response => {
-    setLoader(true)
-    setAction(true)
-     if (response) {
-      signIn(response, "google")
-    }
-  }
+  // const responseGoogle = response => {
+  //   setLoader(true)
+  //   setAction(true)
+  //    if (response) {
+  //     signIn(response, "google")
+  //   }
+  // }
 
   //handleFacebookLoginResponse
-  const facebookResponse = response => {
-    signIn(response, "facebook")
-  }
+  // const facebookResponse = response => {
+  //   signIn(response, "facebook")
+  // }
 
   useEffect(() => {
     document.body.className = "authentication-bg"
@@ -332,20 +331,20 @@ const Login = props => {
                   >
                     <div className="mb-3 form-g position-relative">
                       <Input
-                        name="username"
+                        name="email"
                         className="form-control input-outline"
                         placeholder="Username/Email"
-                        type="email"
+                        type="text"
                         onChange={validation.handleChange}
                         onBlur={validation.handleBlur}
-                        value={validation.values.username || ""}
+                        value={validation.values.email || ""}
                         invalid={
-                          validation.touched.username && validation.errors.username
+                          validation.touched.email && validation.errors.email
                             ? true
                             : false
                         }
                       />
-                      {validation.touched.username && validation.errors.username ? (
+                      {validation.touched.email && validation.errors.email ? (
                         <>
                           <FormFeedback type="invalid">
                             <img
@@ -354,7 +353,7 @@ const Login = props => {
                               alt=""
                               height={15}
                             />
-                            {validation.errors.username}
+                            {validation.errors.email}
                           </FormFeedback>
                         </>
                       ) : null}

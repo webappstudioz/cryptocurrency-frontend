@@ -1,44 +1,46 @@
 import React, { useState, useEffect } from "react";
-import showeye from "../../assets/images/showeye.svg";
-import { Progress } from "semantic-ui-react";
-import hideeye from "../../assets/images/hideeye.svg";
+// import showeye from "../../assets/images/showeye.svg";
+// import { Progress } from "semantic-ui-react";
+// import hideeye from "../../assets/images/hideeye.svg";
 import copy from "copy-to-clipboard";
 import { toast } from "react-toastify";
-import { FormatDate } from "../../helpers/api_helper_rs";
+// import { FormatDate } from "../../helpers/api_helper_rs";
 import { loginData } from "../Authentication/store/apiServices";
 import logoGreen from "../../assets/images/c2c/logoGreen.jpg"
 import { C2CWallet, WidBalance } from "../../components/Common/Widgets";
 const Dashboard = ({ fullRes } = props) => {
-  const [password, setpassword] = useState(true);
-  const [rescuePassword, setrescuePassword] = useState(true);
-  const [ipmiPassword, setipmiPassword] = useState(true);
-  const [startDate, setStartDate] = useState();
-  const [dueDate, setDueDate] = useState();
-  const [currency, setCurrency] = useState()
+  const logInfo = loginData()
+  // const [password, setpassword] = useState(true);
+  // const [rescuePassword, setrescuePassword] = useState(true);
+  // const [ipmiPassword, setipmiPassword] = useState(true);
+  // const [startDate, setStartDate] = useState();
+  // const [dueDate, setDueDate] = useState();
+  // const [currency, setCurrency] = useState()
   const [loader, setLoader] = useState(false);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    let logInfo = loginData();
-    setCurrency(logInfo?.currency)
-    if (fullRes?.product?.regdate) {
-      let startdate = FormatDate(
-        fullRes?.product?.regdate,
-        logInfo?.ClientDateFormat || logInfo?.DateFormat,
-        logInfo?.role
-      );
-      setStartDate(startdate);
-    }
+  // useEffect(() => {
+  //   let logInfo = loginData();
+  //   console.log("logindo",logInfo)
+  //   setCurrency(logInfo?.currency)
+  //   if (fullRes?.product?.regdate) {
+  //     let startdate = FormatDate(
+  //       fullRes?.product?.regdate,
+  //       logInfo?.ClientDateFormat || logInfo?.DateFormat,
+  //       logInfo?.role
+  //     );
+  //     setStartDate(startdate);
+  //   }
 
-    if (fullRes?.product?.nextduedate) {
-      let startdate = FormatDate(
-        fullRes?.product?.nextduedate,
-        logInfo?.ClientDateFormat || logInfo?.DateFormat,
-        logInfo?.role
-      );
-      setDueDate(startdate);
-    }
-  }, [fullRes]);
+  //   if (fullRes?.product?.nextduedate) {
+  //     let startdate = FormatDate(
+  //       fullRes?.product?.nextduedate,
+  //       logInfo?.ClientDateFormat || logInfo?.DateFormat,
+  //       logInfo?.role
+  //     );
+  //     setDueDate(startdate);
+  //   }
+  // }, [fullRes]);
 
 
   return (
@@ -109,12 +111,12 @@ const Dashboard = ({ fullRes } = props) => {
                   <th>Your Referral Link</th>
                     <React.Fragment>
                       <td className="text-right" onClick={() => {
-                              copy("https://www.crypto2cassino.com/@C2C8474");
+                              copy(`https://www.crypto2cassino.com/@${logInfo?.user_name}`);
                               toast("Referral link has been  copied", {
                                 autoClose: 1000,
                               });
                             }}>
-                        https://www.crypto2cassino.com/@C2C8474
+                        {`https://www.crypto2cassino.com/@${logInfo?.user_name}`}
                       </td>
                       {/* <td className="text-right"></td>
                         <td >
@@ -163,7 +165,7 @@ const Dashboard = ({ fullRes } = props) => {
                   <th>Member Id</th>
                     <React.Fragment>
                       <td className="text-right">
-                        USX5474
+                        {logInfo?.user_name}
                       </td>
                       {/* <td className="text-right"></td> */}
                         {/* <td className="text-right">
@@ -203,17 +205,7 @@ const Dashboard = ({ fullRes } = props) => {
                   <th>Member Name</th>
                     <React.Fragment>
                       <td className="text-right">
-                        C2C user
-                      </td>
-                    </React.Fragment>
-                  <><td></td><td></td><td></td></>
-                </tr>
-                <tr></tr>
-                <tr>
-                  <th>Member Name</th>
-                    <React.Fragment>
-                      <td className="text-right">
-                        C2C user
+                        {logInfo?.first_name} {logInfo?.last_name}
                       </td>
                     </React.Fragment>
                   <><td></td><td></td><td></td></>
@@ -233,7 +225,7 @@ const Dashboard = ({ fullRes } = props) => {
                   <th>Mobile</th>
                     <React.Fragment>
                       <td className="text-right">
-                        +911234567890
+                        {logInfo?.phone_numnber}
                       </td>
                     </React.Fragment>
                   <><td></td><td></td><td></td></>
@@ -243,7 +235,7 @@ const Dashboard = ({ fullRes } = props) => {
                   <th>Email</th>
                     <React.Fragment>
                       <td className="text-right">
-                        Crypto2casino@gmail.com
+                        {logInfo?.email}
                       </td>
                     </React.Fragment>
                   <><td></td><td></td><td></td></>
@@ -284,276 +276,6 @@ const Dashboard = ({ fullRes } = props) => {
         </div>
       </div>
       <div>
-        {fullRes?.product?.status == "Active" && (
-          <>
-            <div className="row">
-              <div className="col-md-6">
-                <div className="tab_content tab-data-table">
-                  <h5 className="info_heding">Hardware Configuration</h5>
-                  {/* <table className="w-100"> */}
-                  <div className="technical_block">
-                    <div className="row">
-                      <div className="col-3">
-                        <div className="flex d-flex align-items-center left">
-                          <div className="icon_content">
-                            <p>Chassis</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-9">
-                        <div className="right_content">
-                          <p>
-                            {fullRes?.product?.servername ===
-                              "Leaseweb"
-                              ? fullRes?.server?.chassis?.Title
-                              : fullRes &&
-                              fullRes?.product?.description?.map(
-                                (ele) => {
-                                  if (ele.includes("Chassis")) {
-                                    let i = ele.indexOf(" ");
-                                    let main = ele.substring(i + 1);
-                                    return main;
-                                  }
-                                }
-                              )}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="technical_block">
-                    <div className="row active">
-                      <div className="col-4">
-                        <div className="flex d-flex align-items-center left">
-                          {/* <div className="icon_img">
-                            <Technical2 />
-                          </div> */}
-                          <div className="icon_content">
-                            <p>Processor</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-8">
-                        <div className="right_content">
-                          <p>
-                            {fullRes?.product?.servername ==
-                              "Leaseweb"
-                              ? fullRes?.server?.cpu?.Title
-                              : fullRes &&
-                              fullRes?.product?.description?.map(
-                                (ele) => {
-                                  if (ele.includes("CPU")) {
-                                    let i = ele.indexOf(" ");
-                                    let main = ele.substring(i + 1);
-                                    return main;
-                                  }
-                                }
-                              )}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="technical_block">
-                    <div className="row">
-                      <div className="col-4">
-                        <div className="flex d-flex align-items-center left">
-                          {/* <div className="icon_img">
-                            <Technical3 />
-                          </div> */}
-                          <div className="icon_content">
-                            <p>Disk</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-8">
-                        <div className="right_content">
-                          <p>
-                            {fullRes?.product?.servername ==
-                              "Leaseweb"
-                              ? fullRes?.server?.disks?.Title
-                              : fullRes &&
-                              fullRes?.product?.description?.map(
-                                (ele) => {
-                                  if (ele.includes("Storage")) {
-                                    let i = ele.indexOf(" ");
-                                    let main = ele.substring(i + 1);
-                                    return main;
-                                  }
-                                }
-                              )}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="technical_block">
-                    <div className="row">
-                      <div className="col-3">
-                        <div className="flex d-flex align-items-center left">
-                          {/* <div className="icon_img">
-                              <Technical4 />
-                            </div> */}
-                          <div className="icon_content">
-                            <p>RAM</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-9">
-                        <div className="right_content">
-                          <p>
-                            {fullRes?.product?.servername ==
-                              "Leaseweb"
-                              ? fullRes?.server?.memory?.Title
-                              : fullRes &&
-                              fullRes?.product?.description?.map(
-                                (ele) => {
-                                  if (ele.includes("RAM")) {
-                                    let i = ele.indexOf(" ");
-                                    let main = ele.substring(i + 1);
-                                    return main;
-                                  }
-                                }
-                              )}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="technical_block">
-                    <div className="row active">
-                      <div className="col-4">
-                        <div className="flex d-flex align-items-center left">
-                          {/* <div className="icon_img">
-                            <Technical5 />
-                          </div> */}
-                          <div className="icon_content">
-                            <p>Network</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-8">
-                        <div className="right_content">
-                          <p>
-                            {fullRes?.product?.servername ==
-                              "Leaseweb"
-                              ? fullRes?.server?.network?.Title
-                              : fullRes &&
-                              fullRes?.product?.description?.map(
-                                (ele) => {
-                                  if (ele.includes("Network")) {
-                                    let i = ele.indexOf(" ");
-                                    let main = ele.substring(i + 1);
-                                    return main;
-                                  }
-                                }
-                              )}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="technical_block">
-                    <div className="row">
-                      <div className="col-4">
-                        <div className="flex d-flex align-items-center left">
-                          {/* <div className="icon_img">
-                              <Technical4 />
-                            </div> */}
-                          <div className="icon_content">
-                            <p>Operating System</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-8">
-                        <div className="right_content">
-                          <p>
-                            {fullRes?.server?.["operating-system"]
-                              ? fullRes?.server?.[
-                              "operating-system"
-                              ]
-                              : "Not Installed"}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* </table> */}
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="tab_content tab-data-table">
-                  <h5 className="info_heding">Traffic Usage</h5>
-                  {/* <table className="w-100">
-                    <tbody> */}
-                  <div className="traffic-use">
-                    <div className="traffic-container">
-                      <Progress
-                        percent={
-                          fullRes?.product?.bwlimit == 0 ||
-                            fullRes?.product?.bwlimit == undefined
-                            ? 0
-                            : (
-                              (fullRes?.product?.bwusage * 100) /
-                              fullRes?.product?.bwlimit
-                            ).toFixed(2)
-                        }
-                      />
-                      <p className="use-percent text-right">
-                        {fullRes?.product?.bwlimit == 0
-                          ? 0 + "%"
-                          : fullRes?.product?.bwlimit == undefined
-                            ? 0 + "%"
-                            : (
-                              (fullRes?.product?.bwusage * 100) /
-                              fullRes?.product?.bwlimit
-                            ).toFixed(2) + " % "}
-                      </p>
-                    </div>
-
-                    <div className="traffic_footer">
-                      <div className="row">
-                        <div className="col col-md-3 col-xxl-2">
-                          <div className="traffic_footer_block">
-                            <h5 className="font-normal">Used</h5>
-                            <p className="font-bold">
-                              {fullRes?.product?.bwusage == 0 ||
-                                fullRes?.product?.bwusage == undefined
-                                ? 0.0
-                                : (fullRes?.product?.bwusage).toFixed(
-                                  2
-                                )}{" "}
-                              MB
-                            </p>
-                          </div>
-                        </div>
-                        <div className="col col-md-3 col-xxl-2">
-                          <div className="traffic_footer_block">
-                            <h5 className="font-normal">Total</h5>
-                            <p className="font-bold">
-                              {fullRes?.product?.bwlimit == 0
-                                ? "Unlimited"
-                                : fullRes?.product?.bwlimit ==
-                                  undefined
-                                  ? 0.0
-                                  : (fullRes?.product?.bwlimit).toFixed(
-                                    2
-                                  ) +
-                                  " " +
-                                  "MB"}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* </tbody>
-                  </table> */}
-                </div>
-              </div>
-            </div>
-          </>
-        )}
       </div>
     </div>
     </div>

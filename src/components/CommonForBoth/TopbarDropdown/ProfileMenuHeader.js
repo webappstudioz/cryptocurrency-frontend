@@ -4,8 +4,8 @@ import { useSelector} from "react-redux"
 import { Link } from "react-router-dom"
 
 // users
-import user4 from "../../../assets/images/users/avatar-4.jpg"
-import hand from "../../../assets/images/hand.PNG";
+// import user4 from "../../../assets/images/users/avatar-4.jpg"
+// import hand from "../../../assets/images/hand.PNG";
 import polygon from "../../../assets/images/Polygon.png";
 import logout from "../../../assets/images/logout.svg";
 import drop_arrow from "../../../assets/images/drop_arrow.svg";
@@ -13,11 +13,11 @@ import { loginData, userRole } from "../../../pages/Authentication/store/apiServ
 
 const ProfileMenuHeader = props => {
   const [menu, setMenu] = useState(false)
-  const [userImg, setUserImg] = useState("");
+  // const [userImg, setUserImg] = useState("");
   const [userData, setUserData] = useState();
   const reduxData = useSelector(user => user)
   const user = reduxData?.userupdate?.user?.user
-
+  
   useEffect(() => {
     if(user){
       let role = userRole()
@@ -29,22 +29,22 @@ const ProfileMenuHeader = props => {
   }, [props.success, menu, user])
 
   
-  const getUserimg = async(url) => {
-    // fetch(url, {
-    //   credentials: 'include',
-    //   method: 'POST',
-    //   headers: {'Content-Type': 'application/json', },
-    //   }).then(
-    //     result => {
-    //       setUserImg(result)
-    //     })
-    //     .catch((error) => {
-    //     });
-      try{
-        let img = await(url)
-      }catch(error) {
-      }
-  }
+  // const getUserimg = async(url) => {
+  //   // fetch(url, {
+  //   //   credentials: 'include',
+  //   //   method: 'POST',
+  //   //   headers: {'Content-Type': 'application/json', },
+  //   //   }).then(
+  //   //     result => {
+  //   //       setUserImg(result)
+  //   //     })
+  //   //     .catch((error) => {
+  //   //     });
+  //     try{
+  //       let img = await(url)
+  //     }catch(error) {
+  //     }
+  // }
 
   return (
     <React.Fragment>
@@ -58,18 +58,19 @@ const ProfileMenuHeader = props => {
           id="page-header-user-dropdown"
           tag="button"
         >
-         {userImg? (<img
+         {/* {userImg? (<img
             className="rounded-circle header-profile-user userImg"
             src={userImg}
             alt="Header Avatar"
-          />) : 
-          (<p className="rounded-circle header-profile-user"  alt="Header Avatar">
+          />) :  */}
+          {/* ( */}
+            <p className="rounded-circle header-profile-user"  alt="Header Avatar">
             <span className="userAvtar">
-              {"USX5474"?.charAt(0)?.toUpperCase()}
-              {/* {"USX5474"?.charAt(0)?.toUpperCase()} */}
+              {userData?.first_name?.charAt(0)?.toUpperCase()}
+              {userData?.last_name?.charAt(0)?.toUpperCase()}
               </span>
-          </p>)
-          }
+          </p>
+          {/* )} */}
           <span className="d-none d-xl-inline-block ms-1 fw-medium font-size-15">
             <img           
             src={drop_arrow}     
@@ -77,9 +78,9 @@ const ProfileMenuHeader = props => {
           /></span>{" "}  
         </DropdownToggle>
         <h6 className='mb-0 d-flex align-items-center sd-name'>
-          Hi USX5474
-          {/* {userData? userData?.first_name?.charAt(0)?.toUpperCase() + userData?.first_name?.slice(1).toLowerCase() : ""}  */}
-          {/* {' '}{userData? userData?.last_name?.charAt(0)?.toUpperCase() + userData?.last_name?.slice(1).toLowerCase() : ""} */}
+          Hi {" "}
+          {userData? userData?.first_name?.charAt(0)?.toUpperCase() + userData?.first_name?.slice(1).toLowerCase() : ""} 
+          {' '}{userData? userData?.last_name?.charAt(0)?.toUpperCase() + userData?.last_name?.slice(1).toLowerCase() : ""}
         </h6>
 
         <DropdownMenu className="dropdown-menu-end" style={{ margin: 0 }}>

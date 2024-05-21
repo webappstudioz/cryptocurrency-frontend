@@ -15,15 +15,11 @@ import { storeAuthToken, storeUserData } from "../../../pages/Authentication/sto
 import { registerUserSilently } from "../register/saga"
 
 function* loginUser({ payload: { user, history, invoiceId } }) {
-  storeUserData(user)
-  storeAuthToken("sdekmlwkmlmeem")
-  // invoiceId? history.push(`/invoice-detail/${invoiceId}`) : 
-  user?.role === "Admin"? history.push("/admin/results") : history.push("/dashboard")
   try {
     if (process.env.REACT_APP_DEFAULTAUTH === "jwt") {
       var data = qs.stringify({
-        email: user.email,
-        password: user.password,
+        email: user?.email,
+        password: user?.password,
       })
       let config = {
         headers: {
@@ -33,12 +29,12 @@ function* loginUser({ payload: { user, history, invoiceId } }) {
       const response = yield call(postJwtLoginNew, data, config)
       if (response) {
         yield put(loginSuccess(response))
-        if (user.rememberMe) {
+        if (user?.rememberMe) {
           let userEnc = encrypt(JSON.stringify(user))
           userEnc? bake_cookie(SETTINGS.COOKIE_KEY, userEnc) : ""
-          let userToken = encrypt(JSON.stringify(response.token))
+          let userToken = encrypt(JSON.stringify(response.data?.data?.bearer))
           userToken? bake_cookie(SETTINGS.TOKENKEY, userToken) : ""
-        } else if (!user.rememberMe) {
+        } else if (!user?.rememberMe) {
           delete_cookie(SETTINGS.COOKIE_KEY)
           delete_cookie(SETTINGS.TOKENKEY)
         }

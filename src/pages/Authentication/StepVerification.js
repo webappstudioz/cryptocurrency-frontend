@@ -1,49 +1,54 @@
 import PropTypes from "prop-types"
 import React, { useEffect, useState } from "react"
-import { Row, Col, Alert, Container, Form } from "reactstrap"
+import { Row, Col,
+  //  Alert, 
+  Container, Form } from "reactstrap"
 
 // Redux
-import { useSelector, useDispatch } from "react-redux"
+import { 
+  useSelector, 
+  // useDispatch 
+} from "react-redux"
 
 // Formik Validation
 import * as Yup from "yup"
 import { useFormik } from "formik"
 
 // import images
-import logo from "../../assets/images/Logo.svg"
-import mockup2 from "../../assets/images/mockup2.png"
+// import logo from "../../assets/images/Logo.svg"
+// import mockup2 from "../../assets/images/mockup2.png"
 import tick from "../../assets/images/tick-mark.svg"
 
-import Slider from "react-slick"
-import "slick-carousel/slick/slick.css"
-import "slick-carousel/slick/slick-theme.css"
+// import Slider from "react-slick"
+// import "slick-carousel/slick/slick.css"
+// import "slick-carousel/slick/slick-theme.css"
 import OtpInput from "react-otp-input"
 import {
   registerConfirm,
   resendOtp,
-  storeUserData,
-  storeAuthToken,
+  // storeUserData,
+  // storeAuthToken,
 } from "./store/apiServices"
 import { withRouter, Link, useHistory, useLocation } from "react-router-dom"
 import { toast } from "react-toastify"
 import {
-  decrypt,
+  // decrypt,
   setPageTitle,
-  storeLoginTime,
+  // storeLoginTime,
 } from "../../helpers/api_helper_rs"
-import { bake_cookie } from "sfcookies"
-import { SETTINGS } from "../../constants/api/api_path"
+// import { bake_cookie } from "sfcookies"
+// import { SETTINGS } from "../../constants/api/api_path"
 import TextLoader from "../../components/textLoader"
-import { registerUserSuccessful, registerSilentUser } from "../../store/actions"
+// import { registerUserSuccessful, registerSilentUser } from "../../store/actions"
 
-var settings = {
-  dots: true,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  arrows: false,
-}
+// var settings = {
+//   dots: true,
+//   infinite: true,
+//   speed: 500,
+//   slidesToShow: 1,
+//   slidesToScroll: 1,
+//   arrows: false,
+// }
 
 const StepVerification = () => {
   const location = useLocation()
@@ -55,7 +60,7 @@ const StepVerification = () => {
   const [spinner, setSpinner] = useState(false)
   const [disableBtn, setDisableBtn] = useState(false)
   const [action, setAction] = useState("")
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   let navigate = useHistory()
 
   useEffect(() => {
@@ -85,8 +90,8 @@ const StepVerification = () => {
     }),
 
     onSubmit: () => {
-      navigate.push("/dashboard")
-      return
+      // navigate.push("/dashboard")
+      // return
       setSpinner(true)
       setAction(true)
       var data = new URLSearchParams({
@@ -101,19 +106,20 @@ const StepVerification = () => {
             toast.success(res?.data?.message, {
               position: toast.POSITION.TOP_RIGHT,
             })
-            dispatch(registerSilentUser())
+            // dispatch(registerSilentUser())
             localStorage.removeItem("jwt")
-            let urldetail = res?.data?.data?.url_detail
-            storeAuthToken(res?.data?.data?.token)
-            storeUserData(res?.data?.data)
-            dispatch(registerUserSuccessful(res?.data?.data))
-            storeLoginTime()
-            if (urldetail) {
-              bake_cookie(SETTINGS.GUESTTOKEN, urldetail?.cart_token)
-              navigate.push(`/product-checkout`)
-            } else {
-              navigate.push("/dashboard")
-            }
+            navigate.push("/login")
+            // let urldetail = res?.data?.data?.url_detail
+            // storeAuthToken(res?.data?.data?.token)
+            // storeUserData(res?.data?.data)
+            // // dispatch(registerUserSuccessful(res?.data?.data))
+            // storeLoginTime()
+            // if (urldetail) {
+            //   bake_cookie(SETTINGS.GUESTTOKEN, urldetail?.cart_token)
+            //   navigate.push(`/product-checkout`)
+            // } else {
+            //   navigate.push("/dashboard")
+            // }
           }
         })
         .catch(err => {
@@ -155,14 +161,13 @@ const StepVerification = () => {
       document.body.className = ""
     }
   })
+
   const { forgetError, forgetSuccessMsg } = useSelector(state => ({
     forgetError: state.ForgetPassword.forgetError,
     forgetSuccessMsg: state.ForgetPassword.forgetSuccessMsg,
   }))
 
   const handleChange = code => setCode(code)
-
-
 
   return (
     <React.Fragment>

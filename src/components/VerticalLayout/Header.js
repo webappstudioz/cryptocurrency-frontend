@@ -31,7 +31,7 @@ import {
 import { debounce } from "lodash"
 
 import {
-  checkUser,
+  // checkUser,
   syncInvoices,
   searchProducts,
 } from "../../pages/Authentication/store/apiServices"
@@ -42,14 +42,14 @@ import { getCards } from "../../store/savedcards/action"
 import { allServicesSync, isServicesFetched } from "../../store/services/actions"
 import TextLoader from "../textLoader"
 import ProgressBar from "../progressBar"
-import { syncAllServices } from "../../pages/Service/store/apiService"
+// import { syncAllServices } from "../../pages/Service/store/apiService"
 const Header = props => {
   let navigate = useHistory()
   const serviceData = useSelector(state => state?.services)
   const notificationInfo = useSelector(state => state?.notificationUpdate)
   const supportPermission = useSelector(state => state?.supportTickets?.tickets?.tickets_view)
   const registerUser = useSelector(state => state?.Account?.user)
-  const [search, setsearch] = useState("")
+  // const [search, setsearch] = useState("")
   const path = window.location.pathname;
   const [notificationData, setNotificationData] = useState()
   const [loader, setLoader] = useState(false)
@@ -124,36 +124,36 @@ const Header = props => {
     }
   }, [notificationInfo])
 
-  useEffect(() => {
-    if (serviceData?.services) {
-      let checkuser = localStorage.getItem("checkuserstatus")
-      if (checkuser == undefined) {
-        // dispatch(isNotificationUpdated("unread")) //2
-        // syncInvoices() //1
-        checkUserStatus()
-      }
-    }
-  }, [serviceData])
+  // useEffect(() => {
+  //   if (serviceData?.services) {
+  //     let checkuser = localStorage.getItem("checkuserstatus")
+  //     if (checkuser == undefined) {
+  //       // dispatch(isNotificationUpdated("unread")) //2
+  //       // syncInvoices() //1
+  //       checkUserStatus()
+  //     }
+  //   }
+  // }, [serviceData])
 
-  const checkUserStatus = async () => {
-    localStorage.setItem("checkuserstatus", "done")
-    if(!registerUser){
-      try {
-        let res = await checkUser()
-        // syncAllServices()
-        dispatch(allServicesSync())
-        asyncData()
-      } catch (error) {
-        toast.error(error?.response?.data?.message, {
-          position: toast.POSITION.TOP_RIGHT,
-        })
-        clearCookiesAndStorage()
-        navigate.push(["/login"]);
-      }
-    }else{
-      asyncData()
-    }
-  }
+  // const checkUserStatus = async () => {
+  //   localStorage.setItem("checkuserstatus", "done")
+  //   if(!registerUser){
+  //     try {
+  //       let res = await checkUser()
+  //       // syncAllServices()
+  //       dispatch(allServicesSync())
+  //       asyncData()
+  //     } catch (error) {
+  //       toast.error(error?.response?.data?.message, {
+  //         position: toast.POSITION.TOP_RIGHT,
+  //       })
+  //       clearCookiesAndStorage()
+  //       navigate.push(["/login"]);
+  //     }
+  //   }else{
+  //     asyncData()
+  //   }
+  // }
 
   useEffect(async() => {
     if (notificationInfo?.updated) {

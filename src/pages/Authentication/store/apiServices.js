@@ -55,6 +55,7 @@ export const searchProducts = search => {
   return res
 }
 
+//used
 export const getCountryList = async () => {
   return await getNew(url.GET_COUNTRY)
 }

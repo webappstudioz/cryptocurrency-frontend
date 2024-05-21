@@ -1,11 +1,15 @@
+//C2C
+export const GET_COUNTRY = "/get/countries"
+export const REGISTER = "/user/register"
+export const RESEND = "/user/otp/resend/"
+export const VERIFICATION = "/user/otp/verify"
+export const LOGIN = "/login"
+
+
 //REGISTER
-export const REGISTER = "/register"
 export const GOOGLE_LOGIN = "/auth/google"
-export const VERIFICATION = "/otp/verify"
-export const RESEND = "/otp/resend/"
 
 //LOGIN
-export const LOGIN = "/login"
 export const FORGET_PASSWORD = "/forgot/password"
 export const RESET_PASSWORD = "/reset/password"
 export const RESEND_PASS_LINK = "/resend/password/"
@@ -31,7 +35,6 @@ export const CHANGE_PASSWORD = "/profile/change-password"
 export const GET_CLIENT_INFO = "/profile/profile-details"
 
 export const POST_CLIENT_INFO = "/profile/update-profile"
-export const GET_COUNTRY = "/get/countries"
 export const GST_COUNTRIES = "/get/gst-countries"
 export const POST_COUNTRY = "/get/states" 
 export const GET_USER_DETAILS = "/user-details"
