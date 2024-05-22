@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 // import { FormatDate } from "../../helpers/api_helper_rs";
 import { loginData } from "../Authentication/store/apiServices";
 import logoGreen from "../../assets/images/c2c/logoGreen.jpg"
-import { C2CWallet, WidBalance } from "../../components/Common/Widgets";
+import { C2CWallet, ComisionIncome, DepositWallet, FixedWallet, MonthlyReturn, WidBalance } from "../../components/Common/Widgets";
 const Dashboard = ({ fullRes } = props) => {
   const logInfo = loginData()
   // const [password, setpassword] = useState(true);
@@ -42,7 +42,7 @@ const Dashboard = ({ fullRes } = props) => {
   //   }
   // }, [fullRes]);
 
-
+console.log("country", logInfo)
   return (
     <React.Fragment>
       <div
@@ -81,16 +81,17 @@ const Dashboard = ({ fullRes } = props) => {
             <h5 className="info_heding">Account Details</h5>
             <div className="row">
                 <div className="col">
-                    <WidBalance />
+                    <C2CWallet /> 
+                    {/*  */}
                 </div>
                 <div className="col">
-                    <WidBalance />
+                    <FixedWallet />
                 </div>
                 <div className="col">
-                    <WidBalance />
+                    <MonthlyReturn />
                 </div>
                 <div className="col">
-                    <C2CWallet />
+                    <ComisionIncome />
                 </div>
             </div>
           </div>
@@ -255,7 +256,7 @@ const Dashboard = ({ fullRes } = props) => {
                   <th>Country</th>
                     <React.Fragment>
                       <td className="text-right">
-                        India
+                        {logInfo?.country_name}
                       </td>
                     </React.Fragment>
                   <><td></td><td></td><td></td></>

@@ -34,12 +34,60 @@ import { getFormatedDate, getFormatedTime } from "../../helpers/api_helper_rs"
 //     );
 //   };
 
+const SerialNumber = cell => {
+  return (
+      <p className="sub-text">{cell.row.original.serialNumber}</p>
+  )
+}
+
+const UserName = cell => {
+  return (
+      <p className="sub-text">{cell.row.original.user_name}</p>
+  )
+}
+
+const Name = cell => {
+  return (
+      <p className="sub-text">{cell.row.original.first_name}{" "}{cell.row.original.last_name}</p>
+  )
+}
+
+const Email = cell => {
+  return (
+      <p className="sub-text">{cell.row.original.email}</p>
+  )
+}
+
+const AcountStatus = cell => {
+  return (
+    <div className="d-flex">
+      <div className="status_block">
+        <Badge
+          className={
+            "badge badge-pill bg-pill font-size-12 bg-soft-" +
+            (cell.value === 1
+              ? "success"
+              : "danger" && cell.value === 0
+              ? "danger"
+              : "")
+          }
+        >
+          {cell.value === 1? "Active" : "Deactivated"} 
+        </Badge>{" "}
+      </div>
+    </div>
+  )
+}
+
+const Action = cell => {
+  return (
+      <p className="sub-text">{cell.row.original.serialNumber}</p>
+  )
+}
+
 const CustomerId = cell => {
   return (
-    <Link to="/server-management" className="text-body fw-bold">
-      <h5>{cell.row.original.customerid}</h5>
-      <p className="sub-text">{cell.row.original.customerDetail}</p>
-    </Link>
+      <p className="sub-text">{cell.row.original.serialNumber}</p>
   )
 }
 
@@ -93,10 +141,6 @@ const CustomerName = cell => {
 }
 
 const Date = cell => {
-  return cell.value ? cell.value : ""
-}
-
-const Email = cell => {
   return cell.value ? cell.value : ""
 }
 
@@ -233,10 +277,15 @@ const Actions = ({ cell, togModal }) => {
 }
 
 export {
+  SerialNumber,
+  UserName,
+  Name,
+  Email,
+  AcountStatus,
+  Action,
   CustomerId,
   CustomerName,
   Date,
-  Email,
   CustomerStatus,
   Location,
   Total,

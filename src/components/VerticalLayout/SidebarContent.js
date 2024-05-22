@@ -162,7 +162,7 @@ const SidebarContent = props => {
             <li>
               <Link to="#" className="waves-effect">
                 <img src={overview} alt="" />
-                <span>Partner</span>
+                <span>My Team</span>
               </Link>
             </li> 
             {/* <li className="menu-title s-title sidebar-title-v2">

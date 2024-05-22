@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import "bootstrap/dist/css/bootstrap.min.css"
-import TableContainer from "../../components/Common/TableContainer"
+import TableContainer from "../../components/Common/AllUsersTable"
 import TextLoader from "../../components/textLoader"
 import {
   deleteCustomer as onDeleteCustomer,
   getInvoicesList as onGetInvoicesList,
 } from "../../store/actions"
 import {
+  SerialNumber,
   CustomerId,
   Location,
   NotifiationDate,
@@ -23,6 +24,10 @@ import {
   InvoiceStatus,
   PDF,
   Checks,
+  UserName,
+  Name,
+  AcountStatus,
+  Action,
 //   PaymentMethod,
 //   Ammount,
 } from "../Common/CommonCol"
@@ -32,7 +37,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 import { Col, Row, DropdownMenu, DropdownItem, Dropdown } from "reactstrap"
 import Vector1 from "../../assets/images/Vector1.svg"
-import { getInvoice } from "../Authentication/store/apiServices"
+import { getInvoice, getAllUsersList } from "../Authentication/store/apiServices"
 import PermissionDenied from "../Authentication/PermissionDenied"
 import { toast } from "react-toastify"
 import { setPageTitle } from "../../helpers/api_helper_rs"
@@ -82,61 +87,94 @@ function UsersList() {
   const [paymentTypeFilter, setPaymentTypeFilter] = useState(false)
   const [selectedPaymentType, setSelectedPaymentType] = useState("all")
 
-  useEffect(() => {
-    let config = {
-      params: {
-        command: "whmcs_invoicelist",
-        debug: 1,
-      },
-    }
+  const [allUsers, setAllUsers] = useState()
+  const [totalUsers, setTotalUsers] = useState()
 
-    if (invoicesList && !invoicesList.length) {
-      dispatch(onGetInvoicesList(config))
+  useEffect(() => {
+    handleAllUsersList()
+  },[])
+
+  const handleAllUsersList = async() => {
+    setLoader(true)
+        setLoading(true)
+    try{
+        const result = await getAllUsersList()
+        let users = result?.data?.data?.data.map((user, index) => {
+          return {
+            ...user,
+            serialNumber: index + 1
+          }
+        })
+        
+        setAllUsers(users)
+        setPageination({ state: false })
+        setLoader(false)
+        setLoading(false)
+        setCurrentPage(result?.current_page)
+        setHasMorePages(result?.has_more_pages)
+        setTotalPages(result?.total_pages)
+        setTotalUsers(result?.total)
+    }catch(error){
+      setLoader(false)
+      setLoading(false)
     }
-  }, [dispatch])
+  }
+
+  // useEffect(() => {
+  //   let config = {
+  //     params: {
+  //       command: "whmcs_invoicelist",
+  //       debug: 1,
+  //     },
+  //   }
+
+  //   if (invoicesList && !invoicesList.length) {
+  //     dispatch(onGetInvoicesList(config))
+  //   }
+  // }, [dispatch])
 
   useEffect(async () => {
     setPageTitle("Invoice")
     // getInvoiceList()
   }, [])
 
-  const getInvoiceList = async(data) => {
-    try {
-      let res = ""
-      if(data){
-       res = await getInvoice(data)
-      }else{
-        res = await getInvoice()
-      }
+  // const getInvoiceList = async(data) => {
+  //   try {
+  //     let res = ""
+  //     if(data){
+  //      res = await getInvoice(data)
+  //     }else{
+  //       res = await getInvoice()
+  //     }
      
-      if (res) {
-        setPageination({ state: false })
-        setLoader(false)
-        setLoading(false)
-        let info = res?.data?.data
-        setCurrentPage(info?.current_page)
-        setHasMorePages(info?.has_more_pages)
-        setTotalPages(info?.total_pages)
-        setTotalInvoices(info?.total_records)
-        setinvoice(info?.invoices)
-        setdefaultinvoicelist(
-          JSON.parse(JSON.stringify(info?.invoices))
-        )
-      }
-    } catch (err) {
-      if (err?.response?.data?.status_code == 403) {
-        setPermissionDen(true)
-      }
-      if (err?.response?.data?.status_code != 401) {
-        setPermissionDen(true)
-        setLoader(false)
-        setLoading(false)
-        toast.error(err?.response?.data?.message, {
-          position: toast.POSITION.TOP_RIGHT,
-        })
-      }
-    }
-  }
+  //     if (res) {
+  //       setPageination({ state: false })
+  //       setLoader(false)
+  //       setLoading(false)
+  //       let info = res?.data?.data
+  //       setCurrentPage(info?.current_page)
+  //       setHasMorePages(info?.has_more_pages)
+  //       setTotalPages(info?.total_pages)
+  //       setTotalInvoices(info?.total_records)
+  //       setinvoice(info?.invoices)
+  //       setdefaultinvoicelist(
+  //         JSON.parse(JSON.stringify(info?.invoices))
+  //       )
+  //     }
+  //   } catch (err) {
+  //     if (err?.response?.data?.status_code == 403) {
+  //       setPermissionDen(true)
+  //     }
+  //     if (err?.response?.data?.status_code != 401) {
+  //       setPermissionDen(true)
+  //       setLoader(false)
+  //       setLoading(false)
+  //       toast.error(err?.response?.data?.message, {
+  //         position: toast.POSITION.TOP_RIGHT,
+  //       })
+  //     }
+  //   }
+  // }
   
   const handleInvoiceFilter = (status, time) => {
     let data = "" 
@@ -301,56 +339,56 @@ function UsersList() {
     () => [
       {
         Header: "S.No",
-        accessor: "id",
+        accessor: "serialNumber",
         disableFilters: true,
         filterable: false,
         Cell: cellProps => {
-          return <CustomerId {...cellProps} />
+          return <SerialNumber {...cellProps} />
         },
       },
       {
-        Header: "User Details",
-        accessor: "date",
+        Header: "User Name",
+        accessor: "user_name",
+        disableFilters: true,
+        filterable: false,
+        Cell: cellProps => {
+          return <UserName {...cellProps} />
+        },
+      },
+      {
+        Header: "Name",
+        accessor: "name",
         disableGlobalFilter: true,
         disableSortBy: false, // if true the sortBy is disabled and remove sort icons
         filterable: true,
         Cell: cellProps => {
-          return <CustomerName {...cellProps} />
+          return <Name {...cellProps} />
         },
       },
-      // {
-      //   Header: "Payment Method",
-      //   accessor: "paymentMethod",
-      //   filterable: true,
-      //   Cell: cellProps => {
-      //     return <CustomerStatus {...cellProps} />
-      //   },
-      // },
-      // {
-      //   Header: "Amount",
-      //   accessor: "subtotal",
-      //   filterable: true,
-      //   Cell: cellProps => {
-      //     return <Email {...cellProps} />
-      //   },
-      // },
+      {
+        Header: "User Email",
+        accessor: "email",
+        filterable: true,
+        Cell: cellProps => {
+          return <Email {...cellProps} />
+        },
+      },
       {
         Header: "Status",
         accessor: "status",
         filterable: true,
         Cell: cellProps => {
-          return <InvoiceStatus {...cellProps} />
+          return <AcountStatus {...cellProps} />
         },
       },
-    //   {
-    //     Header: "PDF",
-    //     accessor: "lastname",
-    //     filterable: false,
-    //     disableSortBy: true,
-    //     Cell: cellProps => {
-    //       return <PDF {...cellProps} />
-    //     },
-    //   },
+      {
+        Header: "Action",
+        accessor: "",
+        filterable: true,
+        Cell: cellProps => {
+          return <Action {...cellProps} />
+        },
+      },
     ],
     []
   )
@@ -628,11 +666,11 @@ function UsersList() {
                   <TableContainer
                     tableClassName="product-table table-shadow"
                     columns={columns}
-                    data={invoice == undefined ? [] : invoice}
+                    data={allUsers == undefined ? [] : allUsers}
                     isGlobalFilter={true}
                     isAddCustomer={true}
                     isAddTableBorderStrap={true}
-                    totalCount={totalInvoices}
+                    totalCount={totalUsers}
                     setPageSizes={setPageSizes}
                     hasMorePages={hasMorePages}
                     totalPages={totalPages}

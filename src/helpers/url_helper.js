@@ -1,10 +1,15 @@
 //C2C
+//auth
 export const GET_COUNTRY = "/get/countries"
 export const REGISTER = "/user/register"
 export const RESEND = "/user/otp/resend/"
 export const VERIFICATION = "/user/otp/verify"
 export const LOGIN = "/login"
 
+//Admin
+export const ALL_USERS_LIST = "/user/list"
+
+//User
 
 //REGISTER
 export const GOOGLE_LOGIN = "/auth/google"

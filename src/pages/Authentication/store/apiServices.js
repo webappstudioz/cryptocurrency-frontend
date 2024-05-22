@@ -374,3 +374,7 @@ export const storeGameResults = async(data) => {
 export const getGameResults = async() => {
   return await getNew(url.GETGAMERESULTS)
 }
+
+export const getAllUsersList = async() => {
+  return await getNew(url.ALL_USERS_LIST)
+}

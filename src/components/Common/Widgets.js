@@ -295,3 +295,111 @@ export function C2CWallet(props) {
     </>
   )
 }
+
+export function DepositWallet(props) {
+  const { balance } = props
+  const { currency } = props
+  return (
+    <>
+      <div className="info_block mb-4 mb-lg-0">
+        <div className="icon_img">
+          <Balance />
+        </div>
+        <div className="info_content">
+          <div className="info_flex">
+            <Row className="align-items-center">
+              <Col md="12">
+                <p>Deposit Wallet</p>
+              </Col>
+            </Row>
+          </div>
+          <h6>
+            {currency?.prefix}
+            {balance || "$0.00 USD"} {currency?.suffix}
+          </h6>
+        </div>
+      </div>
+    </>
+  )
+}
+
+export function FixedWallet(props) {
+  const { balance } = props
+  const { currency } = props
+  return (
+    <>
+      <div className="info_block mb-4 mb-lg-0">
+        <div className="icon_img">
+          <Balance />
+        </div>
+        <div className="info_content">
+          <div className="info_flex">
+            <Row className="align-items-center">
+              <Col md="12">
+                <p>Fixed Wallet</p>
+              </Col>
+            </Row>
+          </div>
+          <h6>
+            {currency?.prefix}
+            {balance || "$0.00 USD"} {currency?.suffix}
+          </h6>
+        </div>
+      </div>
+    </>
+  )
+}
+
+export function MonthlyReturn(props) {
+  const { balance } = props
+  const { currency } = props
+  return (
+    <>
+      <div className="info_block mb-4 mb-lg-0">
+        <div className="icon_img">
+          <Balance />
+        </div>
+        <div className="info_content">
+          <div className="info_flex">
+            <Row className="align-items-center">
+              <Col md="12">
+                <p>Monthly Return</p>
+              </Col>
+            </Row>
+          </div>
+          <h6>
+            {currency?.prefix}
+            {balance || "$0.00 USD"} {currency?.suffix}
+          </h6>
+        </div>
+      </div>
+    </>
+  )
+}
+
+export function ComisionIncome(props) {
+  const { balance } = props
+  const { currency } = props
+  return (
+    <>
+      <div className="info_block mb-4 mb-lg-0">
+        <div className="icon_img">
+          <Balance />
+        </div>
+        <div className="info_content">
+          <div className="info_flex">
+            <Row className="align-items-center">
+              <Col md="12">
+                <p>Comision Income</p>
+              </Col>
+            </Row>
+          </div>
+          <h6>
+            {currency?.prefix}
+            {balance || "$0.00 USD"} {currency?.suffix}
+          </h6>
+        </div>
+      </div>
+    </>
+  )
+}
