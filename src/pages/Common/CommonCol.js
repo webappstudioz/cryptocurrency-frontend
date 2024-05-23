@@ -17,6 +17,7 @@ import time from "../../assets/images/time-note.svg"
 import eye from "../../assets/images/eye.svg"
 import reboot from "../../assets/images/reboot.png"
 import ToogleSwitch from "../../components/Common/ToogleSwitch"
+import rightarrow from "../../assets/images/rightarrow.png"
 
 import del from "../../assets/images/table-delete.svg"
 import edit from "../../assets/images/table-edit.svg"
@@ -36,25 +37,25 @@ import { getFormatedDate, getFormatedTime } from "../../helpers/api_helper_rs"
 
 const SerialNumber = cell => {
   return (
-      <p className="sub-text">{cell.row.original.serialNumber}</p>
+      <p className="">{cell.row.original.serialNumber}</p>
   )
 }
 
 const UserName = cell => {
   return (
-      <p className="sub-text">{cell.row.original.user_name}</p>
+      <p className="">{cell.row.original.user_name}</p>
   )
 }
 
 const Name = cell => {
   return (
-      <p className="sub-text">{cell.row.original.first_name}{" "}{cell.row.original.last_name}</p>
+      <p className="">{cell.row.original.first_name}{" "}{cell.row.original.last_name}</p>
   )
 }
 
 const Email = cell => {
   return (
-      <p className="sub-text">{cell.row.original.email}</p>
+      <p className="">{cell.row.original.email}</p>
   )
 }
 
@@ -81,13 +82,13 @@ const AcountStatus = cell => {
 
 const Action = cell => {
   return (
-      <p className="sub-text">{cell.row.original.serialNumber}</p>
+    <img style={{ cursor: "pointer" }} src={rightarrow} />
   )
 }
 
 const CustomerId = cell => {
   return (
-      <p className="sub-text">{cell.row.original.serialNumber}</p>
+      <p className="">{cell.row.original.serialNumber}</p>
   )
 }
 

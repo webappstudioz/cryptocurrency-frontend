@@ -28,40 +28,24 @@ import { toast } from "react-toastify";
 import { CONFIGURATIONS } from "../../../constants/api/api_path";
 import { useSelector } from "react-redux";
 
+
   /**
    * step4
    * here we are fetching stored array and hit the function to get status or percentage of operating system installation. 
    */
-  const getStoredServersList = (cellId) => {
-    const storedArray = JSON.parse(localStorage.getItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY))
-    const service = storedArray?.find(obj => obj?.serverId === cellId?.id)
-    if(service && service?.event == "module_create"){
-      // let status = `service${service?.status}`
-      let serviceStatus  = {status: `service${service?.status}`, percentage: service?.percentage}
-      return serviceStatus
-    }
+  export const getStoredServersList = (cellId) => {
+      let decArray = getStoredServersInstallArr()
+      const service = decArray?.find(obj => obj?.service_id === cellId)
+      if(service && service?.event == "module_create"){
+        let serviceStatus  = {status: `service${service?.status}`, percentage: service?.percentage}
+        return serviceStatus
+      }
   }
+  
 
-const getServiceStatus = (service) => {
-  /**
-   * We store the WID of a new service in local storage.
-   * If a user adds a new service with an active status, but the data hasn't been synchronized yet, this function will return the Provisioning status.
-   * Otherwise, it will return the same status fetched from the API.
-   */
-  const rowid = service?.wid;
-  let serviceIdArr = localStorage.getItem(CONFIGURATIONS?.NEWSERVICEID)
-  if(serviceIdArr){
-    serviceIdArr = serviceIdArr.split(",")
-    if (service?.status === "Active" && serviceIdArr.includes(rowid)) {
-      return "Provisioning...";
-     }
-  }
-  return service?.status;
-}
 
-const getServiceStatus1 = (status) => {
-  //service status
-  if(status === "serviceFINISHED"){
+export const getServiceStatus = (status) => {
+  if(status === "serviceFINISHED" || status === "servicefinalizingDone"){
       return "Active"
   } else if(status === "serviceFAILED"){
       return "Provisioning Failed";
@@ -76,6 +60,7 @@ const getServiceStatus1 = (status) => {
   } else{
       return status
   }
+}
   // else if() {
 
   // }
@@ -88,18 +73,18 @@ const getServiceStatus1 = (status) => {
   //    }
   // }
   // return service?.status;
-}
+// }
 
-const getWarningMessage = (status) => {
+export const getWarningMessage = (status) => {
   /**
    * If the service status is not active, this function will return messages corresponding to that status.
    */
   if(status == "Provisioning...") {
       return "Your server is presently undergoing provisioning. We kindly request you to attempt access again in a few minutes."
-  } else if(status == "Provisioning failed"){
-      return "Opertaing system installation has been failed. Please contact to support team for further assiatnace."
-  } else if(status == "Provisioning canceled"){
-      return "Opertaing system installation has been canceled. Please contact to support team for further assiatnace."
+  } else if(status == "Provisioning Failed"){
+      return "Auto Provisionig has been Failed. Please contact to support team for further assiatnace."
+  } else if(status == "Provisioning Canceled"){
+      return "Auto Provisionig has been canceled by Admin. Please contact to support team for further assiatnace."
   } else if(status == "Provisioning Expired"){
       return "Opertaing system installation has been expired. Please contact to support team for further assiatnace."
   } else if(status == "Finalizing..."){

@@ -377,6 +377,16 @@ export const pushLatestStatus = (myObject) => {
   localStorage.setItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY, JSON.stringify(storedArray));
 }
 
+export const findRange = (count, size) => {
+  for (let i = 0; i < size.length - 1; i++) {
+      if(count > size[i] && count <= size[i + 1]){
+        return size[i +1]
+      }else if(count <= size[i]){
+        return size[i]
+      }
+  }
+}
+
 // For GET requests
 const requestHelper = axios.create({
   baseURL: API_URL,

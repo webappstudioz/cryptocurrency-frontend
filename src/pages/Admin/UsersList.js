@@ -99,7 +99,8 @@ function UsersList() {
         setLoading(true)
     try{
         const result = await getAllUsersList()
-        let users = result?.data?.data?.data.map((user, index) => {
+        let info = result?.data?.data
+        let users = info?.data.map((user, index) => {
           return {
             ...user,
             serialNumber: index + 1
@@ -110,10 +111,10 @@ function UsersList() {
         setPageination({ state: false })
         setLoader(false)
         setLoading(false)
-        setCurrentPage(result?.current_page)
-        setHasMorePages(result?.has_more_pages)
-        setTotalPages(result?.total_pages)
-        setTotalUsers(result?.total)
+        setCurrentPage(info?.current_page)
+        setHasMorePages(info?.has_more_pages)
+        setTotalPages(info?.total_pages)
+        setTotalUsers(info?.total)
     }catch(error){
       setLoader(false)
       setLoading(false)
