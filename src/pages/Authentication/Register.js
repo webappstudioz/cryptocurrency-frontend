@@ -71,7 +71,6 @@ const Register = props => {
   const [selectedPhoneCode, setSelectedPhoneCode] = useState()
   const [selectedCountryCode, setSelectedCountryCode] = useState()
 
-
   useEffect(() => {
     setPageTitle("Registration")
     getcountry()
@@ -195,7 +194,6 @@ const Register = props => {
     //   if (value === country?.value)
     //     gstCountries.includes(country?.short_code) ? setGstCountry(true) : setGstCountry(false)
     // })
-    console.log("value",value)
     validation.setFieldValue('country', value);
   };
 

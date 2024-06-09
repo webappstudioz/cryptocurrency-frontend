@@ -178,7 +178,7 @@ const ServerIPv4Management = (props) => {
   );
 
 
-  const handleCustomerClicks = () => {};
+  const handleCustomerClicks = () => { };
 
   const handleIPVmanageMent = async (flag) => {
     try {
@@ -216,154 +216,154 @@ const ServerIPv4Management = (props) => {
 
   return (
     <React.Fragment>
-    <div className="tab_content bg-transparent manage-tab">
-                  {fullRes?.data?.data?.product?.status != "Active" ? (
-                    <ServiceNotFound />
-                  ) : (
-                    <>
-                      <Row className="server-search">
-                        <Col md="10">
-                          <div className="app-search d-none d-lg-block p-0 search-v1">
-                            <div className="position-relative">
-                              <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Filter for IP addresses"
-                                value={ipv4Search}
-                                onChange={(e) => handleIpv4Search(e)}
-                                onKeyPress={(e) => {
-                                  if (e.key === "Enter") {
-                                    ipv4Search
-                                      ? handleDebounceVal(ipv4Search)
-                                      : handleIPVmanageMent("load");
-                                  }
-                                }}
-                              />
-                              <span
-                                className="uil-search"
-                                style={{ cursor: "pointer" }}
-                                onClick={() =>
-                                  ipv4Search
-                                    ? handleDebounceVal(ipv4Search)
-                                    : handleIPVmanageMent("load")
-                                }
-                              ></span>
-                            </div>
-                          </div>
-                        </Col>
-                        <Col md="2 text-end pl-0">
-                          <a
-                            style={{ cursor: "pointer" }}
-                            className="btn-reset"
-                            onClick={() => {
-                              if (ipv4Search) {
-                                setipv4Search("");
-                                handleDebounceVal("");
-                              }
-                            }}
-                          >
-                            Reset <img src={reset} alt="" />
-                          </a>
-                        </Col>
-                      </Row>
-                      <div className="table_v1 table-management">
-                        <TableContainer
-                          tableClassName="product-table table-shadow"
-                          columns={columns}
-                          data={ipv4Data ? ipv4Data : []}
-                          isGlobalFilter={true}
-                          isAddCustomer={true}
-                          isAddTableBorderStrap={true}
-                          handleCustomerClicks={handleCustomerClicks}
-                          getTablePropsC={() => ({
-                            className: "product-table ",
-                          })}
-                        />
-                      </div>
-                    </>
-                  )}
-                  {/* </CardBody>
-                  </Card> */}
+      <div className="tab_content bg-transparent manage-tab">
+        {fullRes?.data?.data?.product?.status != "Active" ? (
+          <ServiceNotFound />
+        ) : (
+          <>
+            <Row className="server-search">
+              <Col md="10">
+                <div className="app-search d-none d-lg-block p-0 search-v1">
+                  <div className="position-relative">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Filter for IP addresses"
+                      value={ipv4Search}
+                      onChange={(e) => handleIpv4Search(e)}
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                          ipv4Search
+                            ? handleDebounceVal(ipv4Search)
+                            : handleIPVmanageMent("load");
+                        }
+                      }}
+                    />
+                    <span
+                      className="uil-search"
+                      style={{ cursor: "pointer" }}
+                      onClick={() =>
+                        ipv4Search
+                          ? handleDebounceVal(ipv4Search)
+                          : handleIPVmanageMent("load")
+                      }
+                    ></span>
+                  </div>
                 </div>
-
-<Modal
-isOpen={ipv4Modal}
-toggle={() => {
-  tog_Ipv4Modal();
-}}
-backdrop={"static"}
-scrollable={false}
-id="staticBackdrop"
-className="modal_v1"
-size="lg"
->
-<div className="modal-header">
-  <Row className="w-100">
-    <Col xs="10">
-      <h5 className="modal-title" id="staticBackdropLabel">
-        Update IP ({UpdateIp})
-      </h5>
-    </Col>
-    <Col xs="2">
-      <div className="right-content text-end">
-        <button
-          type="button"
-          className="btn-close buttoncustom"
-          onClick={() => {
-            setipv4Modal(false);
-          }}
-          aria-label="Close"
-        ></button>
+              </Col>
+              <Col md="2 text-end pl-0">
+                <a
+                  style={{ cursor: "pointer" }}
+                  className="btn-reset"
+                  onClick={() => {
+                    if (ipv4Search) {
+                      setipv4Search("");
+                      handleDebounceVal("");
+                    }
+                  }}
+                >
+                  Reset <img src={reset} alt="" />
+                </a>
+              </Col>
+            </Row>
+            <div className="table_v1 table-management">
+              <TableContainer
+                tableClassName="product-table table-shadow"
+                columns={columns}
+                data={ipv4Data ? ipv4Data : []}
+                isGlobalFilter={true}
+                isAddCustomer={true}
+                isAddTableBorderStrap={true}
+                handleCustomerClicks={handleCustomerClicks}
+                getTablePropsC={() => ({
+                  className: "product-table ",
+                })}
+              />
+            </div>
+          </>
+        )}
+        {/* </CardBody>
+                  </Card> */}
       </div>
-    </Col>
-  </Row>
-</div>
-<div className="modal-body">
-  <div className="form-group select-v1">
-    <label className="text-blue font-semibold d-block">
-      Valid domain Name
-    </label>
-    <Input
-      className="form-control bg-input"
-      placeholder="hosted-by. redswitches.com "
-      value={DomianName}
-      onChange={(e) => {
-        setDomianName(e.target.value);
-        !e.target.value
-          ? setDomainNameError(false)
-          : hostnamevalid(e.target.value);
-      }}
-    ></Input>
-    <p
-      style={{ color: "red" }}
-      className="font-16 font-normal text-color mt-2"
-    >
-      {DomainNameError &&
-        "Please provide valid domain name e.g hosted.redswitches.com"}
-    </p>
-  </div>
 
-  <div className="btn-group rescuesubmit">
-    <button
-      className="btn btn-primary btn-modal waves-effect waves-light d-flex justify-content-center align-items-center buttoncustom "
-      style={{
-        cursor:
-          !DomainNameError && DomianName ? "pointer" : "not-allowed",
-      }}
-      type="submit"
-      onClick={!DomainNameError && DomianName && UpdateIpApi}
-      disabled={rescuespinner}
-    >
-      {rescuespinner ? (
-        <div className="ui active inline loader"></div>
-      ) : (
-        "Launch"
-      )}{" "}
-    </button>
-  </div>
-</div>
-</Modal>
-</React.Fragment>
+      <Modal
+        isOpen={ipv4Modal}
+        toggle={() => {
+          tog_Ipv4Modal();
+        }}
+        backdrop={"static"}
+        scrollable={false}
+        id="staticBackdrop"
+        className="modal_v1"
+        size="lg"
+      >
+        <div className="modal-header">
+          <Row className="w-100">
+            <Col xs="10">
+              <h5 className="modal-title" id="staticBackdropLabel">
+                Update IP ({UpdateIp})
+              </h5>
+            </Col>
+            <Col xs="2">
+              <div className="right-content text-end">
+                <button
+                  type="button"
+                  className="btn-close buttoncustom"
+                  onClick={() => {
+                    setipv4Modal(false);
+                  }}
+                  aria-label="Close"
+                ></button>
+              </div>
+            </Col>
+          </Row>
+        </div>
+        <div className="modal-body">
+          <div className="form-group select-v1">
+            <label className="text-blue font-semibold d-block">
+              Valid domain Name
+            </label>
+            <Input
+              className="form-control bg-input"
+              placeholder="hosted-by. redswitches.com "
+              value={DomianName}
+              onChange={(e) => {
+                setDomianName(e.target.value);
+                !e.target.value
+                  ? setDomainNameError(false)
+                  : hostnamevalid(e.target.value);
+              }}
+            ></Input>
+            <p
+              style={{ color: "red" }}
+              className="font-16 font-normal text-color mt-2"
+            >
+              {DomainNameError &&
+                "Please provide valid domain name e.g hosted.redswitches.com"}
+            </p>
+          </div>
+
+          <div className="btn-group rescuesubmit">
+            <button
+              className="btn btn-primary btn-modal waves-effect waves-light d-flex justify-content-center align-items-center buttoncustom "
+              style={{
+                cursor:
+                  !DomainNameError && DomianName ? "pointer" : "not-allowed",
+              }}
+              type="submit"
+              onClick={!DomainNameError && DomianName && UpdateIpApi}
+              disabled={rescuespinner}
+            >
+              {rescuespinner ? (
+                <div className="ui active inline loader"></div>
+              ) : (
+                "Launch"
+              )}{" "}
+            </button>
+          </div>
+        </div>
+      </Modal>
+    </React.Fragment>
   );
 };
 

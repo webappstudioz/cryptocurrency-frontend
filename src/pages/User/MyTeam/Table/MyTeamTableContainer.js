@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import TextLoader from "../textLoader";
 import {
   useTable,
   useGlobalFilter,
@@ -14,11 +13,9 @@ import {
 } from "react-table";
 import { Table, Row, Col, Button } from "reactstrap";
 import { Filter, DefaultColumnFilter } from "./filters";
-import left from "../../assets/images/left.svg";
-import right from "../../assets/images/right.svg";
-import { findRange } from "../../helpers/api_helper_rs";
-import { getStoredServersList, getServiceStatus, getWarningMessage, handleFetchedService } from "../../pages/Service/Component/ServiceCustomerCol";
-import { toast } from "react-toastify";
+import left from "../../../../assets/images/left.svg";
+import right from "../../../../assets/images/right.svg";
+import { findRange } from "../../../../helpers/api_helper_rs";
 import { useHistory } from "react-router-dom";
 
 const defaultTablePropGetter = () => ({})

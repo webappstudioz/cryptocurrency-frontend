@@ -8,8 +8,11 @@ export const LOGIN = "/login"
 
 //Admin
 export const ALL_USERS_LIST = "/user/list"
+export const GET_USER_DETAILS = "/user/detail/"
+export const UPDATE_USER_STATUS = "/user/change/status"
 
 //User
+export const UPDATE_USER_PROFILE = "/user/detail/"
 
 //REGISTER
 export const GOOGLE_LOGIN = "/auth/google"
@@ -42,7 +45,7 @@ export const GET_CLIENT_INFO = "/profile/profile-details"
 export const POST_CLIENT_INFO = "/profile/update-profile"
 export const GST_COUNTRIES = "/get/gst-countries"
 export const POST_COUNTRY = "/get/states" 
-export const GET_USER_DETAILS = "/user-details"
+// export const GET_USER_DETAILS = "/user-details"
 
 
 //TWO FACTOR SETTING

@@ -378,3 +378,15 @@ export const getGameResults = async() => {
 export const getAllUsersList = async() => {
   return await getNew(url.ALL_USERS_LIST)
 }
+
+export const updateUserStatus = async(data) => {
+  return await postNew(url.UPDATE_USER_STATUS, data)
+}
+
+export const getUserDetail = async(userId) => {
+  return await getNew(url.GET_USER_DETAILS + userId)
+}
+
+export const updateUserProfile = async(userId, data) => {
+  return await postNew(url.UPDATE_USER_PROFILE + userId, data)
+}

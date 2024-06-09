@@ -1,30 +1,20 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
-import Status from "../../components/CommonForBoth/TopbarDropdown/Status"
-import {
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  Modal,
-  Row,
-  Col,
-  Badge,
-} from "reactstrap"
-import pdf from "../../assets/images/pdf.svg"
-import calender from "../../assets/images/calender.svg"
-import time from "../../assets/images/time-note.svg"
-import eye from "../../assets/images/eye.svg"
-import reboot from "../../assets/images/reboot.png"
-import ToogleSwitch from "../../components/Common/ToogleSwitch"
-import rightarrow from "../../assets/images/rightarrow.png"
+import Status from "../../../../components/CommonForBoth/TopbarDropdown/Status"
+import { Badge } from "reactstrap"
+import pdf from "../../../../assets/images/pdf.svg"
+import calender from "../../../../assets/images/calender.svg"
+import time from "../../../../assets/images/time-note.svg"
+import eye from "../../../../assets/images/eye.svg"
+import ToogleSwitch from "../../../../components/Common/ToogleSwitch"
+import rightarrow from "../../../../assets/images/rightarrow.png"
 
-import del from "../../assets/images/table-delete.svg"
-import edit from "../../assets/images/table-edit.svg"
+// import del from "../../../../assets/images/table-delete.svg"
+import edit from "../../../../assets/images/table-edit.svg"
 // import { ManageI } from "../../Common/CommonSvg"
-import { ManageI } from "../../components/Common/CommonSvg"
-import { FormatDate, getFormatedDate, getFormatedTime } from "../../helpers/api_helper_rs"
-import { updateUserStatus } from "../Authentication/store/apiServices"
+// import { ManageI } from "../../components/Common/CommonSvg"
+import { FormatDate, getFormatedDate, getFormatedTime } from "../../../../helpers/api_helper_rs"
+// import { updateUserStatus } from "../Authentication/store/apiServices"
 // const formateDate = (date, format) => {
 //     const dateFormat = format ? format : "DD MMM Y";
 //     const date1 = moment(new Date(date)).format(dateFormat);
@@ -93,7 +83,7 @@ const AcountStatus = cell => {
         user_id: cell?.row?.original?.id,
         status: status === true ? 1 : 0
       })
-      const result = await updateUserStatus(data)
+      // const result = await updateUserStatus(data)
       setUserStatus(status)
     } catch (error) {
       console.log("error", error)

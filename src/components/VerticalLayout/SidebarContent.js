@@ -160,7 +160,7 @@ const SidebarContent = props => {
               {props.t("Partner")}
             </li> */}
             <li>
-              <Link to="#" className="waves-effect">
+              <Link to="/my-team" className="waves-effect">
                 <img src={overview} alt="" />
                 <span>My Team</span>
               </Link>
@@ -188,16 +188,16 @@ const SidebarContent = props => {
               </Link>
             </li> */}
           </ul>
-          {/* <div className="sidebar_footer px-3">
-            <img src={sidebar} className="w-100" alt="" />
-            <div className="footer_content text-center mt-3">
+          <div className="sidebar_footer px-3">
+            {/* <img src={sidebar} className="w-100" alt="" /> */}
+            {/* <div className="footer_content text-center mt-3">
               <p className="text-center">
                 {" "}
                 RedSwitches Pvt Ltd. Made With <br />{" "}
                 <i className="mdi mdi-heart text-danger"></i> In Melbourne
               </p>
-            </div>
-          </div> */}
+            </div> */}
+          </div>
         </div>
       </SimpleBar>
     </React.Fragment>

@@ -3,6 +3,9 @@ import PropTypes from "prop-types"
 import "bootstrap/dist/css/bootstrap.min.css"
 import TableContainer from "../../components/Common/AllUsersTable"
 import TextLoader from "../../components/textLoader"
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
+import { customRegex } from "../../helpers/validation_helpers"
 import {
   deleteCustomer as onDeleteCustomer,
   getInvoicesList as onGetInvoicesList,
@@ -14,10 +17,10 @@ import {
   NotifiationDate,
   Time,
   CustomerName,
-  Date,
+  // Date,
   Email,
-  CustomerStatus,  
-//   CurDate,
+  CustomerStatus,
+  //   CurDate,
   DueDate,
   Total,
   Number,
@@ -28,8 +31,10 @@ import {
   Name,
   AcountStatus,
   Action,
-//   PaymentMethod,
-//   Ammount,
+  JoiningDate,
+  PhoneNumber,
+  //   PaymentMethod,
+  //   Ammount,
 } from "../Common/CommonCol"
 
 //redux
@@ -41,6 +46,8 @@ import { getInvoice, getAllUsersList } from "../Authentication/store/apiServices
 import PermissionDenied from "../Authentication/PermissionDenied"
 import { toast } from "react-toastify"
 import { setPageTitle } from "../../helpers/api_helper_rs"
+import { debounce } from "lodash-es";
+
 function UsersList() {
   const dispatch = useDispatch()
   const [modal, setModal] = useState(false)
@@ -89,38 +96,143 @@ function UsersList() {
 
   const [allUsers, setAllUsers] = useState()
   const [totalUsers, setTotalUsers] = useState()
+  const [search, setsearch] = useState("")
+  const [isUserStatusFilter, setIsUserStatusFilter] = useState(false)
+  const [selectedUserStatus, setSelectedUserStatus] = useState("all")
+  const [startDate, setStartDate] = useState()
+  const [toDate, settoDate] = useState()
+  const [spinner, setSpinner] = useState(false)
 
   useEffect(() => {
+    setPageTitle("Users List")
     handleAllUsersList()
-  },[])
+  }, [])
 
-  const handleAllUsersList = async() => {
+  const handleAllUsersList = async () => {
     setLoader(true)
-        setLoading(true)
-    try{
-        const result = await getAllUsersList()
-        let info = result?.data?.data
-        let users = info?.data.map((user, index) => {
-          return {
-            ...user,
-            serialNumber: index + 1
-          }
-        })
-        
-        setAllUsers(users)
-        setPageination({ state: false })
-        setLoader(false)
-        setLoading(false)
-        setCurrentPage(info?.current_page)
-        setHasMorePages(info?.has_more_pages)
-        setTotalPages(info?.total_pages)
-        setTotalUsers(info?.total)
-    }catch(error){
+    setLoading(true)
+    try {
+      const result = await getAllUsersList()
+      let info = result?.data?.data
+      let users = info?.data.map((user, index) => {
+        return {
+          ...user,
+          serialNumber: index + 1
+        }
+      })
+
+      setAllUsers(users)
+      setPageination({ state: false })
+      setLoader(false)
+      setLoading(false)
+      setCurrentPage(info?.current_page)
+      setHasMorePages(info?.has_more_pages)
+      setTotalPages(info?.total_pages)
+      setTotalUsers(info?.total)
+    } catch (error) {
       setLoader(false)
       setLoading(false)
     }
   }
 
+  const userStatusFilter = type => {
+    setSelectedUserStatus(type)
+    setIsUserStatusFilter(false)
+    // setPaymentTypeFilter(false)
+    // setSelectedPaymentType(type)
+    // setFilterArray({ ...filterArray, payment: type })
+    // // filterApply()
+    // handleInvoiceFilter(filterArray?.status, filterArray?.date, type)
+  }
+
+  const handleFilterUsers = async () => {  
+    try {
+      let day = (startDate?.getDate() < 10 ? "0" : "") + startDate?.getDate()
+      let month = (startDate?.getMonth() + 1 < 10 ? "0" : "") + (startDate?.getMonth() + 1)
+      let year = startDate?.getFullYear()
+      let from = year + "-" + month + "-" + day
+      // setcomparefromDate(from)
+
+      let day1 = (toDate?.getDate() < 10 ? "0" : "") + toDate?.getDate()
+      let month1 = (toDate?.getMonth() + 1 < 10 ? "0" : "") + (toDate?.getMonth() + 1)
+      let year1 = toDate?.getFullYear()
+      let to = year1 + "-" + month1 + "-" + day1
+      // setcomparetoDate(to)
+      if (from > to || from == to) {
+        toast.error("To date must be greater than From date", {
+          position: toast.POSITION.TOP_RIGHT,
+        })
+      } else {
+        let param = new URLSearchParams({
+          Search_keyword : search,
+          Status: selectedUserStatus,
+          // Daterange_filter : result,
+          from: from,
+          to: to,
+        })
+        // setSpinner(true)
+        setLoader(true)
+        setLoading(true)
+        let res = await getAllUsersList(param)
+
+        if (res) {
+          setLoader(true)
+          setLoading(true)
+          // setddata(res?.data?.data?.data?.down)
+          // setudata(res?.data?.data?.data?.up)
+          // setdates(res?.data?.data?.data)
+          // setunit(res?.data?.data?.data?.unit)
+        }
+      }
+    } catch (error) {
+      setLoader(true)
+      setLoading(true)
+      toast.error(error?.response?.data?.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      })
+    }
+    // setrefresh(true)
+  }
+
+  const handleClearFilters = () => {
+    setsearch("")
+    setSelectedUserStatus("all")
+    setStartDate("")
+    settoDate("")
+    handleAllUsersList()
+  }
+
+  const handleDebounceVal = debounce(async (search) => {
+    setLoading(true)
+    const ipRegex = customRegex?.ipAddress
+    if (ipRegex.test(search)) {
+      let param = new URLSearchParams({
+        service_id: params?.id,
+        action: "ips",
+        ips: search,
+      });
+      try {
+        // setLoader(true);
+        // setLoading(true);
+        let res = await deviceDetails(param);
+        if (res) {
+          setLoader(false);
+          setLoading(false);
+          let data = res?.data?.data;
+          setIpv4Data(data);
+        }
+      } catch (err) {
+        setLoader(false);
+        setLoading(false);
+        setIpv4Data([]);
+      }
+    } else {
+      setLoading(false)
+      toast.error("Please enter a valid IP Address", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+  }, 500);
   // useEffect(() => {
   //   let config = {
   //     params: {
@@ -134,11 +246,6 @@ function UsersList() {
   //   }
   // }, [dispatch])
 
-  useEffect(async () => {
-    setPageTitle("Invoice")
-    // getInvoiceList()
-  }, [])
-
   // const getInvoiceList = async(data) => {
   //   try {
   //     let res = ""
@@ -147,7 +254,7 @@ function UsersList() {
   //     }else{
   //       res = await getInvoice()
   //     }
-     
+
   //     if (res) {
   //       setPageination({ state: false })
   //       setLoader(false)
@@ -176,24 +283,24 @@ function UsersList() {
   //     }
   //   }
   // }
-  
+
   const handleInvoiceFilter = (status, time) => {
-    let data = "" 
-    if(status?.length){
+    let data = ""
+    if (status?.length) {
       data = new URLSearchParams({
-        status:status,
-        timeperiod:time,
-        pagination:pageSizes,
-        page:page
+        status: status,
+        timeperiod: time,
+        pagination: pageSizes,
+        page: page
       })
-    }else {
+    } else {
       data = new URLSearchParams({
-        timeperiod:time,
-        pagination:pageSizes,
-        page:page
+        timeperiod: time,
+        pagination: pageSizes,
+        page: page
       })
     }
-   
+
     getInvoiceList(data)
   }
   // useEffect(() => {
@@ -216,7 +323,7 @@ function UsersList() {
   }
 
   const filterApply = () => {
-    
+
     let arr = [...defaultinvoicelist]
     let filteredData = arr.filter(item => {
       if (
@@ -262,17 +369,17 @@ function UsersList() {
   }
 
   const clearfilter = () => {
-    setCheckboxValues({
-      Paid: false,
-      // Unpaid: false,
-      // Refunded: false,
-      Cancelled: false,
-      // Draft: false,
-      // Overdue: false,
-      Payment_Pending: false,
-      // Collections: false,
-    })
-    getInvoiceList()
+    // setCheckboxValues({
+    //   Paid: false,
+    //   // Unpaid: false,
+    //   // Refunded: false,
+    //   Cancelled: false,
+    //   // Draft: false,
+    //   // Overdue: false,
+    //   Payment_Pending: false,
+    //   // Collections: false,
+    // })
+    // getInvoiceList()
   }
 
   const applyFilter = async () => {
@@ -336,6 +443,7 @@ function UsersList() {
     }
   }
 
+
   const columns = useMemo(
     () => [
       {
@@ -375,6 +483,22 @@ function UsersList() {
         },
       },
       {
+        Header: "Phone Number",
+        accessor: "phone_number",
+        filterable: true,
+        Cell: cellProps => {
+          return <PhoneNumber {...cellProps} />
+        },
+      },
+      {
+        Header: "Joining Date",
+        accessor: "joining_date",
+        filterable: true,
+        Cell: cellProps => {
+          return <JoiningDate {...cellProps} />
+        },
+      },
+      {
         Header: "Status",
         accessor: "status",
         filterable: true,
@@ -410,9 +534,43 @@ function UsersList() {
               {/* <strong>Invoices ✨</strong> */}
               <strong>Users List</strong>
             </h2>
-            {!permissionDen && (
-              <div className="dropdown-group">
-                <div className="dropdown">
+          </div>
+          <div className="rs-product-left-title rs-product-left-title-wrap title-group">
+            <div className="dropdown-group">
+              <div className="dropdown">
+                <div className="top-center search">
+                  <div className="app-search d-none d-lg-block p-0">
+                    <div className="position-relative">
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={search}
+                        placeholder={"Search"}
+                        onChange={e => {
+                          // handleSearch(e?.target?.value)
+                          setsearch(e?.target?.value)
+                          // handleDebounceVal(e?.target?.value)
+                        }}
+                      />
+                      {!search ? (
+                        <span className={"uil-search"}></span>
+                      ) : (
+                        <span
+                          className={"uil-times"}
+                          style={{ cursor: "pointer" }}
+                          onClick={e => {
+                            // handleSearch()
+                            // handleDebounceVal("")
+                            // dashBoardCall0(0)
+                            setsearch("")
+                          }}
+                        ></span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* <div className="dropdown">
                   <Dropdown
                     isOpen={statusFilterOpen}
                     toggle={() => setstatusFilterOpen(!statusFilterOpen)}
@@ -501,65 +659,63 @@ function UsersList() {
                       </li>
                     </DropdownMenu>
                   </Dropdown>
-                </div>
-                <div className="dropdown">
-                  <Dropdown
-                    isOpen={paymentTypeFilter}
-                    toggle={() => setPaymentTypeFilter(!paymentTypeFilter)}
+                </div> */}
+              <div className="dropdown">
+                <Dropdown
+                  isOpen={isUserStatusFilter}
+                  toggle={() => setIsUserStatusFilter(!isUserStatusFilter)}
+                >
+                  <button
+                    className="btn btn-primary dropdown-toggle"
+                    type="button"
+                    data-toggle="dropdown"
+                    onClick={() => setIsUserStatusFilter(!isUserStatusFilter)}
                   >
-                    <button
-                      className="btn btn-primary dropdown-toggle"
-                      type="button"
-                      data-toggle="dropdown"
-                      onClick={() => setPaymentTypeFilter(!paymentTypeFilter)}
-                    >
-                        {selectedPaymentType == "all"
-                        ? "All"
-                        : selectedPaymentType == "deposit"
-                        ? "Deposit"
-                        : selectedPaymentType == "transfer"
-                        ? "Transfer"
-                        : selectedPaymentType == "withdraw"
-                        ? "Withdraw"
-                        : ""}
-                      <span className="caret" />
-                    </button>
-                    <DropdownMenu className="outerdiv">
-                      <>
-                        <li onClick={() => paymentFilter("all")}>
-                          <div className="form-check custom-checkbox">
-                            <label
-                              className="form-check-label"
-                              htmlFor="All"
-                            >
-                              All
-                            </label>
-                          </div>
-                        </li>
-                        <DropdownItem divider />
-                        <li onClick={() => paymentFilter("deposit")}>
-                          <div className="form-check custom-checkbox">
-                            <label
-                              className="form-check-label"
-                              htmlFor="Deposit"
-                            >
-                              Deposit
-                            </label>
-                          </div>
-                        </li>
-                        <DropdownItem divider />
-                        <li onClick={() => paymentFilter("transfer")}>
-                          <div className="form-check custom-checkbox">
-                            <label
-                              className="form-check-label"
-                              htmlFor="Transfer"
-                            >
-                              Transfer
-                            </label>
-                          </div>
-                        </li>
-                        <DropdownItem divider />
-                        <li onClick={() => paymentFilter("withdraw")}>
+                    {selectedUserStatus == "all"
+                      ? "All"
+                      : selectedUserStatus == "active"
+                        ? "Active"
+                        : selectedUserStatus == "inactive"
+                          ? "In-active"
+                          : ""}
+                    <span className="caret" />
+                  </button>
+                  <DropdownMenu className="outerdiv">
+                    <>
+                      <li onClick={() => userStatusFilter("all")}>
+                        <div className="form-check custom-checkbox">
+                          <label
+                            className="form-check-label"
+                            htmlFor="All"
+                          >
+                            All
+                          </label>
+                        </div>
+                      </li>
+                      <DropdownItem divider />
+                      <li onClick={() => userStatusFilter("active")}>
+                        <div className="form-check custom-checkbox">
+                          <label
+                            className="form-check-label"
+                            htmlFor="Active"
+                          >
+                            Active
+                          </label>
+                        </div>
+                      </li>
+                      <DropdownItem divider />
+                      <li onClick={() => userStatusFilter("inactive")}>
+                        <div className="form-check custom-checkbox">
+                          <label
+                            className="form-check-label"
+                            htmlFor="In-active"
+                          >
+                            In-active
+                          </label>
+                        </div>
+                      </li>
+                      <DropdownItem divider />
+                      {/* <li onClick={() => paymentFilter("withdraw")}>
                           <div className="form-check custom-checkbox">
                             <label
                               className="form-check-label"
@@ -569,14 +725,83 @@ function UsersList() {
                             </label>
                           </div>
                         </li>
-                        <DropdownItem divider />
-                      </>
-                    </DropdownMenu>
-                  </Dropdown>
-                </div>
+                        <DropdownItem divider /> */}
+                    </>
+                  </DropdownMenu>
+                </Dropdown>
+              </div>
 
-                <div className="dropdown">
-                  <Dropdown
+              <div className="dropdown">
+                <div
+                  className="chartfilter"
+                // className={loader ? "chartfilter overlayerloader" : "chartfilter"}
+                >
+                  <span>
+                    <p className="datelabel">From</p>
+                    <DatePicker
+                      selected={startDate}
+                      placeholderText="Please select a date"
+                      onChange={date => {
+                        setStartDate(date)
+                        settoDate(toDate? toDate : new Date())
+
+                        // comparisonvalid(date, toDate)
+                      }}
+                      // minDate={registrationDate}
+                      maxDate={new Date()}
+                      dateFormat={"yyyy/MM/dd"}
+                    />
+                  </span>
+                  <span>
+                    <p className="datelabel">To</p>
+                    <DatePicker
+                      selected={toDate}
+                      placeholderText="Please select a date"
+                      onChange={date => {
+                        settoDate(date)
+                        // comparisonvalid(startDate, date)
+                      }}
+                      minDate={startDate}
+                      maxDate={new Date()}
+                      dateFormat={"yyyy/MM/dd"}
+                    />
+                  </span>
+                  <button
+                    // title={
+                    //   comparefromDate >= comparetoDate
+                    //     ? "To date must be greater than Start date"
+                    //     : ""
+                    // }
+                    onClick={() => handleFilterUsers()}
+                    className="filter usage-filter"
+                    disabled={spinner}
+                  // style={{
+                  //   cursor:
+                  //     (comparefromDate >= comparetoDate || spinner) ? "not-allowed" : "pointer",
+                  // }}
+                  >
+                    {/* {spinner ? <div className="ui active inline loader"></div> : "Filter"} */}
+                    Filter
+                  </button>
+                  <button
+                    // title={
+                    //   comparefromDate >= comparetoDate
+                    //     ? "To date must be greater than Start date"
+                    //     : ""
+                    // }
+                    onClick={() => handleClearFilters()}
+                    className="filter usage-filter"
+                    disabled={spinner}
+                  // style={{
+                  //   cursor:
+                  //     (comparefromDate >= comparetoDate || spinner) ? "not-allowed" : "pointer",
+                  // }}
+                  >
+                    {/* {spinner ? <div className="ui active inline loader"></div> : "Filter"} */}
+                    Clear
+                  </button>
+                </div>
+                {/* <Dropdown
                     isOpen={dateFilterOpen}
                     toggle={() => setdateFilterOpen(!dateFilterOpen)}
                   >
@@ -655,43 +880,38 @@ function UsersList() {
                         <DropdownItem divider />
                       </>
                     </DropdownMenu>
-                  </Dropdown>
-                </div>
+                  </Dropdown> */}
               </div>
-            )}
+            </div>
           </div>
-          {!permissionDen ? (
-            <Row>
-              <Col xs="12">
-                <div className="table_v1 invoice-listing">
-                  <TableContainer
-                    tableClassName="product-table table-shadow"
-                    columns={columns}
-                    data={allUsers == undefined ? [] : allUsers}
-                    isGlobalFilter={true}
-                    isAddCustomer={true}
-                    isAddTableBorderStrap={true}
-                    totalCount={totalUsers}
-                    setPageSizes={setPageSizes}
-                    hasMorePages={hasMorePages}
-                    totalPages={totalPages}
-                    currentPage={currentPage}
-                    handleCustomerClicks={handleCustomerClicks}
-                    setPage={setPage}
-                    setPageination={setPageination}
-                    getTablePropsC={() => ({
-                      className: "product-table ",
-                    })}
-                  />
-                </div>
-              </Col>
-            </Row>
-          ) : (
-            <PermissionDenied />
-          )}
+          <Row>
+            <Col xs="12">
+              <div className="table_v1 invoice-listing">
+                <TableContainer
+                  tableClassName="product-table table-shadow"
+                  columns={columns}
+                  data={allUsers == undefined ? [] : allUsers}
+                  isGlobalFilter={true}
+                  isAddCustomer={true}
+                  isAddTableBorderStrap={true}
+                  totalCount={totalUsers}
+                  setPageSizes={setPageSizes}
+                  hasMorePages={hasMorePages}
+                  totalPages={totalPages}
+                  currentPage={currentPage}
+                  handleCustomerClicks={handleCustomerClicks}
+                  setPage={setPage}
+                  setPageination={setPageination}
+                  getTablePropsC={() => ({
+                    className: "product-table ",
+                  })}
+                />
+              </div>
+            </Col>
+          </Row>
         </div>
       </div>
-      <TextLoader loading={loading} loader={loader}/>
+      <TextLoader loading={loading} loader={loader} />
     </React.Fragment>
   )
 }

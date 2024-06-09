@@ -253,7 +253,7 @@ const Header = props => {
             ) : (
               ""
             )}
-            <div className="d-flex align-items-center">
+            {/* <div className="d-flex align-items-center">
               <NotificationDropdown
                 notificationData={notificationData}
                 setNotificationData={setNotificationData}
@@ -274,7 +274,7 @@ const Header = props => {
                   Add Service
                 </Link>
               )}
-            </div>
+            </div> */}
           </div>
         </div>
           <TextLoader  loader={loader}/>

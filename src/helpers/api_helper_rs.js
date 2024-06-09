@@ -87,16 +87,17 @@ export async function getNew(url, config = {}) {
   }
   // return axios(config);
   return axios(config).catch(error => {
-    // if (error?.response?.status === 401 || error?.response?.status === 500) {
-    // if (error?.response?.status === 401) {
-      // toast.error("Login session expired", {
-      //   position: toast.POSITION.TOP_RIGHT,
-      // })
-      // window.location.href = "/login"
-      // localStorage.clear()
-      // sessionExpired()
-    // }
-    throw error
+    if (error?.response?.status === 401 || error?.response?.status === 500) {
+      if (error?.response?.status === 401) {
+        toast.error("Login session expired", {
+          position: toast.POSITION.TOP_RIGHT,
+        })
+        window.location.href = "/login"
+        localStorage.clear()
+        sessionExpired()
+      }
+      throw error
+    }
   })
 }
 
@@ -119,7 +120,7 @@ export async function postNew(url, data, config = {}) {
   return axios(config).catch(error => {
     // if (error?.response?.status === 401 || error?.response?.status === 500) {
     // if (error?.response?.status === 401) {
-      // sessionExpired()
+    // sessionExpired()
     // }
     throw error
   })
@@ -205,14 +206,14 @@ export const getHoursAgo = (time, currentTime) => {
 }
 
 export const storeLoginTime = () => {
-    const currTime = new Date().toLocaleString()
-    let time = encrypt(currTime)
-    localStorage.setItem(SETTINGS.LOGIN_TIME, time)
+  const currTime = new Date().toLocaleString()
+  let time = encrypt(currTime)
+  localStorage.setItem(SETTINGS.LOGIN_TIME, time)
 }
 
 export const checkSessionExpire = () => {
   let auth = localStorage.getItem("authToken")
-  if(auth){
+  if (auth) {
     let loginTime = localStorage.getItem(SETTINGS.LOGIN_TIME)
     loginTime = decrypt(loginTime)
     let currentTime = new Date().toLocaleString()
@@ -259,12 +260,13 @@ export const FormatDate = (
   let minutes = date?.substring(14, 16)
   let seconds = date?.substring(17, 19)
 
+  clientformat = "DD/MM/YYYY"
   if (date?.substring(0, 10) === "0000-00-00" && zerodateval) {
     return zerodateval
   }
   let formattedDate
 
-  if (client && clientformat && year > 0 && month > 0 && day > 0) {
+  if (clientformat && year > 0 && month > 0 && day > 0) {
     if (clientformat === "full") {
       formattedDate = new Date(year, month - 1, day)
       formattedDate = formattedDate?.toLocaleDateString(undefined, {
@@ -287,12 +289,12 @@ export const FormatDate = (
         day: "numeric",
         year: "numeric",
       })
-    }else if (clientformat === "DD/MM/YYYY") {
+    } else if (clientformat === "DD/MM/YYYY") {
       formattedDate = new Date(year, month - 1, day)
       formattedDate = formattedDate?.toLocaleDateString(undefined, {
-        day: "numeric",
-        month: "numeric",
-        year: "numeric",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
       })
     }
 
@@ -341,22 +343,22 @@ export const getStoredCards = () => {
   }
 }
 
- /**
-   * step 2
-   * here we store array in localstorage.
-  */
+/**
+  * step 2
+  * here we store array in localstorage.
+ */
 
 export const storeArrayFuc = (serverid, uuid, status, percentage) => {
   let storedArray = JSON.parse(localStorage.getItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY)) || [];
-  let newArray = {serverId:serverid, jobId:uuid, status:status, percentage:percentage}
+  let newArray = { serverId: serverid, jobId: uuid, status: status, percentage: percentage }
   let isItemAlreadyExist = storedArray.some((item) => item.serverId === newArray.serverId)
-  if(!isItemAlreadyExist){
+  if (!isItemAlreadyExist) {
     storedArray.push(newArray)
     localStorage.setItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY, JSON.stringify(storedArray));
-  }else{
+  } else {
     let existingObject = storedArray.find((item) => item.serverId === newArray.serverId)
-    if(existingObject?.status != "FINISHED" && existingObject?.status != "CANCELED"){
-      let myObject = {serverId: serverid, jobId: uuid, status: status, percentage: percentage || existingObject?.percentage};
+    if (existingObject?.status != "FINISHED" && existingObject?.status != "CANCELED") {
+      let myObject = { serverId: serverid, jobId: uuid, status: status, percentage: percentage || existingObject?.percentage };
       pushLatestStatus(myObject)
     }
   }
@@ -368,10 +370,10 @@ export const storeArrayFuc = (serverid, uuid, status, percentage) => {
   */
 export const pushLatestStatus = (myObject) => {
   const storedArray = JSON.parse(localStorage.getItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY))
-  const indexToUpdate = storedArray.findIndex(obj=> obj?.serverId === myObject?.serverId)
-  if(indexToUpdate !== -1){
+  const indexToUpdate = storedArray.findIndex(obj => obj?.serverId === myObject?.serverId)
+  if (indexToUpdate !== -1) {
     storedArray[indexToUpdate] = myObject
-  }else {
+  } else {
     storedArray.push(myObject)
   }
   localStorage.setItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY, JSON.stringify(storedArray));
@@ -379,11 +381,11 @@ export const pushLatestStatus = (myObject) => {
 
 export const findRange = (count, size) => {
   for (let i = 0; i < size.length - 1; i++) {
-      if(count > size[i] && count <= size[i + 1]){
-        return size[i +1]
-      }else if(count <= size[i]){
-        return size[i]
-      }
+    if (count > size[i] && count <= size[i + 1]) {
+      return size[i + 1]
+    } else if (count <= size[i]) {
+      return size[i]
+    }
   }
 }
 

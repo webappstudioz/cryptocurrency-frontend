@@ -64,6 +64,9 @@ import AddAccount from "../pages/Admin/AddAccount"
 import AdminMyAccount from "../pages/Admin/AdminMyAccount"
 import AdminChangePassword from "../pages/Admin/AdminChangePassword"
 import StoreResulst from "../pages/Admin/StoreResulst"
+import UserDetail from "../pages/Admin/UserDetail"
+import UpdateProfile from "../pages/Authentication/UpdateProfile"
+import MyTeam from "../pages/User/MyTeam/MyTeam"
 
 const authRoutes = [
   { path: "/logout", component: Logout },
@@ -90,6 +93,8 @@ const unAuthrizedRoutes = [
 
 const userRoutes = [
   { path: "/dashboard", component: Dashboard },
+  { path: "/profile/update", component: UpdateProfile },
+  { path: "/my-team", component: MyTeam },
   { path: "/services", component: ServiceList },
   { path: "/server-management/:id", component: ServerManagement },
   { path: "/invoice-detail/:id", component: InvoiceDetail },
@@ -136,6 +141,7 @@ const userRoutes = [
 
 const adminRoutes = [
   { path: "/users-list", component: UsersList },
+  { path: "/user-detail/:id", component: UserDetail },
   { path: "/add-accounts", component: AddAccount },
   { path: "/my-profile", component: AdminMyAccount },
   { path: "/changepassword", component: AdminChangePassword },

@@ -880,7 +880,7 @@ function DatatableTables() {
                 </div>
               </div>
             </div>
-            <div className="tab-content" id="myTabContent">
+          <div className="tab-content" id="myTabContent">
             {/* //server overview start*/}
             {activeTab === "Overview" && 
               <div
