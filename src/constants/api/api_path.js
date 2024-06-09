@@ -60,3 +60,6 @@ export const TimeFormat = {
         hour: 'numeric',
         minute: 'numeric',
 }
+
+//short code of those countries which data is not available in phone input and flag is not available in country list
+export const noCountryData = ["aq", "bv", "tp", "xa", "tf", "hm", "xj", "xm", "an", "pn", "xg", "gs", "um", "yu", "xu"]

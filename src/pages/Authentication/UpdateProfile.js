@@ -5,7 +5,7 @@ import * as Yup from "yup"
 import { useFormik } from "formik"
 //redux
 import { useDispatch } from "react-redux"
-import { withRouter, useLocation } from "react-router-dom"
+import { withRouter, useLocation, useHistory } from "react-router-dom"
 import { isUserUpdated } from "../../store/auth/userdetails/actions"
 import rederror from "../../assets/images/redvalidationicon/rederror.jpg"
 import {
@@ -26,10 +26,12 @@ import { toast } from "react-toastify"
 import PermissionDenied from "./PermissionDenied"
 import { setPageTitle } from "../../helpers/api_helper_rs"
 import { FocusError } from 'focus-formik-error'
+import { noCountryData } from "../../constants/api/api_path"
 
 const UpdateProfile = props => {
   const locationParams = useLocation()
   const userInfo = locationParams?.state?.userInfo
+  const navigate = useHistory()
   const phoneInputRef = useRef(null);
   const [countryList, setcountryList] = useState()
   const [stateList, setstateList] = useState()
@@ -37,43 +39,42 @@ const UpdateProfile = props => {
   const [selectedState, setselectedState] = useState()
   const [countryError, setcountryError] = useState(true)
   const [stateError, setstateError] = useState(false)
-  const [loader, setLoader] = useState("")
+  const [loader, setLoader] = useState(true)
   const [role, setRole] = useState()
   const [permissionDen, setPermissionDen] = useState(false)
   const [inlineLoader, setinlineLoader] = useState(false)
-  const [countryname, setcountryname] = useState("")
+  const [countryname, setCountryName] = useState("")
   const [statename, setstatename] = useState("")
   const [selectedCountryCode, setSelectedCountryCode] = useState()
   const [bankQR, setBankQR] = useState()
+  const [bankQRError, setBankQRError] = useState(false)
   const [cryptoQR, setCryptoQR] = useState()
+  const [cryptoQRError, setCryptoQRError] = useState(false)
+  const [selectedPhoneCode, setSelectedPhoneCode] = useState()
 
   useEffect(() => {
     setPageTitle("Update Profile")
     getcountry()
   }, [])
 
-  const country = async (event, maindata) => {
-    try {
-      setinlineLoader(true)
-      let data = new URLSearchParams({
-        country_id: maindata.value,
-      })
-      let res = await postCountry(data)
-      let all = []
-      if (res) {
-        setinlineLoader(false)
-
-        res.data.data.map(ele => {
-          all.push({ text: ele.name, value: ele.id })
-        })
-        setstateList(all)
-        setselectedCountry(maindata.value)
-        setcountryError(false)
-      }
-    } catch (error) {
-      setinlineLoader(false)
+  useEffect(() => {
+    if (userInfo?.country_id) {
+      setselectedCountry(userInfo?.country_id)
+      setcountryError(false)
     }
-  }
+  }, [userInfo])
+
+  useEffect(() => {
+    if (countryList) {
+      countryList?.map((list) => {
+        if (list?.value === selectedCountry) {
+          setSelectedCountryCode(list?.short_code?.toLowerCase())
+          setCountryName(list?.text)
+          setLoader(false)
+        }
+      })
+    }
+  }, [selectedCountry, countryList])
 
   const getcountry = async () => {
     try {
@@ -140,57 +141,57 @@ const UpdateProfile = props => {
       // zipCode: Yup.string().required("Zip code is required."),
     }),
     onSubmit: async values => {
-      console.log("values", values)
-      return
+      // return
       if (selectedCountry != undefined && selectedCountry != null && selectedCountry.length > 1) {
-        // setcountryError(false)
+        setcountryError(false)
       } else {
-        // setcountryError(true)
+        setcountryError(true)
       }
       // if (selectedState != undefined && selectedState != null && selectedState.length > 1) {
       // } else {   }
 
       let data = new URLSearchParams({
-        id: userId,
-        user_name: user_name,
-        first_name: firstName,
-        last_name: lastName,
-        email: email,
-        phone_number: phoneNumber,
-        country_code: countryCode,
-        joining_date: JoiningDate,
-        address: address,
-        city: city,
-        zip_code: zipCode,
-        crypto_id: cryptoId,
-        crypto_image: "",
-        bank_name: bankName,
-        account_number: accountNumber,
-        ifsc_code: ifscCode,
-        account_holder_name: accountHolderName,
-        upi_id: upiId,
-        account_image: ""
+        user_name: userInfo?.user_name,
+        first_name: values?.firstName,
+        last_name: values?.lastName,
+        email: userInfo?.email,
+        phone_number: values?.phoneNumber,
+        country_code: selectedCountryCode,
+        joining_date: userInfo?.joining_date,
+        address: values?.address,
+        city: values?.city,
+        country_id: selectedCountry,
+        zip_code: values?.zipCode,
+        crypto_id: values?.cryptoId,
+        crypto_image: cryptoQR,
+        bank_name: values?.bankName,
+        account_number: values?.accountNumber,
+        ifsc_code: values?.ifscCode,
+        account_holder_name: values?.accountName,
+        upi_id: values?.upiId,
+        account_image: bankQR
       })
 
-      if (!stateError) {
+      // if (!stateError) {
         try {
           setLoader(true)
-          let res = await updateUserProfile(data)
+          let res = await updateUserProfile(userInfo?.id, data)
           if (res) {
-            handleClientInfo()
+            // handleClientInfo()
             setLoader(false)
             toast.success(res.data?.message, {
               position: toast.POSITION.TOP_RIGHT,
             })
+            navigate.push("/my-account")
 
-            let data = loginData()
-            data.address_one = values.addressOne
-            data.address_two = values.addressTwo
-            data.city = values.city
-            data.zip_code = values.zipCode
-            data.state = statename
-            data.country = countryname
-            storeUserData(data)
+            // let data = loginData()
+            // data.address_one = values.addressOne
+            // data.address_two = values.addressTwo
+            // data.city = values.city
+            // data.zip_code = values.zipCode
+            // data.state = statename
+            // data.country = countryname
+            // storeUserData(data)
             updateProfileSilent()
           }
 
@@ -201,76 +202,141 @@ const UpdateProfile = props => {
           })
         }
       }
-    },
+    // },
   })
 
-  useEffect(async () => {
-      try {
-        setLoader(true)
-        if (user) {
-          setLoader(false)
-          // if (user?.state_id != null && (user?.state_id).length > 0) {
-          //   setselectedState(user?.state_id)
-          // } else {
-          //   setselectedState("n")
-          // }
-          if (userInfo?.country_id != null && (userInfo?.country_id).length > 0) {
-            try {
-              setcountryError(false)
-              setselectedCountry(userInfo.country_id)
-              let data = new URLSearchParams({
-                country_id: user.country_id,
-              })
-              let res = await postCountry(data)
-              let all = []
-              res.data.data.map(ele => {
-                all.push({ text: ele.name, value: ele.id })
-              })
-              setstateList(all)
-            } catch (error) { }
-          } else {
-            setselectedCountry("n")
-          }
-        }
-      } catch (err) {
-        setLoader(false)
-          toast.error(err?.response?.data?.message, {
-            position: toast.POSITION.TOP_RIGHT,
-          })
-      }
-  }, [])
+  // useEffect(async () => {
+  //   console.log("userInfo", userInfo?.country_id)
+  //     try {
+  //       setLoader(true)
+  //       if (user) {
+  //         setLoader(false)
+  //         // if (user?.state_id != null && (user?.state_id).length > 0) {
+  //         //   setselectedState(user?.state_id)
+  //         // } else {
+  //         //   setselectedState("n")
+  //         // }
+  //         if (userInfo?.country_id != null && (userInfo?.country_id).length > 0) {
+  //           try {
+  //             setcountryError(false)
+  //             setselectedCountry(userInfo.country_id)
+  //             let data = new URLSearchParams({
+  //               country_id: user.country_id,
+  //             })
+  //             let res = await postCountry(data)
+  //             let all = []
+  //             res.data.data.map(ele => {
+  //               all.push({ text: ele.name, value: ele.id })
+  //             })
+  //             setstateList(all)
+  //           } catch (error) { }
+  //         } else {
+  //           setselectedCountry("n")
+  //         }
+  //       }
+  //     } catch (err) {
+  //       setLoader(false)
+  //         toast.error(err?.response?.data?.message, {
+  //           position: toast.POSITION.TOP_RIGHT,
+  //         })
+  //     }
+  // }, [userInfo])
 
   useEffect(() => {
-    const inputElement = phoneInputRef.current;
+    const countryCodeMatch = noCountryData.some((item) => item == selectedCountryCode)
+    const inputElement = phoneInputRef?.current;
+    let iti;
     if (inputElement) {
-      const iti = intlTelInput(inputElement, {
+      iti = intlTelInput(inputElement, {
         separateDialCode: true,
-        initialCountry: selectedCountryCode,
+        initialCountry: countryCodeMatch ? 'us' : selectedCountryCode,
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js"
-
       });
-
-      inputElement?.addEventListener("countrychange", function () {
+      inputElement.addEventListener("countrychange", function () {
         const selectedCountryData = iti.getSelectedCountryData();
         setSelectedPhoneCode(selectedCountryData)
+        // focusOnInput()
+        countryList?.map(async (countries) => {
+          if (selectedCountryData?.iso2 === countries?.short_code.toLowerCase()) {
+            setselectedCountry(countries.value)
+          }
+        })
       });
+
 
       // Clean up by destroying the intlTelInput instance when the component unmounts
       return () => {
         iti.destroy();
       };
     }
-  }, [phoneInputRef?.current, selectedCountryCode]);
+  }, [
+    phoneInputRef?.current,
+    selectedCountryCode,
+    countryList
+  ]);
 
-  const handleImageChange = (e, action) => {
-    console.log("e",e?.target?.files)
-    console.log("action",action)
-    if(action === "bankQR"){
-      setBankQR(e?.target?.files)
-    }else if (action === "cryptoQR"){
-      setCryptoQR(e?.target?.files)
+  const handleFileChange = (event, action) => {
+
+    // console.log("action",action)
+    // console.log("event",event)
+    const file = event.target.files[0];
+    if (file) {
+      const fileSize = file.size / 1024 / 1024; // in MB
+      const fileType = file.type.split("/")[1]; // get file extension
+
+      // Validate file size (10MB max)
+      if (fileSize > 20) {
+        action === "cryptoQR" ? setCryptoQRError("File size should be less than 20 MB") : setBankQRError("File size should be less than 20 MB")
+      } else {
+        // Validate file extension
+        if (
+          fileType === "jpg" ||
+          fileType === "jpeg" ||
+          fileType === "png" ||
+          fileType === "pdf" ||
+          fileType === "doc" ||
+          fileType === "xls" ||
+          fileType === "zip"
+        ) {
+          action === "cryptoQR" ? (setCryptoQR(file), setCryptoQRError("")) : (setBankQR(file), setBankQRError(""))
+          // setSelectedFile(file)
+          // setErrorMsg("");
+        } else {
+          action === "cryptoQR" ? setCryptoQRError("Only JPG, PNG, PDF, DOC, XLS, and ZIP files are allowed") : setBankQRError("Only JPG, PNG, PDF, DOC, XLS, and ZIP files are allowed")
+
+          // setErrorMsg(
+          //   "Only JPG, PNG, PDF, DOC, XLS, and ZIP files are allowed"
+          // );
+        }
+      }
     }
-  } 
+  };
+
+  const handleCountryChange = async (event, maindata) => {
+    setselectedCountry(maindata.value)
+    setcountryError(false)
+    // try {
+    //   setinlineLoader(true)
+    //   let data = new URLSearchParams({
+    //     country_id: maindata.value,
+    //   })
+    //   let res = await postCountry(data)
+    //   let all = []
+    //   if (res) {
+    //     setinlineLoader(false)
+
+    //     res.data.data.map(ele => {
+    //       all.push({ text: ele.name, value: ele.id })
+    //     })
+    //     setstateList(all)
+    //     setselectedCountry(maindata.value)
+    //     setcountryError(false)
+    //   }
+    // } catch (error) {
+    //   setinlineLoader(false)
+    // }
+
+  }
 
   return (
     <React.Fragment>
@@ -435,7 +501,7 @@ const UpdateProfile = props => {
                     ) : null}
                   </Col> */}
                   <Col lg="6">
-                  <div className="form-group">
+                    <div className="form-group">
                       <Input
                         type="tel"
                         id="phone"
@@ -486,7 +552,7 @@ const UpdateProfile = props => {
                       ) : null}
                       <div id="flag-container"></div>
                     </div>
-                    </Col>
+                  </Col>
                   <Col lg="6">
                     <Input
                       name="doj"
@@ -606,15 +672,17 @@ const UpdateProfile = props => {
                     ) : null}
                   </Col>
                   <Col lg="6">
-                    <Dropdown
-                      placeholder="Select Country"
-                      fluid
-                      search
-                      className="country-Drop input-outline"
-                      defaultValue={selectedCountry}
-                      onChange={country}
-                      options={countryList}
-                    />
+                    {selectedCountry && (
+                      <Dropdown
+                        placeholder="Select Country"
+                        fluid
+                        search
+                        className="country-Drop input-outline"
+                        value={selectedCountry}
+                        onChange={handleCountryChange}
+                        options={countryList}
+                      />
+                    )}
                     {countryError && (
                       <div style={{ display: "flex" }}>
                         <img
@@ -693,35 +761,41 @@ const UpdateProfile = props => {
                     ) : null}
                   </Col>
                   <Col lg="6">
-                    <Input
-                      name="cryptoQRCode"
+                    <input
+                      // disabled={spinner}
+                      // key={inputKey}
+                      id="file-upload"
                       type="file"
-                      // value={validation.values.cryptoQRCode}
-                      className="mt-3 input-outline"
-                      placeholder="Crypto QR Code"
-                      onChange={(e) => {handleImageChange(e, "cryptQR")}}
-                      // onBlur={validation.handleBlur}
-                      // invalid={
-                      //   validation.touched.cryptoQRCode &&
-                      //     validation.errors.cryptoQRCode
-                      //     ? true
-                      //     : false
-                      // }
+                      // accept=".jpg,.jpeg,.png,.pdf,.doc,.xls,.zip"
+                      accept=".jpg,.jpeg,.png"
+                      onChange={(e) => { handleFileChange(e, "cryptoQR") }}
+                      onClick={(event) => {
+                        if (
+                          event.target.files.length === 1 &&
+                          event.target.files[0].name ===
+                          cryptoQR?.name
+                        ) {
+                          event.target.value = null;
+                        }
+                      }}
+                    // multiple
                     />
-                    {/* {validation.touched.cryptoQRCode &&
-                      validation.errors.cryptoQRCode ? (
-                      <>
-                        <FormFeedback type="invalid">
-                          <img
-                            className="form-error-icon"
-                            src={rederror}
-                            alt=""
-                            height={15}
-                          />
-                          {validation.errors.cryptoQRCode}
-                        </FormFeedback>
-                      </>
-                    ) : null} */}
+                    <span className="file-formats">
+                      Please select files to attach (20 MB max, .jpg, .jpeg,
+                      .png,)
+                    </span>
+                    {cryptoQRError && (
+                      <span className="ticket-validaton-error">
+                        {" "}
+                        <img
+                          className="form-error-icon"
+                          src={rederror}
+                          alt=""
+                          height={15}
+                        />
+                        {cryptoQRError}
+                      </span>
+                    )}
                   </Col>
                 </Row>
               </CardBody>
@@ -764,7 +838,7 @@ const UpdateProfile = props => {
                   </Col>
                   <Col lg="6">
                     <Input
-                      name="accountNum"
+                      name="accountNumber"
                       value={validation.values.accountNumber}
                       className="mt-3 input-outline"
                       placeholder="Account Number"
@@ -883,36 +957,41 @@ const UpdateProfile = props => {
                     ) : null}
                   </Col>
                   <Col lg="6">
-                    <Input
-                      name="bankQRCode"
+                    <input
+                      // disabled={spinner}
+                      // key={inputKey}
+                      id="file-upload"
                       type="file"
-                      // value={validation.values.bankQRCode}
-                      className="mt-3 input-outline"
-                      placeholder=""
-                      onChange={(e) => {handleImageChange(e, "bankQR")}}
-                      // onChange={validation.handleChange}
-                      // onBlur={validation.handleBlur}
-                      // invalid={
-                      //   validation.touched.bankQRCode &&
-                      //     validation.errors.bankQRCode
-                      //     ? true
-                      //     : false
-                      // }
+                      // accept=".jpg,.jpeg,.png,.pdf,.doc,.xls,.zip"
+                      accept=".jpg,.jpeg,.png"
+                      onChange={(e) => { handleFileChange(e, "bankQR") }}
+                      onClick={(event) => {
+                        if (
+                          event.target.files.length === 1 &&
+                          event.target.files[0].name ===
+                          bankQR?.name
+                        ) {
+                          event.target.value = null;
+                        }
+                      }}
+                    // multiple
                     />
-                    {/* {validation.touched.bankQRCode &&
-                      validation.errors.bankQRCode ? (
-                      <>
-                        <FormFeedback type="invalid">
-                          <img
-                            className="form-error-icon"
-                            src={rederror}
-                            alt=""
-                            height={15}
-                          />
-                          {validation.errors.bankQRCode}
-                        </FormFeedback>
-                      </>
-                    ) : null} */}
+                    <span className="file-formats">
+                      Please select files to attach (20 MB max, .jpg, .jpeg,
+                      .png,)
+                    </span>
+                    {bankQRError && (
+                      <span className="ticket-validaton-error">
+                        {" "}
+                        <img
+                          className="form-error-icon"
+                          src={rederror}
+                          alt=""
+                          height={15}
+                        />
+                        {bankQRError}
+                      </span>
+                    )}
                   </Col>
                 </Row>
               </CardBody>
