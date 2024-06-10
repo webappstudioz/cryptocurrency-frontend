@@ -166,7 +166,7 @@ const Register = props => {
       values.termConditions ? (terms = 1) : (terms = 0)
       let data = new URLSearchParams({
         first_name: name[0],
-        last_name: name[1],
+        last_name: name[1] || "",
         phone_number: values?.phoneNumber,
         email: values?.email,
         country_id: values?.country,

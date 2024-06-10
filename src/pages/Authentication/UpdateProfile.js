@@ -33,6 +33,7 @@ const UpdateProfile = props => {
   const userInfo = locationParams?.state?.userInfo
   const navigate = useHistory()
   const phoneInputRef = useRef(null);
+  const dispatch = useDispatch()
   const [countryList, setcountryList] = useState()
   const [stateList, setstateList] = useState()
   const [selectedCountry, setselectedCountry] = useState()
@@ -192,7 +193,8 @@ const UpdateProfile = props => {
             // data.state = statename
             // data.country = countryname
             // storeUserData(data)
-            updateProfileSilent()
+            // dispatch(isUserUpdated(data))
+            // updateProfileSilent()
           }
 
         } catch (error) {

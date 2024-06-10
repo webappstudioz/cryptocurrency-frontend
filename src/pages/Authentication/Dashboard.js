@@ -8,39 +8,11 @@ import { FormatDate } from "../../helpers/api_helper_rs";
 import { loginData } from "../Authentication/store/apiServices";
 import logoGreen from "../../assets/images/c2c/logoGreen.jpg"
 import { C2CWallet, ComisionIncome, DepositWallet, FixedWallet, MonthlyReturn, WidBalance } from "../../components/Common/Widgets";
+import TextLoader from "../../components/textLoader";
 const Dashboard = ({ fullRes } = props) => {
   const logInfo = loginData()
-  // const [password, setpassword] = useState(true);
-  // const [rescuePassword, setrescuePassword] = useState(true);
-  // const [ipmiPassword, setipmiPassword] = useState(true);
-  // const [startDate, setStartDate] = useState();
-  // const [dueDate, setDueDate] = useState();
-  // const [currency, setCurrency] = useState()
   const [loader, setLoader] = useState(false);
-  // const [loading, setLoading] = useState(false);
-
-  // useEffect(() => {
-  //   let logInfo = loginData();
-  //   setCurrency(logInfo?.currency)
-  //   if (fullRes?.product?.regdate) {
-  //     let startdate = FormatDate(
-  //       fullRes?.product?.regdate,
-  //       logInfo?.ClientDateFormat || logInfo?.DateFormat,
-  //       logInfo?.role
-  //     );
-  //     setStartDate(startdate);
-  //   }
-
-  //   if (fullRes?.product?.nextduedate) {
-  //     let startdate = FormatDate(
-  //       fullRes?.product?.nextduedate,
-  //       logInfo?.ClientDateFormat || logInfo?.DateFormat,
-  //       logInfo?.role
-  //     );
-  //     setDueDate(startdate);
-  //   }
-  // }, [fullRes]);
-
+ 
   return (
     <React.Fragment>
       <div
@@ -226,7 +198,7 @@ const Dashboard = ({ fullRes } = props) => {
                         <th>Mobile</th>
                           <React.Fragment>
                             <td className="text-right">
-                              {logInfo?.phone_numnber}
+                              {logInfo?.country_code}{" "}{logInfo?.phone_number}
                             </td>
                           </React.Fragment>
                         <><td></td><td></td><td></td></>
@@ -279,6 +251,7 @@ const Dashboard = ({ fullRes } = props) => {
           </div>
         </div>
       </div>
+      <TextLoader loading={loader} loader={loader} />
     </React.Fragment>
   );
 };

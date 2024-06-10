@@ -63,9 +63,11 @@ const MyAccount = props => {
       const result = await getUserDetail(userId)
       const info = result?.data?.data
       setUserInfo(info)
+      dispatch(isUserUpdated(info))
+      console.log("info", info)
+      // storeUserData(info)
       setLoader(false)
     } catch (error) {
-      console.log("error", error)
       setLoader(false)
     }
   }
@@ -115,7 +117,6 @@ const MyAccount = props => {
   //     // zipCode: Yup.string().required("Zip code is required."),
   //   }),
   //   onSubmit: async values => {
-  //     console.log("values", values)
   //     return
   //     if (selectedCountry != undefined && selectedCountry != null && selectedCountry.length > 1) {
   //       // setcountryError(false)
@@ -568,16 +569,16 @@ const MyAccount = props => {
                     <table className="w-100">
                       <tbody>
                         <tr>
-                          <th>Bank Name</th>
+                          <th>Crypto Address</th>
                           <React.Fragment>
                             <td className="text-right">
-                              {userInfo?.bank_name}
+                              {userInfo?.crypto_id}
                             </td>
                           </React.Fragment>
                           <><td></td><td></td><td></td></>
                         </tr>
                         <tr></tr>
-                        <tr>
+                        {/* <tr>
                           <th>Account Number</th>
                           <React.Fragment>
                             <td className="text-right">
@@ -615,7 +616,7 @@ const MyAccount = props => {
                             </td>
                           </React.Fragment>
                           <><td></td><td></td><td></td></>
-                        </tr>
+                        </tr> */}
                       </tbody>
                     </table>
                   </div>

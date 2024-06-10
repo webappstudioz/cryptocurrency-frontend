@@ -9,7 +9,7 @@ import { Link } from "react-router-dom"
 import polygon from "../../../assets/images/Polygon.png";
 import logout from "../../../assets/images/logout.svg";
 import drop_arrow from "../../../assets/images/drop_arrow.svg";
-import { loginData, userRole } from "../../../pages/Authentication/store/apiServices";
+import { loginData } from "../../../pages/Authentication/store/apiServices";
 
 const ProfileMenuHeader = props => {
   const [menu, setMenu] = useState(false)
@@ -20,8 +20,7 @@ const ProfileMenuHeader = props => {
   
   useEffect(() => {
     if(user){
-      let role = userRole()
-      setUserData({first_name:user?.first_name, last_name: user?.last_name, role: role})
+      setUserData(user)
     } else {
       let loginDetail = loginData()
       setUserData(loginDetail)
@@ -77,10 +76,10 @@ const ProfileMenuHeader = props => {
             className="arrow"      
           /></span>{" "}  
         </DropdownToggle>
-        <h6 className='mb-0 d-flex align-items-center sd-name'>
-          Hi {" "}
-          {userData? userData?.first_name?.charAt(0)?.toUpperCase() + userData?.first_name?.slice(1).toLowerCase() : ""} 
-          {' '}{userData? userData?.last_name?.charAt(0)?.toUpperCase() + userData?.last_name?.slice(1).toLowerCase() : ""}
+        <h6 className='mb-0 d-flex align-items-center sd-name' style={{"text-transform": "capitalize"}}>
+          Hi {" "} {userData?.first_name} {" "}{userData?.last_name}
+          {/* {userData?.first_name? userData?.first_name?.charAt(0)?.toUpperCase() + userData?.first_name?.slice(1).toLowerCase() : ""} 
+          {' '}{userData?.last_name? userData?.last_name?.charAt(0)?.toUpperCase() + userData?.last_name?.slice(1).toLowerCase() : ""} */}
         </h6>
 
         <DropdownMenu className="dropdown-menu-end" style={{ margin: 0 }}>
