@@ -18,7 +18,7 @@ import {
     PhoneNumber,
 } from "./Table/CommonCol"
 import { getTeamList } from "../../Authentication/store/apiServices"
-
+import { toast } from "react-toastify"
 const MyTeam = () => {
     const [usersList, setUsersList] = useState([])
     const [loader, setLoader] = useState(false)
@@ -28,7 +28,7 @@ const MyTeam = () => {
     const [startDate, setStartDate] = useState()
     const [toDate, settoDate] = useState()
     const [spinner, setSpinner] = useState(false)
-    const [activeLevel, setActiveLevel] = useState("LevelOne")
+    const [activeLevel, setActiveLevel] = useState(1)
     const [pageSizes, setPageSizes] = useState(10)
     const [hasMorePages, setHasMorePages] = useState(false)
     const [totalPages, setTotalPages] = useState()
@@ -39,7 +39,7 @@ const MyTeam = () => {
 
     useEffect(() => {
         handleAllUsersList(activeLevel)
-    },[])
+    }, [])
 
     const handleTab = (level) => {
         setActiveLevel(level)
@@ -50,28 +50,28 @@ const MyTeam = () => {
         setLoader(true)
         // setLoading(true)
         try {
-          const result = await getTeamList(1)
-          let info = result?.data?.data
-          let users = info?.data.map((user, index) => {
-            return {
-              ...user,
-              serialNumber: index + 1
-            }
-          })
-    
-          setUsersList(users)
-          setPageination({ state: false })
-          setLoader(false)
-        //   setLoading(false)
-          setCurrentPage(info?.current_page)
-          setHasMorePages(info?.has_more_pages)
-          setTotalPages(info?.total_pages)
-          setTotalUsers(info?.total)
+            const result = await getTeamList(level)
+            let info = result?.data?.data
+            let users = info?.data.map((user, index) => {
+                return {
+                    ...user,
+                    serialNumber: index + 1
+                }
+            })
+
+            setUsersList(users)
+            setPageination({ state: false })
+            setLoader(false)
+            //   setLoading(false)
+            setCurrentPage(info?.current_page)
+            setHasMorePages(info?.has_more_pages)
+            setTotalPages(info?.total_pages)
+            setTotalUsers(info?.total)
         } catch (error) {
-          setLoader(false)
-        //   setLoading(false)
+            setLoader(false)
+            //   setLoading(false)
         }
-      }
+    }
 
     const columns = useMemo(
         () => [
@@ -175,15 +175,13 @@ const MyTeam = () => {
                     Status: selectedUserStatus,
                     from: from,
                     to: to,
-                    level: activeLevel
                 })
                 // setSpinner(true)
                 setLoader(true)
                 // setLoading(true)
-                // let res = await getAllUsersList(param)
-
+                let res = await getTeamList(activeLevel, param)
                 if (res) {
-                    setLoader(true)
+                    setLoader(false)
                     // setLoading(true)
                     // setddata(res?.data?.data?.data?.down)
                     // setudata(res?.data?.data?.data?.up)
@@ -192,7 +190,7 @@ const MyTeam = () => {
                 }
             }
         } catch (error) {
-            setLoader(true)
+            setLoader(false)
             // setLoading(true)
             toast.error(error?.response?.data?.message, {
                 position: toast.POSITION.TOP_RIGHT,
@@ -392,7 +390,7 @@ const MyTeam = () => {
                                         <li className="nav-item" role="presentation">
                                             <button
                                                 // disabled={loading}
-                                                className={activeLevel === "LevelOne" ? "nav-link active buttoncustom" : "nav-link buttoncustom"}
+                                                className={activeLevel === 1 ? "nav-link active buttoncustom" : "nav-link buttoncustom"}
                                                 id="LevelOne-tab"
                                                 data-bs-toggle="tab"
                                                 data-bs-target="#LevelOne"
@@ -400,7 +398,7 @@ const MyTeam = () => {
                                                 role="tab"
                                                 aria-controls="LevelOne"
                                                 aria-selected="true"
-                                                onClick={() => handleTab("LevelOne")}
+                                                onClick={() => handleTab(1)}
                                             >
                                                 Level One
                                             </button>
@@ -408,7 +406,7 @@ const MyTeam = () => {
                                         <li className="nav-item" role="presentation">
                                             <button
                                                 // disabled={loading}
-                                                className={activeLevel === "LevelTwo" ? "nav-link active buttoncustom" : "nav-link buttoncustom"}
+                                                className={activeLevel === 2 ? "nav-link active buttoncustom" : "nav-link buttoncustom"}
                                                 id="LevelTwo-tab"
                                                 data-bs-toggle="tab"
                                                 data-bs-target="#LevelTwo"
@@ -416,7 +414,7 @@ const MyTeam = () => {
                                                 role="tab"
                                                 aria-controls="LevelTwo"
                                                 aria-selected="false"
-                                                onClick={() => handleTab("LevelTwo")}
+                                                onClick={() => handleTab(2)}
                                             // onClick={rendergraph}
                                             >
                                                 Level Two
@@ -425,7 +423,7 @@ const MyTeam = () => {
                                         <li className="nav-item" role="presentation">
                                             <button
                                                 // disabled={loading}
-                                                className={activeLevel === "LevelThree" ? "nav-link active buttoncustom" : "nav-link buttoncustom"}
+                                                className={activeLevel === 3 ? "nav-link active buttoncustom" : "nav-link buttoncustom"}
                                                 id="LevelThree-tab"
                                                 data-bs-toggle="tab"
                                                 data-bs-target="#LevelThree"
@@ -434,7 +432,7 @@ const MyTeam = () => {
                                                 aria-controls="LevelThree"
                                                 aria-selected="false"
                                                 onClick={() => {
-                                                    handleTab("LevelThree")
+                                                    handleTab(3)
                                                 }}
                                             >
                                                 Level Three

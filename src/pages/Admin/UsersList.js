@@ -176,8 +176,8 @@ function UsersList() {
         let res = await getAllUsersList(param)
 
         if (res) {
-          setLoader(true)
-          setLoading(true)
+          setLoader(false)
+          setLoading(false)
           // setddata(res?.data?.data?.data?.down)
           // setudata(res?.data?.data?.data?.up)
           // setdates(res?.data?.data?.data)
@@ -185,8 +185,8 @@ function UsersList() {
         }
       }
     } catch (error) {
-      setLoader(true)
-      setLoading(true)
+      setLoader(false)
+      setLoading(false)
       toast.error(error?.response?.data?.message, {
         position: toast.POSITION.TOP_RIGHT,
       })

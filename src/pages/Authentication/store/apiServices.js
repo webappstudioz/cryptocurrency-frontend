@@ -375,8 +375,12 @@ export const getGameResults = async() => {
   return await getNew(url.GETGAMERESULTS)
 }
 
-export const getAllUsersList = async() => {
-  return await getNew(url.ALL_USERS_LIST)
+export const getAllUsersList = async(data) => {
+  if(data){
+    return await getNew(url.ALL_USERS_LIST, data)
+  }else {
+    return await getNew(url.ALL_USERS_LIST)
+  }
 }
 
 export const updateUserStatus = async(data) => {
@@ -391,6 +395,10 @@ export const updateUserProfile = async(userId, data) => {
   return await postNew(url.UPDATE_USER_PROFILE + userId, data)
 }
 
-export const getTeamList = async(level) => {
-  return await getNew(url.GET_TEAM_LIST + level)
+export const getTeamList = async(level, data) => {
+  if(data){
+    return await getNew(url.GET_TEAM_LIST + level, data)
+  }else {
+    return await getNew(url.GET_TEAM_LIST + level)
+  }
 }
