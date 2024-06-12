@@ -161,6 +161,7 @@ const Register = props => {
       return schema
     },
     onSubmit: (values) => {
+      console.log("hitt")
       const name = values?.name?.split(" ")
       let terms = 0
       values.termConditions ? (terms = 1) : (terms = 0)
@@ -173,6 +174,7 @@ const Register = props => {
         password: values?.password,
         confirm_password: values?.password,
         term_condition: terms,
+        referral_code: values?.referralCode || "",
       })
       // if (!inviteInfo) {
       //   data.append('country_id', values.country);

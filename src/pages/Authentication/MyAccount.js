@@ -64,7 +64,7 @@ const MyAccount = props => {
       const info = result?.data?.data
       setUserInfo(info)
       dispatch(isUserUpdated(info))
-      console.log("info", info)
+      // console.log("info", info)
       // storeUserData(info)
       setLoader(false)
     } catch (error) {

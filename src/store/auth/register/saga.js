@@ -27,6 +27,7 @@ function* registerUser({ payload: { user, history, signUpType } }) {
     yield put(registerUserSuccessful(info))
     yield call(resendOtp,info?.token)
   } catch (error) {
+    console.log("error", error)
       toast.error(error?.response?.data?.message, {
         position: toast.POSITION.TOP_RIGHT
       });
