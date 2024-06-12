@@ -390,3 +390,7 @@ export const getUserDetail = async(userId) => {
 export const updateUserProfile = async(userId, data) => {
   return await postNew(url.UPDATE_USER_PROFILE + userId, data)
 }
+
+export const getTeamList = async(level) => {
+  return await getNew(url.GET_TEAM_LIST + level)
+}

@@ -17,6 +17,7 @@ import {
     JoiningDate,
     PhoneNumber,
 } from "./Table/CommonCol"
+import { getTeamList } from "../../Authentication/store/apiServices"
 
 const MyTeam = () => {
     const [usersList, setUsersList] = useState([])
@@ -49,7 +50,7 @@ const MyTeam = () => {
         setLoader(true)
         // setLoading(true)
         try {
-        //   const result = await getAllUsersList()
+          const result = await getTeamList(1)
           let info = result?.data?.data
           let users = info?.data.map((user, index) => {
             return {

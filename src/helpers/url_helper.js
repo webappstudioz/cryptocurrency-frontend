@@ -13,7 +13,7 @@ export const UPDATE_USER_STATUS = "/user/change/status"
 
 //User
 export const UPDATE_USER_PROFILE = "/user/detail/"
-
+export const GET_TEAM_LIST = "/team/list/"
 //REGISTER
 export const GOOGLE_LOGIN = "/auth/google"
 
