@@ -6,6 +6,7 @@ export const RESEND = "/user/otp/resend/"
 export const VERIFICATION = "/user/otp/verify"
 export const LOGIN = "/login"
 export const FORGET_PASSWORD = "/user/reset/password"
+export const RESET_PASSWORD = "/user/set-new/password"
 
 //Admin
 export const ALL_USERS_LIST = "/user/list"
@@ -20,7 +21,7 @@ export const GOOGLE_LOGIN = "/auth/google"
 
 //LOGIN
 // export const FORGET_PASSWORD = "/forgot/password"
-export const RESET_PASSWORD = "/reset/password"
+// export const RESET_PASSWORD = "/reset/password"
 export const RESEND_PASS_LINK = "/resend/password/"
 export const POST_FAKE_JWT_PASSWORD_FORGET = "/jwt-forget-pwd"
 export const SOCIAL_LOGIN = "/social-login"
