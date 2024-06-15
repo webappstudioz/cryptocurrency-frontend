@@ -7,6 +7,7 @@ export const VERIFICATION = "/user/otp/verify"
 export const LOGIN = "/login"
 export const FORGET_PASSWORD = "/user/reset/password"
 export const RESET_PASSWORD = "/user/set-new/password"
+export const VERIFY_RESET_TOKEN = "/user/reset-password/"
 
 //Admin
 export const ALL_USERS_LIST = "/user/list"

@@ -30,6 +30,11 @@ export const resetPassword = async data => {
   return await postNew(url.RESET_PASSWORD, data)
 }
 
+export const verifyResetPasswordToken = async (token) => {
+  return await getNew(url.VERIFY_RESET_TOKEN + `${token}/verify`)
+}
+
+
 export const resendPassLink = async data => {
   return await getNew(url.RESEND_PASS_LINK + data)
 }

@@ -36,7 +36,7 @@ import Slider from "react-slick"
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import { customRegex } from "../../helpers/validation_helpers"
-import { resetPassword, resendPassLink } from "./store/apiServices"
+import { resetPassword, resendPassLink, verifyResetPasswordToken } from "./store/apiServices"
 import { setPageTitle } from "../../helpers/api_helper_rs"
 import { toast } from "react-toastify"
 import TextLoader from "../../components/textLoader"
@@ -59,15 +59,28 @@ const ResetPassword = props => {
   const [spinner, setSpinner] = useState(false)
   const [disableBtn, setDisableBtn] = useState(false)
   const [action, setAction] = useState("")
+  const [loader, setLoader] = useState(false)
+
 
   useEffect(() => {
     setToken(match?.params?.token)
+    handleVerifyToken(match?.params?.token)
   }, [setToken])
 
   useEffect(() => {
     setPageTitle("Reset Password")
   }, [])
 
+  const handleVerifyToken = async(token) => {
+    console.log("token", token)
+    try{
+      const result = await verifyResetPasswordToken(token)
+      console.log("result", result)
+    }catch(error){
+      console.log("erro", error)
+    }
+
+  }
   const validation = useFormik({
     enableReinitialize: true,
 
@@ -154,11 +167,11 @@ const ResetPassword = props => {
 
   return (
     <React.Fragment>
-      <div className="home-btn d-none d-sm-block">
+      {/* <div className="home-btn d-none d-sm-block">
         <Link onClick={(e) => {spinner? e?.preventDefault() : null }} to="/" className="text-dark">
           <i className="mdi mdi-home-variant h2"></i>
         </Link>
-      </div>
+      </div> */}
 
       <div
         className="account-pages forgot"
@@ -166,8 +179,8 @@ const ResetPassword = props => {
         <Container fluid>
           <Row>
             <Col lg={6} className="left-panel">
-            <Link onClick={(e) => {(spinner || disableBtn)? e?.preventDefault() : null }} to="/productlist"><img src={logo} alt="" /> </Link>
-              <div className="slide-content">
+            {/* <Link onClick={(e) => {(spinner || disableBtn)? e?.preventDefault() : null }} to="/productlist"><img src={logo} alt="" /> </Link> */}
+              {/* <div className="slide-content">
                 <Slider {...settings}>
                   <div>
                     <img src={mockup} alt="" />
@@ -203,7 +216,7 @@ const ResetPassword = props => {
                     </div>
                   </div>
                 </Slider>
-              </div>
+              </div> */}
             </Col>
             <Col lg={6}>
               <div className="right_content">
