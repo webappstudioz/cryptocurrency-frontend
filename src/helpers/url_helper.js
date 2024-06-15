@@ -5,7 +5,7 @@ export const REGISTER = "/user/register"
 export const RESEND = "/user/otp/resend/"
 export const VERIFICATION = "/user/otp/verify"
 export const LOGIN = "/login"
-export const FORGET_PASSWORD = "user/reset/password"
+export const FORGET_PASSWORD = "/user/reset/password"
 
 //Admin
 export const ALL_USERS_LIST = "/user/list"
