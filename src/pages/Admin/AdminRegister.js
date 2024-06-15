@@ -150,7 +150,7 @@ const AdminRegister = props => {
     return schema 
   },
     onSubmit: (values) => {
-      navigate.push("/Verification")
+      navigate.push("/verification")
       return
       let terms = 0
       values.termConditions ? (terms = 1) : (terms = 0)

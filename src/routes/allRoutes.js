@@ -67,6 +67,7 @@ import StoreResulst from "../pages/Admin/StoreResulst"
 import UserDetail from "../pages/Admin/UserDetail"
 import UpdateProfile from "../pages/Authentication/UpdateProfile"
 import MyTeam from "../pages/User/MyTeam/MyTeam"
+import AdminUpdateProfile from "../pages/Admin/AdminUpdateProfile"
 
 const authRoutes = [
   { path: "/logout", component: Logout },
@@ -144,13 +145,14 @@ const adminRoutes = [
   { path: "/user-detail/:id", component: UserDetail },
   { path: "/add-accounts", component: AddAccount },
   { path: "/my-profile", component: AdminMyAccount },
+  { path: "/my-profile/update", component: AdminUpdateProfile },
   { path: "/changepassword", component: AdminChangePassword },
   // { path: "/admin-payment-history", component: PaymentHistory },
   { path: "/admin/results", component: StoreResulst },
 ]
 
 const userVerifyRoutes = [
-  { path: "/Verification", component: StepVerification },
+  { path: "/verification", component: StepVerification },
   { path: "/two-fa", component: TwoFAVerification}
   // { path: "**", component: Login},
 ]

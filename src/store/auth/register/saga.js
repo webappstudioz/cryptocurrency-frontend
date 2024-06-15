@@ -22,7 +22,7 @@ function* registerUser({ payload: { user, history, signUpType } }) {
       });
       // let encInfo = encrypt(JSON.stringify(info))  // in starting we store user token and email in localstorge in encrypted form.
       // localStorage.setItem("jwt", JSON.stringify(encInfo))
-      yield history.push({pathname:'/Verification', state:{email: info?.email, token: info?.token}}) // now we will send the token and email in state.
+      yield history.push({pathname:'/verification', state:{email: info?.email, token: info?.token}}) // now we will send the token and email in state.
     }
     yield put(registerUserSuccessful(info))
     yield call(resendOtp,info?.token)

@@ -59,7 +59,7 @@ const ForgetPasswordPage = props => {
     }),
 
     onSubmit: values => {
-      return
+      // return
       setSpinner(true)
       setUserEmail(values.email)
       dispatch(userForgetPassword(values, props.history))

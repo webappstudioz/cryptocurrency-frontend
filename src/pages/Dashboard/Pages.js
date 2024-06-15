@@ -82,7 +82,7 @@ function Pages() {
                   <Link target="_blank" to="/login-suspended" className="page_link w-100 mb-4">Account Suspended</Link>
                 </Col>
                 <Col md="3">
-                  <Link target="_blank" to="/Verification" className="page_link w-100 mb-4">2 - Step Verification</Link>
+                  <Link target="_blank" to="/verification" className="page_link w-100 mb-4">2 - Step Verification</Link>
                 </Col>
                 <Col md="3">
                   <Link target="_blank" to="/change-password" className="page_link w-100 mb-4">Change Password</Link>
