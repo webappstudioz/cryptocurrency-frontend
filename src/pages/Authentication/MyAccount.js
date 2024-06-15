@@ -55,7 +55,7 @@ const MyAccount = props => {
   useEffect(() => {
     setPageTitle("My Account")
     const logInfo = loginData()
-    handleUserDetails(logInfo?.user_id)
+    handleUserDetails(logInfo?.id)
   }, [])
 
   const handleUserDetails = async (userId) => {
@@ -64,8 +64,7 @@ const MyAccount = props => {
       const info = result?.data?.data
       setUserInfo(info)
       dispatch(isUserUpdated(info))
-      // console.log("info", info)
-      // storeUserData(info)
+      storeUserData(info)
       setLoader(false)
     } catch (error) {
       setLoader(false)

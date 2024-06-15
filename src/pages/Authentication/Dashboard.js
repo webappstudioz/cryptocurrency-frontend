@@ -84,12 +84,13 @@ const Dashboard = ({ fullRes } = props) => {
                         <th>Your Referral Link</th>
                           <React.Fragment>
                             <td className="text-right" onClick={() => {
-                                    copy(`https://www.crypto2cassino.com/@${logInfo?.user_name}`);
+                                    // copy(`https://www.crypto2cassino.com/@${logInfo?.referral_code}`);
+                                    copy(logInfo?.referral_code);
                                     toast("Referral link has been  copied", {
                                       autoClose: 1000,
                                     });
                                   }}>
-                              {`https://www.crypto2cassino.com/@${logInfo?.user_name}`}
+                              {logInfo?.referral_code}
                             </td>
                             {/* <td className="text-right"></td>
                               <td >
