@@ -84,7 +84,7 @@ const ProfileMenuHeader = props => {
 
         <DropdownMenu className="dropdown-menu-end" style={{ margin: 0 }}>
           <DropdownItem /*tag="a"*/  className="profile-header">
-            <Link to="/my-profile" className="dropdown-item">
+            <Link to="/my-account" className="dropdown-item">
             {/* <Link to="/" className="dropdown-item"> */}
               {" "}   
               My Account{" "}
@@ -93,37 +93,37 @@ const ProfileMenuHeader = props => {
           </DropdownItem>
 
           <div className="profile-center">
-          {userData?.role != "user"? 
-          <DropdownItem /*tag="a"*/ >    
+          {/* {userData?.role != "user"? 
+          <DropdownItem /*tag="a" >    
             {/* <Link to="/user-management" className="dropdown-item">        */}
-            <Link to="/" className="dropdown-item">       
+            {/* <Link to="/" className="dropdown-item">       
              User Management 
             </Link>
-          </DropdownItem> : 
-          <DropdownItem /* tag="a"*/ >    
+          </DropdownItem> :  */}
+          {/* <DropdownItem /* tag="a" >     */}
             {/* <Link to="/user-account-detail" className="dropdown-item">        */}
-            <Link to="/user-account-detail" className="dropdown-item">       
+            {/* <Link to="/user-account-detail" className="dropdown-item">       
               My Profile 
             </Link>
-          </DropdownItem> }
+          </DropdownItem> } */}
           <DropdownItem /* tag="a"*/ >   
-            <Link to="/changepassword" className="dropdown-item">       
+            <Link to="/change-password" className="dropdown-item">       
               Change Password     
             </Link>      
           </DropdownItem>
-          <DropdownItem /* tag="a"*/>  
+          {/* <DropdownItem  tag="a">   */}
             {/* <Link to="/security-settings" className="dropdown-item">        */}
-            <Link to="/" className="dropdown-item">       
+            {/* <Link to="/" className="dropdown-item">       
               Security Settings    
-            </Link> 
-          </DropdownItem>
+            </Link>  */}
+          {/* </DropdownItem> */}
           </div>         
           <div className="profile-header">
-            <Link to="/logout" className="dropdown-item p-0 d-flex align-items-center">
+            <Link to={userData?.role === "User"? "/logout" : "/admin/logout"} className="dropdown-item p-0 d-flex align-items-center">
             <img           
               src={logout}           
             />
-              <span > Log Out</span>
+              <span > Log Out here</span>
             </Link>
           </div>
         </DropdownMenu>

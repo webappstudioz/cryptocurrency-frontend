@@ -70,7 +70,6 @@ import MyTeam from "../pages/User/MyTeam/MyTeam"
 import AdminUpdateProfile from "../pages/Admin/AdminUpdateProfile"
 
 const authRoutes = [
-  { path: "/logout", component: Logout },
   { path: "/login", component: Login },
   { path: "/forgot-password", component: ForgetPwd },
   { path: "/register", component: Register },
@@ -96,6 +95,8 @@ const userRoutes = [
   { path: "/dashboard", component: Dashboard },
   { path: "/profile/update", component: UpdateProfile },
   { path: "/my-team", component: MyTeam },
+  { path: "/logout", component: Logout },
+
   { path: "/services", component: ServiceList },
   { path: "/server-management/:id", component: ServerManagement },
   { path: "/invoice-detail/:id", component: InvoiceDetail },
@@ -143,6 +144,8 @@ const userRoutes = [
 const adminRoutes = [
   { path: "/users-list", component: UsersList },
   { path: "/user-detail/:id", component: UserDetail },
+  { path: "/admin/logout", component: Logout },
+
   { path: "/add-accounts", component: AddAccount },
   { path: "/my-profile", component: AdminMyAccount },
   { path: "/my-profile/update", component: AdminUpdateProfile },

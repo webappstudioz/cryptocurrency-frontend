@@ -17,6 +17,9 @@ export const UPDATE_USER_STATUS = "/user/change/status"
 //User
 export const UPDATE_USER_PROFILE = "/user/detail/"
 export const GET_TEAM_LIST = "/team/list/"
+export const CHANGE_PASSWORD = "/user/change-password"
+
+
 //REGISTER
 export const GOOGLE_LOGIN = "/auth/google"
 
@@ -42,7 +45,7 @@ export const POST_USER_INFO = "/update/profile"
 export const CHECKUSER = "/silent-check"
 export const SIGNUP_SILENT= "/silent-signup"
 export const WEDGITSINFO = "/dashboard"
-export const CHANGE_PASSWORD = "/profile/change-password"
+// export const CHANGE_PASSWORD = "/profile/change-password"
 export const GET_CLIENT_INFO = "/profile/profile-details"
 
 export const POST_CLIENT_INFO = "/profile/update-profile"

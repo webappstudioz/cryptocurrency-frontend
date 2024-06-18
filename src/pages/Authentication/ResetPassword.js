@@ -59,7 +59,7 @@ const ResetPassword = props => {
   const [spinner, setSpinner] = useState(false)
   const [disableBtn, setDisableBtn] = useState(false)
   const [action, setAction] = useState("")
-  const [loader, setLoader] = useState(false)
+  const [loader, setLoader] = useState(true)
 
 
   useEffect(() => {
@@ -72,12 +72,18 @@ const ResetPassword = props => {
   }, [])
 
   const handleVerifyToken = async(token) => {
-    console.log("token", token)
     try{
       const result = await verifyResetPasswordToken(token)
-      console.log("result", result)
+      if(result){
+        setLoader(false)
+      }else{
+        toast.error("Your token is invalid", {
+          position: toast.POSITION.TOP_RIGHT,
+        })
+        history.push("/login")
+      }
     }catch(error){
-      console.log("erro", error)
+      console.log("handleVerifyToken error", error)
     }
 
   }
@@ -361,6 +367,7 @@ const ResetPassword = props => {
           </Row>
         </Container>
         <TextLoader loading={action}/>
+        <TextLoader loading={loader} loader={loader}/>
       </div>
     </React.Fragment>
   )

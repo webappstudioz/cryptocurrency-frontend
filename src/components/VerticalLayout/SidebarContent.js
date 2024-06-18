@@ -98,12 +98,12 @@ const SidebarContent = props => {
       <SimpleBar style={{ height: "100%" }} ref={ref}>
         <div id="sidebar-menu">
           <ul className="metismenu list-unstyled" id="side-menu">
-            <li>
+            {/* <li>
               <Link to="/my-account" className="waves-effect">
                 <img src={overview} alt="" />
                 <span>My Profile</span>
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link to="/dashboard" className="waves-effect">
                 <img src={overview} alt="" />

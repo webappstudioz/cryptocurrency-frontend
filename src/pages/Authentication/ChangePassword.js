@@ -64,9 +64,9 @@ const ChangePassword = props => {
       setLoading(true)
       try {
         let data = new URLSearchParams({
-          old_password: values.password,
+          oldpassword: values.password,
           password: values.newPassword,
-          password_confirmation: values.confirmPassword,
+          confirm_password: values.confirmPassword,
         })
         let res = await changePassword(data)
         if (res) {
