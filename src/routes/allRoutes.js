@@ -68,6 +68,7 @@ import UserDetail from "../pages/Admin/UserDetail"
 import UpdateProfile from "../pages/Authentication/UpdateProfile"
 import MyTeam from "../pages/User/MyTeam/MyTeam"
 import AdminUpdateProfile from "../pages/Admin/AdminUpdateProfile"
+import SingleUserDetail from "../pages/Authentication/SingleUserDetail"
 
 const authRoutes = [
   { path: "/login", component: Login },
@@ -93,9 +94,12 @@ const unAuthrizedRoutes = [
 
 const userRoutes = [
   { path: "/dashboard", component: Dashboard },
-  { path: "/profile/update", component: UpdateProfile },
+  { path: "/my-profile/update", component: UpdateProfile },
   { path: "/my-team", component: MyTeam },
+  { path: "/user-detail/:id", component: SingleUserDetail },
   { path: "/logout", component: Logout },
+  { path: "/my-profile", component: MyAccount },
+
 
   { path: "/services", component: ServiceList },
   { path: "/server-management/:id", component: ServerManagement },
@@ -113,7 +117,6 @@ const userRoutes = [
   { path: "/notification", component: Notification },
   { path: "/profile", component: UserProfile },
   { path: "/change-password", component: ChangePassword },
-  { path: "/my-account", component: MyAccount },
   { path: "/user-account-detail", component: UserAccountDetail },
   { path: "/user-management", component: UserManagementv2 },
   { path: "/user-management/v2", component: UserManagement },
@@ -142,13 +145,13 @@ const userRoutes = [
 ]
 
 const adminRoutes = [
-  { path: "/users-list", component: UsersList },
-  { path: "/user-detail/:id", component: UserDetail },
+  { path: "/admin/users-list", component: UsersList },
+  { path: "/admin/user-detail/:id", component: UserDetail },
   { path: "/admin/logout", component: Logout },
 
   { path: "/add-accounts", component: AddAccount },
-  { path: "/my-profile", component: AdminMyAccount },
-  { path: "/my-profile/update", component: AdminUpdateProfile },
+  { path: "/admin/my-profile", component: AdminMyAccount },
+  { path: "/admin/update", component: AdminUpdateProfile },
   { path: "/changepassword", component: AdminChangePassword },
   // { path: "/admin-payment-history", component: PaymentHistory },
   { path: "/admin/results", component: StoreResulst },

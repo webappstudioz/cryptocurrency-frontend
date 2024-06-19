@@ -143,7 +143,7 @@ const SidebarContent = (props) => {
               </Link>
             </li>
             <li>
-              <Link to="/users-list" className="waves-effect">
+              <Link to="/admin/users-list" className="waves-effect">
                 <img src={server} alt="" />
                 <span>Users List</span>
               </Link>

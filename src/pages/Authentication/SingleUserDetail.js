@@ -5,12 +5,12 @@ import React, { useState, useEffect } from "react";
 import copy from "copy-to-clipboard";
 import { toast } from "react-toastify";
 import { FormatDate } from "../../helpers/api_helper_rs";
-import { getUserDetail, loginData } from "../Authentication/store/apiServices";
+import { getUserDetail, loginData } from "./store/apiServices";
 import logoGreen from "../../assets/images/c2c/logoGreen.jpg"
 import { useParams } from "react-router-dom/cjs/react-router-dom";
 import TextLoader from "../../components/textLoader";
 // import { C2CWallet, ComisionIncome, DepositWallet, FixedWallet, MonthlyReturn, WidBalance } from "../../components/Common/Widgets";
-const UserDetail = () => {
+const SingleUserDetail = () => {
     const params = useParams()
     // const userInfo = loginData()
     const [loader, setLoader] = useState(false);
@@ -355,4 +355,4 @@ const UserDetail = () => {
     );
 };
 
-export default React.memo(UserDetail);
+export default React.memo(SingleUserDetail);

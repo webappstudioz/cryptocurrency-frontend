@@ -84,7 +84,7 @@ const ProfileMenuHeader = props => {
 
         <DropdownMenu className="dropdown-menu-end" style={{ margin: 0 }}>
           <DropdownItem /*tag="a"*/  className="profile-header">
-            <Link to="/my-account" className="dropdown-item">
+            <Link to={userData?.role === "User"? "/my-profile" : "/admin/my-profile"} className="dropdown-item">
             {/* <Link to="/" className="dropdown-item"> */}
               {" "}   
               My Account{" "}

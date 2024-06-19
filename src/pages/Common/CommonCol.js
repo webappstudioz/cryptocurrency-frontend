@@ -38,7 +38,7 @@ import { updateUserStatus } from "../Authentication/store/apiServices"
 
 const SerialNumber = cell => {
   return (
-    <Link to={`/user-detail/${cell?.row?.original?.id}`}  style={{cursor:"pointer"}}>
+    <Link to={`/admin/user-detail/${cell?.row?.original?.id}`}  style={{cursor:"pointer"}}>
       {cell?.row.original?.serialNumber}
     </Link>
   )
@@ -46,7 +46,7 @@ const SerialNumber = cell => {
 
 const UserName = cell => {
   return (
-    <Link to={`/user-detail/${cell?.row?.original?.id}`}  style={{cursor:"pointer"}}>
+    <Link to={`/admin/user-detail/${cell?.row?.original?.id}`}  style={{cursor:"pointer"}}>
       {cell?.row.original?.user_name}
     </Link>
   )
@@ -54,7 +54,7 @@ const UserName = cell => {
 
 const Name = cell => {
   return (
-    <Link to={`/user-detail/${cell?.row?.original?.id}`}  style={{cursor:"pointer"}}>
+    <Link to={`/admin/user-detail/${cell?.row?.original?.id}`}  style={{cursor:"pointer"}}>
       {cell?.row.original?.first_name}{" "}{cell?.row.original?.last_name}
     </Link>
   )
@@ -62,7 +62,7 @@ const Name = cell => {
 
 const Email = cell => {
   return (
-    <Link to={`/user-detail/${cell?.row?.original?.id}`}  style={{cursor:"pointer"}}>
+    <Link to={`/admin/user-detail/${cell?.row?.original?.id}`}  style={{cursor:"pointer"}}>
       {cell?.row.original?.email}
     </Link>
   )
@@ -70,7 +70,7 @@ const Email = cell => {
 
 const PhoneNumber = cell => {
   return (
-    <Link to={`/user-detail/${cell?.row?.original?.id}`}  style={{cursor:"pointer"}}>
+    <Link to={`/admin/user-detail/${cell?.row?.original?.id}`}  style={{cursor:"pointer"}}>
       {cell?.row.original?.phone_number}
     </Link>
   )
@@ -79,7 +79,7 @@ const PhoneNumber = cell => {
 const JoiningDate = cell => {
   const joiningDate = FormatDate(cell?.row.original?.joining_date)
   return (
-    <Link to={`/user-detail/${cell?.row?.original?.id}`}  style={{cursor:"pointer"}}>
+    <Link to={`/admin/user-detail/${cell?.row?.original?.id}`}  style={{cursor:"pointer"}}>
       {joiningDate}
     </Link>
   )
@@ -120,7 +120,7 @@ const AcountStatus = cell => {
 
 const Action = cell => {
   return (
-    <Link to={`/user-detail/${cell?.row?.original?.id}`}>
+    <Link to={`/admin/user-detail/${cell?.row?.original?.id}`}>
       <img style={{ cursor: "pointer" }} src={rightarrow} />
     </Link>
   )

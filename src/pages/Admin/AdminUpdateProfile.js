@@ -185,7 +185,7 @@ const AdminUpdateProfile = props => {
             toast.success(res.data?.message, {
               position: toast.POSITION.TOP_RIGHT,
             })
-            navigate.push("/my-profile")
+            navigate.push("/admin/my-profile")
 
             // let data = loginData()
             // data.address_one = values.addressOne
@@ -1004,7 +1004,7 @@ const AdminUpdateProfile = props => {
               <button
                 className="btn btn-primary w-100 waves-effect waves-light btn-cancel m-0"
                 type="button"
-                onClick={() => validation.resetForm({ values: "" })}
+                onClick={() => {validation.resetForm({ values: "" }), navigate.push("/admin/my-profile")}}
               >
                 Cancel
               </button>

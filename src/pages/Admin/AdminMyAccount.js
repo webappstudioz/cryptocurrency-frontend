@@ -325,7 +325,7 @@ const AdminMyAccount = props => {
         <div className="my-account-header">
           <h5 className="info_heding">Personal Details</h5>
           <Link to={{
-            pathname: "/my-profile/update",
+            pathname: "/admin/update",
             state: {
               userInfo: userInfo 
             }
