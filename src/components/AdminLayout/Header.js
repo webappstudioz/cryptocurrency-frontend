@@ -7,7 +7,7 @@ import { Link, useHistory } from "react-router-dom"
 // Import menuDropdown
 import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown"
 
-import logoSm from "../../assets/images/logo-sm.png"
+import logoSm from "../../assets/images/c2c/logo-sm.png"
 import logoDark from "../../assets/images/logo-dark.png"
 import logoLight from "../../assets/images/logo-light.png"
 
@@ -188,18 +188,18 @@ const Header = props => {
               <span className="logo-sm">
                 <img src={logoSm} alt="" height="22" />
               </span>
-              <span className="logo-lg">
+              {/* <span className="logo-lg">
                 <img src={logoDark} alt="" height="20" />
-              </span>
+              </span> */}
             </Link>
 
             <Link to="/" className="logo logo-light">
-              <span className="logo-sm">
+               <span className="logo-sm">
                 <img src={logoSm} alt="" height="22" />
               </span>
-              <span className="logo-lg">
+              {/*<span className="logo-lg">
                 <img src={logoLight} alt="" height="20" />
-              </span>
+              </span> */}
             </Link>
           </div>
 
