@@ -161,7 +161,6 @@ const Register = props => {
       return schema
     },
     onSubmit: (values) => {
-      console.log("hitt")
       const name = values?.name?.split(" ")
       let terms = 0
       values.termConditions ? (terms = 1) : (terms = 0)

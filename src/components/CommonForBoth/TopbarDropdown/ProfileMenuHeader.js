@@ -123,7 +123,7 @@ const ProfileMenuHeader = props => {
             <img           
               src={logout}           
             />
-              <span > Log Out here</span>
+              <span>Log Out</span>
             </Link>
           </div>
         </DropdownMenu>

@@ -618,7 +618,7 @@ const DepositFunds = props => {
                     type="submit"
                     disabled={spinner}
                   >
-                    {spinner ? <div className="ui active inline loader"></div> : "Add Fund"}
+                    {spinner ? <div className="ui active inline loader"></div> : "Deposit Funds"}
                   </button>
                 </div>
               </Form>
