@@ -2773,6 +2773,14 @@ a.download {
   color: #3f3d65;
 }
 
+.firstLettercapital{
+   text-transform: capitalize
+}
+
+.capitalize{
+  text-transform: uppercase
+}
+
 .text-right .badge.rounded-pill.bg-success {
   background-color: #198754 !important;
 }

@@ -288,7 +288,7 @@ const WihtdrawFunds = props => {
                   <div>
                     <div className="row">
                       <div className="col-md-12">
-                        <h5 className="info_heding" style={{ textTransform: "capitalize" }}>{selectedMethod}</h5>
+                        <h5 className="info_heding firstLettercapital" >{selectedMethod}</h5>
                         <div className="tab_content tab-data-table">
                           <div className="row">
                             <div className="col-md-6">

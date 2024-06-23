@@ -4,20 +4,20 @@ import {
   getNew,
   decrypt,
   encrypt,
-  sessionExpired
+  sessionExpired,
+  postDataImg
 } from "../../../helpers/api_helper_rs"
 import * as url from "../../../helpers/url_helper"
 
 const API_URL = process.env.REACT_APP_API_HOST
-
 export const registerConfirm = data => {
   return postNew(url.VERIFICATION, data)
 }
 
-export const registerSilent = async() => {
-  try{
+export const registerSilent = async () => {
+  try {
     return await postNew(url.SIGNUP_SILENT)
-  }catch(error){
+  } catch (error) {
     sessionExpired(error?.response?.data?.message)
   }
 }
@@ -39,9 +39,9 @@ export const resendPassLink = async data => {
   return await getNew(url.RESEND_PASS_LINK + data)
 }
 
-export const checkUser = async() => {
+export const checkUser = async () => {
   let user = await getNew(url.CHECKUSER)
-  if(user.status === 200){
+  if (user.status === 200) {
     return user
   } else {
     sessionExpired(user?.data?.message)
@@ -65,7 +65,7 @@ export const getCountryList = async () => {
   return await getNew(url.GET_COUNTRY)
 }
 
-export const getGstCountries = async() => {
+export const getGstCountries = async () => {
   return await getNew(url.GST_COUNTRIES)
 }
 
@@ -186,8 +186,8 @@ export const invoiceDetail = async id => {
   return await getNew(url.GET_INVOICE_DETAIL + "/" + id)
 }
 
-export const syncInvoice = async(id,action) => {
-  return await postNew(url.GET_INVOICE_DETAIL + "/" + id +  "/" + action)
+export const syncInvoice = async (id, action) => {
+  return await postNew(url.GET_INVOICE_DETAIL + "/" + id + "/" + action)
 }
 
 export const resendInvitation = async id => {
@@ -256,27 +256,27 @@ export const downloadInvoiceInstant = async (id) => {
   return "Invoice download initiated."
 }
 
-export const confirmPageDetail = async(data) => {
+export const confirmPageDetail = async (data) => {
   return await postNew(url.CONFIRM_PAGE_DETAIL, data)
 }
 
-export const getPaymentMethodList = async(data) => {
-  if(data){
+export const getPaymentMethodList = async (data) => {
+  if (data) {
     return await postNew(url.PAYMENTMETHOD_LIST, data)
-  }else {
+  } else {
     return await postNew(url.PAYMENTMETHOD_LIST)
   }
 }
 
-export const addWalletAmount = async(data) => {
+export const addWalletAmount = async (data) => {
   return await postNew(url.ADD_WALLET_AMOUNT, data)
 }
 
-export const applyCredit = async(data) => {
-  return await postNew(url.APPLY_CREDIT,data)
+export const applyCredit = async (data) => {
+  return await postNew(url.APPLY_CREDIT, data)
 }
 
-export const getSupportPin = async() => {
+export const getSupportPin = async () => {
   return await getNew(url.SUPPORT_PIN)
 }
 
@@ -291,119 +291,135 @@ export const storeAuthToken = (data) => {
   return true
 }
 
-export const notificationList = async(data) => {
+export const notificationList = async (data) => {
   return await postNew(url.NOTIFICATION_LIST, data)
 }
 
-export const markAllRead = async(data) => {
-  if(data){
+export const markAllRead = async (data) => {
+  if (data) {
     return await postNew(url.MARK_ALL_READ, data)
-  }else{
+  } else {
     return await postNew(url.MARK_ALL_READ)
   }
 }
 
-export const syncInvoices = async() => {
+export const syncInvoices = async () => {
   return await getNew(url.SYNC_INVOICES)
 }
 
 export const getPaymentForms = async (data) => {
-  return await postNew(url.PAYMENT_FORMS,data)
+  return await postNew(url.PAYMENT_FORMS, data)
 }
 
-export const sendInvoiceMail = async(invoiceid) => {
-  try{
-     let data = new URLSearchParams({
-      invoiceid:invoiceid
+export const sendInvoiceMail = async (invoiceid) => {
+  try {
+    let data = new URLSearchParams({
+      invoiceid: invoiceid
     })
     return await postNew(url.SEND_INVOICE_MAIL + `/${invoiceid}`, data)
-  }catch(error){
+  } catch (error) {
   }
 }
 
-export const getDataTrafficDetails = async(data) => {
+export const getDataTrafficDetails = async (data) => {
   return await postNew(url.GET_DATA_TRAFFIC, data)
 }
 
-export const getBandwidthDetails = async(data) => {
+export const getBandwidthDetails = async (data) => {
   return await postNew(url.GET_DATA_BANDWIDTH, data)
 }
 
-export const getOSList = async(data) => {
-  return await postNew(url.GET_OS_LIST,data)
+export const getOSList = async (data) => {
+  return await postNew(url.GET_OS_LIST, data)
 }
 
-export const getOSConfig = async(data) => {
+export const getOSConfig = async (data) => {
   return await postNew(url.GET_OS_CONFIG, data)
 }
 
 /**
  * get installation percenteage and status of operating system of single server
  */
-export const getOsInstallationInfo = async(data) => {
-  return await postNew(url.GET_OSINSTALLATION_INFO,data)
+export const getOsInstallationInfo = async (data) => {
+  return await postNew(url.GET_OSINSTALLATION_INFO, data)
 }
 
 /**
  * get list of all servers wich is installing opertaing systems
  */
-export const getListOsInstallServers = async() => {
+export const getListOsInstallServers = async () => {
   return await postNew(url.ALL_OS_INSTALL_SERVERS)
 }
 
-export const cancelOsInstallation = async(data) => {
+export const cancelOsInstallation = async (data) => {
   return await postNew(url.CACEL_INSTALLATION, data)
-} 
+}
 
-export const completeProfile = async(data) => {
+export const completeProfile = async (data) => {
   return await postNew(url.COMPLETE_PROFILE, data)
 }
 
-export const updateProfileSilent = async() => {
+export const updateProfileSilent = async () => {
   return await postNew(url.UPDATE_PROFILE_SILENT)
 }
 
 //operating system installation for leaseweb
-export const installOperatingSystem = async(data) => {
-  return await postNew(url.OS_INSTALL,data)
+export const installOperatingSystem = async (data) => {
+  return await postNew(url.OS_INSTALL, data)
 }
 
-export const getTimeZones = async() => {
+export const getTimeZones = async () => {
   return await getNew(url.TIMEZONES)
 }
 
-export const storeGameResults = async(data) => {
+export const storeGameResults = async (data) => {
   return await postNew(url.STOREGAMERESULTS, data)
 }
 
-export const getGameResults = async() => {
+export const getGameResults = async () => {
   return await getNew(url.GETGAMERESULTS)
 }
 
-export const getAllUsersList = async(data) => {
-  if(data){
+export const getAllUsersList = async (data) => {
+  if (data) {
     return await getNew(url.ALL_USERS_LIST, data)
-  }else {
+  } else {
     return await getNew(url.ALL_USERS_LIST)
   }
 }
 
-export const updateUserStatus = async(data) => {
+export const updateUserStatus = async (data) => {
   return await postNew(url.UPDATE_USER_STATUS, data)
 }
 
-export const getUserDetail = async(userId) => {
+export const getUserDetail = async (userId) => {
   return await getNew(url.GET_USER_DETAILS + userId)
 }
 
-export const updateUserProfile = async(userId, data) => {
-  return await postNew(url.UPDATE_USER_PROFILE + userId, data)
+export const updateUserProfile = async (userId, data) => {
+  return await postDataImg(url.UPDATE_USER_PROFILE + userId, data)
 }
 
-export const getTeamList = async(level, data) => {
-  if(data){
+export const getTeamList = async (level, data) => {
+  if (data) {
     return await getNew(url.GET_TEAM_LIST + level, data)
-  }else {
+  } else {
     return await getNew(url.GET_TEAM_LIST + level)
   }
+}
+
+export const adminAccountsDetails = async () => {
+  return await getNew(url.ADMIN_ACC_DETAILS)
+}
+
+export const depositFunds = async (data) => {
+  return await postNew(url.DEPOSTE_FUNDS, data)
+}
+
+export const withDrawFunds = async (data) => {
+  return await postNew(url.WITHDRAW_FUNDS, data)
+}
+
+export const transferFunds = async (data) => {
+  return await postNew(url.TRANSFER_FUNDS, data)
 }

@@ -30,9 +30,10 @@ import EthereumLogo from "../../assets/images/c2c/ethereum.png"
 import BitcoinLogo from "../../assets/images/c2c/bitcoinlogo.png"
 import TetherLogo from "../../assets/images/c2c/tetherlogo.png"
 import file from "../../assets/images/file.png";
+import { adminAccountsDetails, depositFunds } from "../Authentication/store/apiServices"
 
 const DepositFunds = props => {
-  const [loader, setLoader] = useState(false)
+  const [loader, setLoader] = useState(true)
   const [custompay, setcustompay] = useState()
   const [selectedMethod, setSelectedMethod] = useState("bankTransfer")
   const [spinner, setSpinner] = useState(false)
@@ -41,10 +42,24 @@ const DepositFunds = props => {
   const [selectedFile, setSelectedFile] = useState([]);
   const [inputKey, setInputKey] = useState(0);
   const [errorMsg, setErrorMsg] = useState("");
+  const [adminInfo, setAdminInfo] = useState("")
 
   useEffect(() => {
     setPageTitle("Deposite Funds")
+    getAdminAccountsDetails()
   }, [])
+
+  const getAdminAccountsDetails = async () => {
+    try {
+      let result = await adminAccountsDetails()
+      const info = result?.data?.data
+      setAdminInfo(result?.data?.data)
+      setLoader(false)
+    } catch (error) {
+      console.log("error", error)
+      setLoader(false)
+    }
+  }
 
   const DepositForm = useFormik({
     enableReinitialize: true,
@@ -53,6 +68,7 @@ const DepositFunds = props => {
       customAmount: "",
       paymentId: "",
     },
+
     validationSchema: Yup.object({
       customAmount: Yup.string()
         .required("Please enter amount.")
@@ -61,8 +77,21 @@ const DepositFunds = props => {
         .required("Please enter payment id"),
     }),
 
-    onSubmit: values => {
-      console.log("values", values)
+    onSubmit: async (values) => {
+      let data = new URLSearchParams({
+        amount: values?.customAmount,
+        method: selectedMethod,
+        paymentId: values?.paymentId,
+        payment_screenShot: selectedFile
+      })
+      if (!errorMsg) {
+        try {
+          const result = await depositFunds(data)
+          console.log("result", result)
+        } catch (error) {
+          console.log("Error", error)
+        }
+      }
       // return
       // let amount = ""
       // values?.customAmount ? amount = values?.customAmount : amount = selectedAmount
@@ -110,16 +139,16 @@ const DepositFunds = props => {
           fileType === "jpeg" ||
           fileType === "png" ||
           fileType === "pdf" ||
-          fileType === "doc" ||
-          fileType === "xls" ||
-          fileType === "zip"
+          fileType === "doc"
+          // fileType === "xls" ||
+          // fileType === "zip"
         ) {
-          setSelectedFile([...selectedFile, file]);
-          // setSelectedFile(file)
+          // setSelectedFile([...selectedFile, file]);
+          setSelectedFile(file)
           setErrorMsg("");
         } else {
           setErrorMsg(
-            "Only JPG, PNG, PDF, DOC, XLS, and ZIP files are allowed"
+            "Only JPG, PNG, PDF, and DOC files are allowed"
           );
         }
       }
@@ -144,7 +173,7 @@ const DepositFunds = props => {
                 className="form-horizontal user-management"
                 onSubmit={e => {
                   e.preventDefault()
-                  DepositForm.handleSubmit()
+                  DepositForm.handleSubmit(selectedFile.length === 0 && setErrorMsg("Payment's Screen shot is required1"))
                   return false
                 }}
               >
@@ -288,13 +317,13 @@ const DepositFunds = props => {
                   <div>
                     <div className="row">
                       <div className="col-md-12">
-                        <h5 className="info_heding" style={{ textTransform: "capitalize" }}>{selectedMethod}</h5>
+                        <h5 className="info_heding firstLettercapital">{selectedMethod}</h5>
                         <div className="tab_content tab-data-table">
                           <div className="row">
                             <div className="col-md-6">
                               <table className="w-100">
                                 <tbody>
-                                  <img src={LogoGreen} style={{ height: "100%", width: "100%" }} />
+                                  <img src={adminInfo?.crypto_image || LogoGreen} style={{ height: "100%", width: "100%" }} />
                                 </tbody>
                               </table>
                             </div>
@@ -302,50 +331,10 @@ const DepositFunds = props => {
                               <table className="w-100">
                                 <tbody>
                                   <tr>
-                                    <th>Bank Name</th>
+                                    <th>Crypto Id</th>
                                     <React.Fragment>
                                       <td className="text-right">
-                                        {/* {userInfo?.bank_name} */}
-                                      </td>
-                                    </React.Fragment>
-                                    <><td></td><td></td><td></td></>
-                                  </tr>
-                                  <tr></tr>
-                                  <tr>
-                                    <th>Account Number</th>
-                                    <React.Fragment>
-                                      <td className="text-right">
-                                        {/* {userInfo?.account_number} */}
-                                      </td>
-                                    </React.Fragment>
-                                    <><td></td><td></td><td></td></>
-                                  </tr>
-                                  <tr></tr>
-                                  <tr>
-                                    <th>{"Account Holder's Name"}</th>
-                                    <React.Fragment>
-                                      <td className="text-right">
-                                        {/* {FormatDate(userInfo?.account_holder_name)} */}
-                                      </td>
-                                    </React.Fragment>
-                                    <><td></td><td></td><td></td></>
-                                  </tr>
-                                  <tr></tr>
-                                  <tr>
-                                    <th>IFSC Code</th>
-                                    <React.Fragment>
-                                      <td className="text-right">
-                                        {/* {userInfo?.ifsc_code} */}
-                                      </td>
-                                    </React.Fragment>
-                                    <><td></td><td></td><td></td></>
-                                  </tr>
-                                  <tr></tr>
-                                  <tr>
-                                    <th>UPI ID</th>
-                                    <React.Fragment>
-                                      <td className="text-right">
-                                        {/* {userInfo?.upi_id} */}
+                                        {adminInfo?.crypto_id}
                                       </td>
                                     </React.Fragment>
                                     <><td></td><td></td><td></td></>
@@ -397,7 +386,7 @@ const DepositFunds = props => {
                             <div className="col-md-6">
                               <table className="w-100">
                                 <tbody>
-                                  <img src={LogoGreen} style={{ height: "100%", width: "100%" }} />
+                                  <img src={adminInfo?.account_image || LogoGreen} style={{ height: "100%", width: "100%" }} />
                                 </tbody>
                               </table>
                             </div>
@@ -407,8 +396,8 @@ const DepositFunds = props => {
                                   <tr>
                                     <th>Bank Name</th>
                                     <React.Fragment>
-                                      <td className="text-right">
-                                        {/* {userInfo?.bank_name} */}
+                                      <td className="text-right capitalize">
+                                        {adminInfo?.bank_name}
                                       </td>
                                     </React.Fragment>
                                     <><td></td><td></td><td></td></>
@@ -418,7 +407,7 @@ const DepositFunds = props => {
                                     <th>Account Number</th>
                                     <React.Fragment>
                                       <td className="text-right">
-                                        {/* {userInfo?.account_number} */}
+                                        {adminInfo?.account_number}
                                       </td>
                                     </React.Fragment>
                                     <><td></td><td></td><td></td></>
@@ -427,8 +416,8 @@ const DepositFunds = props => {
                                   <tr>
                                     <th>{"Account Holder's Name"}</th>
                                     <React.Fragment>
-                                      <td className="text-right">
-                                        {/* {FormatDate(userInfo?.account_holder_name)} */}
+                                      <td className="text-right firstLettercapital">
+                                        {adminInfo?.account_holder_name}
                                       </td>
                                     </React.Fragment>
                                     <><td></td><td></td><td></td></>
@@ -438,7 +427,7 @@ const DepositFunds = props => {
                                     <th>IFSC Code</th>
                                     <React.Fragment>
                                       <td className="text-right">
-                                        {/* {userInfo?.ifsc_code} */}
+                                        {adminInfo?.ifsc_code}
                                       </td>
                                     </React.Fragment>
                                     <><td></td><td></td><td></td></>
@@ -448,7 +437,7 @@ const DepositFunds = props => {
                                     <th>UPI ID</th>
                                     <React.Fragment>
                                       <td className="text-right">
-                                        {/* {userInfo?.upi_id} */}
+                                        {adminInfo?.upi_id}
                                       </td>
                                     </React.Fragment>
                                     <><td></td><td></td><td></td></>
@@ -513,21 +502,21 @@ const DepositFunds = props => {
 
                                   disabled={spinner}
                                 />
-                              
-                              {DepositForm.touched.customAmount &&
-                                DepositForm.errors.customAmount ? (
-                                <>
-                                  <FormFeedback type="invalid">
-                                    <img
-                                      className="form-error-icon"
-                                      src={rederror}
-                                      alt=""
-                                      height={15}
-                                    />
-                                    {DepositForm.errors.customAmount}
-                                  </FormFeedback>
-                                </>
-                              ) : null}
+
+                                {DepositForm.touched.customAmount &&
+                                  DepositForm.errors.customAmount ? (
+                                  <>
+                                    <FormFeedback type="invalid">
+                                      <img
+                                        className="form-error-icon"
+                                        src={rederror}
+                                        alt=""
+                                        height={15}
+                                      />
+                                      {DepositForm.errors.customAmount}
+                                    </FormFeedback>
+                                  </>
+                                ) : null}
                               </div>
                             </div>
                             <span className="billing-max-amt">*Maximum amount: 5000</span>
@@ -558,7 +547,7 @@ const DepositFunds = props => {
                                 key={inputKey}
                                 id="file-upload"
                                 type="file"
-                                accept=".jpg,.jpeg,.png,.pdf,.doc,.xls,.zip"
+                                accept=".jpg,.jpeg,.png,.pdf,.doc"
                                 onChange={handleFileChange}
                                 onClick={(event) => {
                                   if (
@@ -570,9 +559,25 @@ const DepositFunds = props => {
                                     event.target.value = null;
                                   }
                                 }}
-                                multiple
+                              // multiple
                               />
                             </label>
+                            {errorMsg && (
+                              <span className="ticket-validaton-error">
+                                {" "}
+                                <img
+                                  className="form-error-icon"
+                                  src={rederror}
+                                  alt=""
+                                  height={15}
+                                />
+                                {errorMsg}
+                              </span>
+                            )}
+                            <span className="file-formats">
+                              Please select files to attach (20 MB max, .jpg, .jpeg,
+                              .png,)
+                            </span>
                           </div>
                           <div className="col-lg-6 form-group">
                             <p className="place-holder">Payment id</p>

@@ -102,13 +102,34 @@ export async function getNew(url, config = {}) {
 }
 
 export async function postNew(url, data, config = {}) {
-  // let navigate = useHistory()
-
   var config = {
     method: "POST",
     url: `${API_URL}${url}`,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
+      "X-Requested-With": "XMLHttpRequest",
+    },
+    data: data,
+    params: {
+      ...config?.params,
+    },
+  }
+  // return axios(config);
+  return axios(config).catch(error => {
+    // if (error?.response?.status === 401 || error?.response?.status === 500) {
+    // if (error?.response?.status === 401) {
+    // sessionExpired()
+    // }
+    throw error
+  })
+}
+
+export async function postDataImg(url, data, config = {}) {
+  var config = {
+    method: "POST",
+    url: `${API_URL}${url}`,
+    headers: {
+      'Content-Type': 'multipart/form-data',
       "X-Requested-With": "XMLHttpRequest",
     },
     data: data,

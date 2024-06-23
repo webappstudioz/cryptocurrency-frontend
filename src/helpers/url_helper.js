@@ -13,12 +13,15 @@ export const VERIFY_RESET_TOKEN = "/user/reset-password/"
 export const ALL_USERS_LIST = "/user/list"
 export const GET_USER_DETAILS = "/user/detail/"
 export const UPDATE_USER_STATUS = "/user/change/status"
+export const ADMIN_ACC_DETAILS = "/admin/account/detail"
 
 //User
 export const UPDATE_USER_PROFILE = "/user/detail/"
 export const GET_TEAM_LIST = "/team/list/"
 export const CHANGE_PASSWORD = "/user/change-password"
-
+export const DEPOSTE_FUNDS = ""
+export const WITHDRAW_FUNDS = ""
+export const TRANSFER_FUNDS = ""
 
 //REGISTER
 export const GOOGLE_LOGIN = "/auth/google"

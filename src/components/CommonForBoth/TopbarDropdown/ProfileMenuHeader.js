@@ -76,10 +76,8 @@ const ProfileMenuHeader = props => {
             className="arrow"      
           /></span>{" "}  
         </DropdownToggle>
-        <h6 className='mb-0 d-flex align-items-center sd-name' style={{"textTransform": "capitalize"}}>
+        <h6 className='mb-0 d-flex align-items-center sd-name firstLettercapital' >
           Hi {" "} {userData?.first_name} {" "}{userData?.last_name}
-          {/* {userData?.first_name? userData?.first_name?.charAt(0)?.toUpperCase() + userData?.first_name?.slice(1).toLowerCase() : ""} 
-          {' '}{userData?.last_name? userData?.last_name?.charAt(0)?.toUpperCase() + userData?.last_name?.slice(1).toLowerCase() : ""} */}
         </h6>
 
         <DropdownMenu className="dropdown-menu-end" style={{ margin: 0 }}>
