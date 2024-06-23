@@ -33,6 +33,7 @@ import file from "../../assets/images/file.png";
 import { adminAccountsDetails, depositFunds } from "../Authentication/store/apiServices"
 
 const DepositFunds = props => {
+  const IMAGE_URL = process.env.REACT_APP_IMAGE_HOST
   const [loader, setLoader] = useState(true)
   const [custompay, setcustompay] = useState()
   const [selectedMethod, setSelectedMethod] = useState("bankTransfer")
@@ -52,7 +53,7 @@ const DepositFunds = props => {
   const getAdminAccountsDetails = async () => {
     try {
       let result = await adminAccountsDetails()
-      const info = result?.data?.data
+      // const info = result?.data?.data
       setAdminInfo(result?.data?.data)
       setLoader(false)
     } catch (error) {
@@ -78,12 +79,18 @@ const DepositFunds = props => {
     }),
 
     onSubmit: async (values) => {
-      let data = new URLSearchParams({
-        amount: values?.customAmount,
-        method: selectedMethod,
-        paymentId: values?.paymentId,
-        payment_screenShot: selectedFile
-      })
+      // let data = new URLSearchParams({
+      //   amount: values?.customAmount,
+      //   method: selectedMethod,
+      //   paymentId: values?.paymentId,
+      //   payment_screenShot: selectedFile
+      // })
+      let data = new FormData()
+      data.append('image', selectedFile);
+      data.append('payment_id',  values?.paymentId);
+      data.append('payment_type', "deposit");
+      data.append('method_type', selectedMethod);
+      data.append('amount' , values?.customAmount);
       if (!errorMsg) {
         try {
           const result = await depositFunds(data)
@@ -323,7 +330,7 @@ const DepositFunds = props => {
                             <div className="col-md-6">
                               <table className="w-100">
                                 <tbody>
-                                  <img src={adminInfo?.crypto_image || LogoGreen} style={{ height: "100%", width: "100%" }} />
+                                  <img src={adminInfo?.account_image ? (IMAGE_URL + adminInfo?.account_image) : LogoGreen} style={{ height: "100%", width: "100%" }} />
                                 </tbody>
                               </table>
                             </div>
@@ -386,7 +393,7 @@ const DepositFunds = props => {
                             <div className="col-md-6">
                               <table className="w-100">
                                 <tbody>
-                                  <img src={adminInfo?.account_image || LogoGreen} style={{ height: "100%", width: "100%" }} />
+                                  <img src={adminInfo?.account_image ? (IMAGE_URL + adminInfo?.account_image) : LogoGreen} style={{ height: "100%", width: "100%" }} />
                                 </tbody>
                               </table>
                             </div>

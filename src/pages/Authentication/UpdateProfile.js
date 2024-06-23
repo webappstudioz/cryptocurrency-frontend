@@ -42,7 +42,7 @@ const UpdateProfile = props => {
   // const [stateError, setstateError] = useState(false)
   const [loader, setLoader] = useState(true)
   // const [role, setRole] = useState()
-  const [permissionDen, setPermissionDen] = useState(false)
+  // const [permissionDen, setPermissionDen] = useState(false)
   // const [inlineLoader, setinlineLoader] = useState(false)
   const [countryname, setCountryName] = useState("")
   // const [statename, setstatename] = useState("")
@@ -170,7 +170,6 @@ const UpdateProfile = props => {
       data.append('account_holder_name', values?.accountName);
       data.append('upi_id', values?.upiId);
       data.append('account_image', bankQR);
-      data.append('crypto_image', cryptoQR)
       console.log("data", data)
       // if (!stateError) {
       try {
@@ -341,6 +340,8 @@ const UpdateProfile = props => {
 
   }
 
+  console.log("crypto", cryptoQR)
+  console.log("bank", bankQR)
   return (
     <React.Fragment>
       <div

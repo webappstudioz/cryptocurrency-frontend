@@ -52,7 +52,7 @@ const MyAccount = props => {
   // const [countryname, setcountryname] = useState("")
   // const [statename, setstatename] = useState("")
   const [userInfo, setUserInfo] = useState("")
-  
+
   useEffect(() => {
     setPageTitle("My Account")
     const logInfo = loginData()
@@ -328,7 +328,7 @@ const MyAccount = props => {
           <Link to={{
             pathname: "/my-profile/update",
             state: {
-              userInfo: userInfo 
+              userInfo: userInfo
             }
           }} className="btn btn-primary">Edit Profile</Link>
         </div>
@@ -486,7 +486,7 @@ const MyAccount = props => {
                   <div className="col-md-6">
                     <table className="w-100">
                       <tbody>
-                        <img src={userInfo?.account_image? (IMAGE_URL + userInfo?.account_image) : logoGreen} style={{ height: "100%", width: "100%" }} />
+                        <img src={userInfo?.account_image ? (IMAGE_URL + userInfo?.account_image) : logoGreen} style={{ height: "100%", width: "100%" }} />
                       </tbody>
                     </table>
                   </div>
@@ -561,7 +561,7 @@ const MyAccount = props => {
                   <div className="col-md-6">
                     <table className="w-100">
                       <tbody>
-                      <img src={userInfo?.crypto_image? (IMAGE_URL + userInfo?.crypto_image) : logoGreen} style={{ height: "100%", width: "100%" }} />
+                        <img src={userInfo?.crypto_image ? (IMAGE_URL + userInfo?.crypto_image) : logoGreen} style={{ height: "100%", width: "100%" }} />
                       </tbody>
                     </table>
                   </div>

@@ -413,7 +413,7 @@ export const adminAccountsDetails = async () => {
 }
 
 export const depositFunds = async (data) => {
-  return await postNew(url.DEPOSTE_FUNDS, data)
+  return await postDataImg(url.DEPOSTE_FUNDS, data)
 }
 
 export const withDrawFunds = async (data) => {

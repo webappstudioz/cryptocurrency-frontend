@@ -4,21 +4,21 @@ import { Row, Col, Card, CardBody, Input, FormFeedback, Form } from "reactstrap"
 import * as Yup from "yup"
 import { useFormik } from "formik"
 //redux
-import { useDispatch } from "react-redux"
+// import { useDispatch } from "react-redux"
 import { withRouter, useLocation, useHistory } from "react-router-dom"
-import { isUserUpdated } from "../../store/auth/userdetails/actions"
+// import { isUserUpdated } from "../../store/auth/userdetails/actions"
 import rederror from "../../assets/images/redvalidationicon/rederror.jpg"
 import {
   getCountryList,
-  postClientProfileDetails,
-  postCountry,
-  getClientInfo,
-  userRole,
-  storeUserData,
-  loginData,
-  updateProfileSilent,
+  // postClientProfileDetails,
+  // postCountry,
+  // getClientInfo,
+  // userRole,
+  // storeUserData,
+  // loginData,
+  // updateProfileSilent,
   updateUserProfile,
-  getUserDetail
+  // getUserDetail
 } from "../Authentication/store/apiServices"
 import { Dropdown } from "semantic-ui-react"
 import TextLoader from "../../components/textLoader"
@@ -33,19 +33,19 @@ const AdminUpdateProfile = props => {
   const userInfo = locationParams?.state?.userInfo
   const navigate = useHistory()
   const phoneInputRef = useRef(null);
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const [countryList, setcountryList] = useState()
-  const [stateList, setstateList] = useState()
+  // const [stateList, setstateList] = useState()
   const [selectedCountry, setselectedCountry] = useState()
-  const [selectedState, setselectedState] = useState()
+  // const [selectedState, setselectedState] = useState()
   const [countryError, setcountryError] = useState(false)
-  const [stateError, setstateError] = useState(false)
+  // const [stateError, setstateError] = useState(false)
   const [loader, setLoader] = useState(true)
-  const [role, setRole] = useState()
-  const [permissionDen, setPermissionDen] = useState(false)
-  const [inlineLoader, setinlineLoader] = useState(false)
+  // const [role, setRole] = useState()
+  // const [permissionDen, setPermissionDen] = useState(false)
+  // const [inlineLoader, setinlineLoader] = useState(false)
   const [countryname, setCountryName] = useState("")
-  const [statename, setstatename] = useState("")
+  // const [statename, setstatename] = useState("")
   const [selectedCountryCode, setSelectedCountryCode] = useState()
   const [bankQR, setBankQR] = useState()
   const [bankQRError, setBankQRError] = useState(false)
@@ -152,59 +152,58 @@ const AdminUpdateProfile = props => {
       }
       // if (selectedState != undefined && selectedState != null && selectedState.length > 1) {
       // } else {   }
+      let data = new FormData()
+      data.append('user_name', userInfo?.user_name);
+      data.append('first_name', values?.firstName);
+      data.append('last_name', values?.lastName);
+      data.append('email', userInfo?.email);
+      data.append('phone_number', values?.phoneNumber);
+      data.append('country_code', selectedCountryCode);
+      data.append('joining_date', userInfo?.joining_date);
+      data.append('address', values?.address);
+      data.append('city', values?.city);
+      data.append('country_id', selectedCountry);
+      data.append('zip_code', values?.zipCode);
+      data.append('crypto_id', values?.cryptoId);
+      data.append('crypto_image', cryptoQR);
+      data.append('bank_name', values?.bankName);
+      data.append('account_number', values?.accountNumber);
+      data.append('ifsc_code', values?.ifscCode);
+      data.append('account_holder_name', values?.accountName);
+      data.append('upi_id', values?.upiId);
+      data.append('account_image', bankQR);
+      console.log("data", data)
 
-      let data = new URLSearchParams({
-        user_name: userInfo?.user_name,
-        first_name: values?.firstName,
-        last_name: values?.lastName,
-        email: userInfo?.email,
-        phone_number: values?.phoneNumber,
-        country_code: selectedCountryCode,
-        joining_date: userInfo?.joining_date,
-        address: values?.address,
-        city: values?.city,
-        country_id: selectedCountry,
-        zip_code: values?.zipCode,
-        crypto_id: values?.cryptoId,
-        crypto_image: cryptoQR,
-        bank_name: values?.bankName,
-        account_number: values?.accountNumber,
-        ifsc_code: values?.ifscCode,
-        account_holder_name: values?.accountName,
-        upi_id: values?.upiId,
-        account_image: bankQR
-      })
-
-      // if (!stateError) {
-        try {
-          setLoader(true)
-          let res = await updateUserProfile(userInfo?.id, data)
-          if (res) {
-            // handleClientInfo()
-            setLoader(false)
-            toast.success(res.data?.message, {
-              position: toast.POSITION.TOP_RIGHT,
-            })
-            navigate.push("/admin/my-profile")
-
-            // let data = loginData()
-            // data.address_one = values.addressOne
-            // data.address_two = values.addressTwo
-            // data.city = values.city
-            // data.zip_code = values.zipCode
-            // data.state = statename
-            // data.country = countryname
-            // storeUserData(data)
-            // dispatch(isUserUpdated(data))
-            // updateProfileSilent()
-          }
-
-        } catch (error) {
+      try {
+        setLoader(true)
+        let res = await updateUserProfile(userInfo?.id, data)
+        if (res) {
+          // handleClientInfo()
           setLoader(false)
-          toast.error(error?.response?.data?.message, {
+          toast.success(res.data?.message, {
             position: toast.POSITION.TOP_RIGHT,
           })
+          navigate.push("/my-profile")
+
+          // let data = loginData()
+          // data.address_one = values.addressOne
+          // data.address_two = values.addressTwo
+          // data.city = values.city
+          // data.zip_code = values.zipCode
+          // data.state = statename
+          // data.country = countryname
+          // storeUserData(data)
+          // dispatch(isUserUpdated(data))
+          // updateProfileSilent()
         }
+
+      } catch (error) {
+        console.log("Eror", error)
+        setLoader(false)
+        toast.error(error?.response?.data?.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        })
+      }
       }
     // },
   })

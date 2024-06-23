@@ -1,55 +1,56 @@
 import React, { useState, useEffect } from "react"
-import { Row, Col, Card, CardBody, Input, FormFeedback, Form, Button } from "reactstrap"
+// import { Row, Col, Card, CardBody, Input, FormFeedback, Form, Button } from "reactstrap"
 // Formik Validation
-import * as Yup from "yup"
-import { useFormik } from "formik"
+// import * as Yup from "yup"
+// import { useFormik } from "formik"
 //redux
 import { useDispatch } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { isUserUpdated } from "../../store/auth/userdetails/actions"
-import rederror from "../../assets/images/redvalidationicon/rederror.jpg"
+// import rederror from "../../assets/images/redvalidationicon/rederror.jpg"
 import {
-  getCountryList,
-  postClientProfileDetails,
-  postCountry,
-  getClientInfo,
-  userRole,
+  // getCountryList,
+  // postClientProfileDetails,
+  // postCountry,
+  // getClientInfo,
+  // userRole,
   storeUserData,
   loginData,
-  updateProfileSilent,
+  // updateProfileSilent,
   getUserDetail,
 } from "../../pages/Authentication/store/apiServices"
-import { Dropdown } from "semantic-ui-react"
+// import { Dropdown } from "semantic-ui-react"
 import TextLoader from "../../components/textLoader"
-import { toast } from "react-toastify"
+// import { toast } from "react-toastify"
 // import PermissionDenied from "./PermissionDenied"
 import { setPageTitle } from "../../helpers/api_helper_rs"
-import { FocusError } from 'focus-formik-error'
+// import { FocusError } from 'focus-formik-error'
 import { FormatDate } from "../../helpers/api_helper_rs"
 import logoGreen from "../../assets/images/c2c/logoGreen.jpg"
 import { Link, useHistory } from "react-router-dom"
 
 const AdminMyAccount = props => {
+  const IMAGE_URL = process.env.REACT_APP_IMAGE_HOST
   const dispatch = useDispatch()
-  const navigate = useHistory()
-  const [userData, setUserData] = useState()
-  const [domain, setdomain] = useState()
-  const [product, setproduct] = useState()
-  const [invoice, setinvoice] = useState()
-  const [general, setgeneral] = useState()
-  const [support, setsupport] = useState()
-  const [countryList, setcountryList] = useState()
-  const [stateList, setstateList] = useState()
-  const [selectedCountry, setselectedCountry] = useState()
-  const [selectedState, setselectedState] = useState()
-  const [countryError, setcountryError] = useState(true)
-  const [stateError, setstateError] = useState(false)
+  // const navigate = useHistory()
+  // const [userData, setUserData] = useState()
+  // const [domain, setdomain] = useState()
+  // const [product, setproduct] = useState()
+  // const [invoice, setinvoice] = useState()
+  // const [general, setgeneral] = useState()
+  // const [support, setsupport] = useState()
+  // const [countryList, setcountryList] = useState()
+  // const [stateList, setstateList] = useState()
+  // const [selectedCountry, setselectedCountry] = useState()
+  // const [selectedState, setselectedState] = useState()
+  // const [countryError, setcountryError] = useState(true)
+  // const [stateError, setstateError] = useState(false)
   const [loader, setLoader] = useState(true)
-  const [role, setRole] = useState()
-  const [permissionDen, setPermissionDen] = useState(false)
-  const [inlineLoader, setinlineLoader] = useState(false)
-  const [countryname, setcountryname] = useState("")
-  const [statename, setstatename] = useState("")
+  // const [role, setRole] = useState()
+  // const [permissionDen, setPermissionDen] = useState(false)
+  // const [inlineLoader, setinlineLoader] = useState(false)
+  // const [countryname, setcountryname] = useState("")
+  // const [statename, setstatename] = useState("")
   const [userInfo, setUserInfo] = useState("")
 
   useEffect(() => {
@@ -327,7 +328,7 @@ const AdminMyAccount = props => {
           <Link to={{
             pathname: "/admin/update",
             state: {
-              userInfo: userInfo 
+              userInfo: userInfo
             }
           }} className="btn btn-primary">Edit Profile</Link>
         </div>
@@ -485,7 +486,7 @@ const AdminMyAccount = props => {
                   <div className="col-md-6">
                     <table className="w-100">
                       <tbody>
-                        <img src={logoGreen} style={{ height: "100%", width: "100%" }} />
+                        <img src={userInfo?.account_image ? (IMAGE_URL + userInfo?.account_image) : logoGreen} style={{ height: "100%", width: "100%" }} />
                       </tbody>
                     </table>
                   </div>
@@ -560,7 +561,7 @@ const AdminMyAccount = props => {
                   <div className="col-md-6">
                     <table className="w-100">
                       <tbody>
-                        <img src={logoGreen} style={{ height: "100%", width: "100%" }} />
+                        <img src={userInfo?.account_image ? (IMAGE_URL + userInfo?.account_image) : logoGreen} style={{ height: "100%", width: "100%" }} />
                       </tbody>
                     </table>
                   </div>
