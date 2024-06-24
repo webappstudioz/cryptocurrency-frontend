@@ -31,8 +31,10 @@ import BankLogo from "../../assets/images/c2c/banklogo.png"
 import TetherLogo from "../../assets/images/c2c/tetherlogo.png"
 import { handlePayents, loginData } from "../Authentication/store/apiServices"
 // import file from "../../assets/images/file.png";
+import { useHistory } from "react-router-dom"
 
 const WihtdrawFunds = props => {
+  let navigate = useHistory()
   const IMAGE_URL = process.env.REACT_APP_IMAGE_HOST
   const [loader, setLoader] = useState(false)
   const [custompay, setcustompay] = useState()
@@ -74,13 +76,12 @@ const WihtdrawFunds = props => {
         setLoader(true)
         try {
           const result = await handlePayents(data)
-          console.log("result", result)
           setLoader(false)
+          navigate.push("/dashboard")
           toast.success(result?.data?.message, {
 						position: toast.POSITION.TOP_RIGHT,
 					})
         } catch (error) {
-          console.log("Error", error?.message)
           toast.error(error?.response?.data?.message, {
             position: toast.POSITION.TOP_RIGHT,
           })

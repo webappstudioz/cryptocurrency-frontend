@@ -13,10 +13,13 @@ import { FocusError } from 'focus-formik-error'
 // import showeye from "../../assets/images/showeye.svg"
 // import hideeye from "../../assets/images/hideeye.svg"
 import { customRegex } from "../../helpers/validation_helpers"
+import { useHistory } from "react-router-dom"
 const TransferFunds = props => {
+  let navigate = useHistory()
   const [userData, setUserData] = useState()
   const [loader, setLoader] = useState("")
   const [spinner, setSpinner] = useState(false)
+  const [custompay, setcustompay] = useState()
 
   // const [passwordInputType, setPasswordInputType] = useState(true)
 
@@ -40,8 +43,8 @@ const TransferFunds = props => {
     },
     validationSchema: Yup.object({
       transferToId: Yup.string()
-        .required("Transfer id is required.")
-        .matches(/^[A-Za-z]+$/, "Only albhabets are allowed."),
+        .required("Transfer id is required."),
+        // .matches(customRegex?.userName, "Enter valid user name."),
       transferToAccName: Yup.string()
         .required("Transfer account name is required.")
         .matches(customRegex?.name, "Only alphabets are allowed"),
@@ -66,7 +69,7 @@ const TransferFunds = props => {
       data.append('amount', values?.customAmount);
       data.append('send_to', values?.transferToId)
 
-      if (!errorMsg) {
+      // if (!errorMsg) {
         setLoader(true)
         setSpinner(true)
         try {
@@ -74,6 +77,7 @@ const TransferFunds = props => {
           console.log("result", result)
           setLoader(false)
           setSpinner(false)
+          navigate.push("/dashboard")
           toast.success(result?.data?.message, {
             position: toast.POSITION.TOP_RIGHT,
           })
@@ -85,7 +89,7 @@ const TransferFunds = props => {
           setLoader(false)
           setSpinner(false)
         }
-      }
+      // }
     },
   })
 
@@ -337,7 +341,7 @@ const TransferFunds = props => {
               type="submit"
               disabled={spinner}
             >
-              {spinner ? <div className="ui active inline loader"></div> : "Deposit Funds"}
+              {spinner ? <div className="ui active inline loader"></div> : "Transfer Funds"}
             </button>
           </div>
         </Form>

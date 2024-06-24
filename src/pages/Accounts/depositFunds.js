@@ -30,9 +30,11 @@ import EthereumLogo from "../../assets/images/c2c/ethereum.png"
 import BitcoinLogo from "../../assets/images/c2c/bitcoinlogo.png"
 import TetherLogo from "../../assets/images/c2c/tetherlogo.png"
 import file from "../../assets/images/file.png";
-import { adminAccountsDetails, depositFunds, handlePayents } from "../Authentication/store/apiServices"
+import { adminAccountsDetails, handlePayents } from "../Authentication/store/apiServices"
+import { useHistory } from "react-router-dom"
 
 const DepositFunds = props => {
+  let navigate = useHistory()
   const IMAGE_URL = process.env.REACT_APP_IMAGE_HOST
   const [loader, setLoader] = useState(true)
   const [custompay, setcustompay] = useState()
@@ -89,13 +91,12 @@ const DepositFunds = props => {
         setLoader(true)
         try {
           const result = await handlePayents(data)
-          console.log("result", result)
           setLoader(false)
+          navigate.push("/dashboard")
           toast.success(result?.data?.message, {
 						position: toast.POSITION.TOP_RIGHT,
 					})
         } catch (error) {
-          console.log("Error", error?.message)
           toast.error(error?.response?.data?.message, {
             position: toast.POSITION.TOP_RIGHT,
           })
