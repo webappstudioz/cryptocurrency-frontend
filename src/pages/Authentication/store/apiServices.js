@@ -412,14 +412,14 @@ export const adminAccountsDetails = async () => {
   return await getNew(url.ADMIN_ACC_DETAILS)
 }
 
-export const depositFunds = async (data) => {
-  return await postDataImg(url.DEPOSTE_FUNDS, data)
+export const handlePayents = async (data) => {
+  return await postDataImg(url.PAYMENTS, data)
 }
 
-export const withDrawFunds = async (data) => {
-  return await postNew(url.WITHDRAW_FUNDS, data)
-}
+// export const withDrawFunds = async (data) => {
+//   return await postNew(url.WITHDRAW_FUNDS, data)
+// }
 
-export const transferFunds = async (data) => {
-  return await postNew(url.TRANSFER_FUNDS, data)
-}
+// export const transferFunds = async (data) => {
+//   return await postNew(url.TRANSFER_FUNDS, data)
+// }

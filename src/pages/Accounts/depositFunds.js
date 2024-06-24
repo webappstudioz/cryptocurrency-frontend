@@ -30,13 +30,13 @@ import EthereumLogo from "../../assets/images/c2c/ethereum.png"
 import BitcoinLogo from "../../assets/images/c2c/bitcoinlogo.png"
 import TetherLogo from "../../assets/images/c2c/tetherlogo.png"
 import file from "../../assets/images/file.png";
-import { adminAccountsDetails, depositFunds } from "../Authentication/store/apiServices"
+import { adminAccountsDetails, depositFunds, handlePayents } from "../Authentication/store/apiServices"
 
 const DepositFunds = props => {
   const IMAGE_URL = process.env.REACT_APP_IMAGE_HOST
   const [loader, setLoader] = useState(true)
   const [custompay, setcustompay] = useState()
-  const [selectedMethod, setSelectedMethod] = useState("bankTransfer")
+  const [selectedMethod, setSelectedMethod] = useState("bank")
   const [spinner, setSpinner] = useState(false)
   const [loading, setLoading] = useState("")
   const [openModal, setOpenModal] = useState(false)
@@ -79,24 +79,27 @@ const DepositFunds = props => {
     }),
 
     onSubmit: async (values) => {
-      // let data = new URLSearchParams({
-      //   amount: values?.customAmount,
-      //   method: selectedMethod,
-      //   paymentId: values?.paymentId,
-      //   payment_screenShot: selectedFile
-      // })
       let data = new FormData()
       data.append('image', selectedFile);
-      data.append('payment_id',  values?.paymentId);
+      data.append('payment_id', values?.paymentId);
       data.append('payment_type', "deposit");
       data.append('method_type', selectedMethod);
-      data.append('amount' , values?.customAmount);
+      data.append('amount', values?.customAmount);
       if (!errorMsg) {
+        setLoader(true)
         try {
-          const result = await depositFunds(data)
+          const result = await handlePayents(data)
           console.log("result", result)
+          setLoader(false)
+          toast.success(result?.data?.message, {
+						position: toast.POSITION.TOP_RIGHT,
+					})
         } catch (error) {
-          console.log("Error", error)
+          console.log("Error", error?.message)
+          toast.error(error?.response?.data?.message, {
+            position: toast.POSITION.TOP_RIGHT,
+          })
+          setLoader(false)
         }
       }
       // return
@@ -196,20 +199,20 @@ const DepositFunds = props => {
                             <div className="form-check form-check-inline mt-20">
                               <Input
                                 type="radio"
-                                id="bankTransfer"
+                                id="bank"
                                 name="paymentMethod"
                                 className="form-check-input"
-                                value={"bankTransfer"}
-                                checked={selectedMethod === "bankTransfer"}
+                                value={"bank"}
+                                checked={selectedMethod === "bank"}
                                 onChange={() => { }}
                                 onClick={() => {
-                                  setSelectedMethod("bankTransfer")
+                                  setSelectedMethod("bank")
                                 }}
                               // disabled={spinner}
                               />
                               <Label
                                 className="form-check-label"
-                                htmlFor="bankTransfer"
+                                htmlFor="bank"
                               >
                                 <img src={BankLogo} />
                                 <p className="font-normal">India Local Banks</p>
@@ -297,13 +300,13 @@ const DepositFunds = props => {
                   className="slide"
                   style={{
                     // height: selectedMethod === "stripe" ? selectedCard === "add_new"? "auto" : "450px" : "0px",
-                    height: selectedMethod !== "bankTransfer" ? "auto" : "0px",
+                    height: selectedMethod !== "bank" ? "auto" : "0px",
                     // height: "auto",
                     // height: stripeCardHeight,
                     overflow: "hidden",
                     maxHeight: "450px",
                     transition: "height 0.6s ease 0s",
-                    opacity: selectedMethod !== "bankTransfer" ? 1 : 0,
+                    opacity: selectedMethod !== "bank" ? 1 : 0,
                   }}
                 >
                   {/* <Card className="m-10 stripe-form">
@@ -360,13 +363,13 @@ const DepositFunds = props => {
                   className="slide"
                   style={{
                     // height: selectedMethod === "stripe" ? selectedCard === "add_new"? "auto" : "450px" : "0px",
-                    height: selectedMethod === "bankTransfer" ? "auto" : "0px",
+                    height: selectedMethod === "bank" ? "auto" : "0px",
                     // height: "auto",
                     // height: stripeCardHeight,
                     overflow: "hidden",
                     maxHeight: "450px",
                     transition: "height 0.6s ease 0s",
-                    opacity: selectedMethod === "bankTransfer" ? 1 : 0,
+                    opacity: selectedMethod === "bank" ? 1 : 0,
                   }}
                 >
                   {/* <Card className="m-10 stripe-form">
@@ -492,12 +495,15 @@ const DepositFunds = props => {
                                   value={DepositForm.values.customAmount || ""}
                                   placeholder="5000"
                                   max="5000"
-                                  min="1"
+                                  min="50"
                                   onChange={e => {
                                     DepositForm.handleChange(e)
                                     setcustompay(e.target.value)
                                   }}
-                                  onBlur={(e) => { DepositForm.handleBlur, custompay > 5000 ? DepositForm.values.customAmount = 5000 : "" }}
+                                  onBlur={(e) => { 
+                                    DepositForm.handleBlur, 
+                                    custompay > 5000 ? DepositForm.values.customAmount = 5000 :custompay < 50? DepositForm.values.customAmount = 50 : null 
+                                  }}
                                   invalid={
                                     DepositForm.touched.customAmount &&
                                       DepositForm.errors.customAmount
@@ -566,6 +572,7 @@ const DepositFunds = props => {
                                     event.target.value = null;
                                   }
                                 }}
+                                invalid={errorMsg ? true : false}
                               // multiple
                               />
                             </label>

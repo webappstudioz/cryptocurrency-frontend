@@ -19,7 +19,7 @@ export const ADMIN_ACC_DETAILS = "/admin/account/detail"
 export const UPDATE_USER_PROFILE = "/user/detail/"
 export const GET_TEAM_LIST = "/team/list/"
 export const CHANGE_PASSWORD = "/user/change-password"
-export const DEPOSTE_FUNDS = "/payment"
+export const PAYMENTS = "/payment"
 export const WITHDRAW_FUNDS = ""
 export const TRANSFER_FUNDS = ""
 

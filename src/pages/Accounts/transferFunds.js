@@ -5,18 +5,20 @@ import { useFormik } from "formik"
 import { withRouter } from "react-router-dom"
 import rederror from "../../assets/images/redvalidationicon/rederror.jpg"
 import Breadcrumb from "../../components/Common/Breadcrumb"
-import { loginData, postClientProfileDetails } from "../../pages/Authentication/store/apiServices"
+import { handlePayents, loginData } from "../../pages/Authentication/store/apiServices"
 import TextLoader from "../../components/textLoader"
 import { toast } from "react-toastify"
 import { setPageTitle } from "../../helpers/api_helper_rs"
 import { FocusError } from 'focus-formik-error'
-import showeye from "../../assets/images/showeye.svg"
-import hideeye from "../../assets/images/hideeye.svg"
+// import showeye from "../../assets/images/showeye.svg"
+// import hideeye from "../../assets/images/hideeye.svg"
 import { customRegex } from "../../helpers/validation_helpers"
 const TransferFunds = props => {
   const [userData, setUserData] = useState()
-  const [loader, setloader] = useState("")
-  const [passwordInputType, setPasswordInputType] = useState(true)
+  const [loader, setLoader] = useState("")
+  const [spinner, setSpinner] = useState(false)
+
+  // const [passwordInputType, setPasswordInputType] = useState(true)
 
 
   useEffect(() => {
@@ -25,7 +27,7 @@ const TransferFunds = props => {
     setUserData(userInfo)
   }, [])
 
-  const validation = useFormik({
+  const transferForm = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
     initialValues: {
@@ -33,8 +35,8 @@ const TransferFunds = props => {
       transferToAccName: "",
       transferById: userData?.user_name || "",
       transferByAccName: (userData?.first_name + " " + userData?.last_name) || "",
-      amount: "",
-      password: "",
+      customAmount: "",
+      // password: "",
     },
     validationSchema: Yup.object({
       transferToId: Yup.string()
@@ -43,38 +45,46 @@ const TransferFunds = props => {
       transferToAccName: Yup.string()
         .required("Transfer account name is required.")
         .matches(customRegex?.name, "Only alphabets are allowed"),
-      amount: Yup.string()
+      customAmount: Yup.string()
         .matches(customRegex?.onlyDigitsRegex, "Please enter valid amount.")
         .required("Amount is required."),
-      password: Yup.string()
-        .required("Password is required")
-        .min(6, "Enter Valid Password"),
+      // password: Yup.string()
+      //   .required("Password is required")
+      //   .min(6, "Enter Valid Password"),
     }),
     onSubmit: async values => {
-      let data = new URLSearchParams({
-        transferToId: values.transferToId,
-        transferToAccName: values.transferToAccName,
-        transferById: values.transferById,
-        transferByAccName: values.transferByAccName,
-        amount: values.amount,
-        password: values?.password
-      })
+      // let data = new URLSearchParams({
+      //   transferToId: values.transferToId,
+      //   transferToAccName: values.transferToAccName,
+      //   transferById: values.transferById,
+      //   transferByAccName: values.transferByAccName,
+      //   amount: values.amount,
+      //   password: values?.password
+      // })
+      let data = new FormData()
+      data.append('payment_type', "transfer");
+      data.append('amount', values?.customAmount);
+      data.append('send_to', values?.transferToId)
 
-      try {
-        setloader(true)
-        let res = await postClientProfileDetails(data)
-        if (res) {
-          setloader(false)
-          toast.success(res.data?.message, {
+      if (!errorMsg) {
+        setLoader(true)
+        setSpinner(true)
+        try {
+          const result = await handlePayents(data)
+          console.log("result", result)
+          setLoader(false)
+          setSpinner(false)
+          toast.success(result?.data?.message, {
             position: toast.POSITION.TOP_RIGHT,
           })
+        } catch (error) {
+          console.log("Error", error?.message)
+          toast.error(error?.response?.data?.message, {
+            position: toast.POSITION.TOP_RIGHT,
+          })
+          setLoader(false)
+          setSpinner(false)
         }
-
-      } catch (error) {
-        setloader(false)
-        toast.error(error?.response?.data?.message, {
-          position: toast.POSITION.TOP_RIGHT,
-        })
       }
     },
   })
@@ -93,7 +103,7 @@ const TransferFunds = props => {
           className="form-horizontal floating-form my-account"
           onSubmit={e => {
             e.preventDefault()
-            validation.handleSubmit()
+            transferForm.handleSubmit()
             return false
           }}
         >
@@ -107,26 +117,26 @@ const TransferFunds = props => {
               <br />
               <Row>
                 <Col lg="6">
-                  <FocusError formik={validation} />
+                  <FocusError formik={transferForm} />
                   <label>Transfer Id</label>
                   <Input
                     name="transferToId"
                     className="mt-3 input-outline"
                     placeholder="Transfer Id"
                     type="text"
-                    onChange={validation.handleChange}
-                    onBlur={validation.handleBlur}
+                    onChange={transferForm.handleChange}
+                    onBlur={transferForm.handleBlur}
                     // disabled={true}
-                    value={validation.values.transferToId || ""}
+                    value={transferForm.values.transferToId || ""}
                     invalid={
-                      validation.touched.transferToId &&
-                        validation.errors.transferToId
+                      transferForm.touched.transferToId &&
+                        transferForm.errors.transferToId
                         ? true
                         : false
                     }
                   />
-                  {validation.touched.transferToId &&
-                    validation.errors.transferToId ? (
+                  {transferForm.touched.transferToId &&
+                    transferForm.errors.transferToId ? (
                     <>
                       <FormFeedback type="invalid">
                         <img
@@ -135,7 +145,7 @@ const TransferFunds = props => {
                           alt=""
                           height={15}
                         />
-                        {validation.errors.transferToId}
+                        {transferForm.errors.transferToId}
                       </FormFeedback>
                     </>
                   ) : null}
@@ -150,18 +160,18 @@ const TransferFunds = props => {
                     className="mt-3 input-outline"
                     placeholder="Account Holder's Name"
                     type="text"
-                    onChange={validation.handleChange}
-                    onBlur={validation.handleBlur}
-                    value={validation.values.transferToAccName || ""}
+                    onChange={transferForm.handleChange}
+                    onBlur={transferForm.handleBlur}
+                    value={transferForm.values.transferToAccName || ""}
                     invalid={
-                      validation.touched.transferToAccName &&
-                        validation.errors.transferToAccName
+                      transferForm.touched.transferToAccName &&
+                        transferForm.errors.transferToAccName
                         ? true
                         : false
                     }
                   />
-                  {validation.touched.transferToAccName &&
-                    validation.errors.transferToAccName ? (
+                  {transferForm.touched.transferToAccName &&
+                    transferForm.errors.transferToAccName ? (
                     <>
                       <FormFeedback type="invalid">
                         <img
@@ -170,7 +180,7 @@ const TransferFunds = props => {
                           alt=""
                           height={15}
                         />
-                        {validation.errors.transferToAccName}
+                        {transferForm.errors.transferToAccName}
                       </FormFeedback>
                     </>
                   ) : null}
@@ -185,7 +195,7 @@ const TransferFunds = props => {
               <br />
               <Row>
                 <Col lg="6">
-                  <FocusError formik={validation} />
+                  <FocusError formik={transferForm} />
                   <label>Transfer Id</label>
                   <Input
                     name="transferById"
@@ -193,7 +203,7 @@ const TransferFunds = props => {
                     placeholder=""
                     type="text"
                     readOnly
-                    value={validation.values.transferById}
+                    value={transferForm.values.transferById}
                   />
                 </Col>
               </Row>
@@ -207,47 +217,64 @@ const TransferFunds = props => {
                     placeholder="Account Holder's Name"
                     type="text"
                     readOnly
-                    value={validation.values.transferByAccName}
+                    value={transferForm.values.transferByAccName}
                   />
                 </Col>
               </Row>
               <br />
               <Row>
-                <Col lg="6">
-                  <label>Ammount</label>
-                  <Input
-                    name="amount"
-                    className="mt-3 input-outline"
-                    placeholder="Amount"
-                    type="text"
-                    onChange={validation.handleChange}
-                    onBlur={validation.handleBlur}
-                    value={validation.values.amount || ""}
-                    invalid={
-                      validation.touched.amount &&
-                        validation.errors.amount
-                        ? true
-                        : false
-                    }
-                  />
-                  {validation.touched.amount &&
-                    validation.errors.amount ? (
-                    <>
-                      <FormFeedback type="invalid">
-                        <img
-                          className="form-error-icon"
-                          src={rederror}
-                          alt=""
-                          height={15}
-                        />
-                        {validation.errors.amount}
-                      </FormFeedback>
-                    </>
-                  ) : null}
+                <Col>
+                  <div className="test form-check form-check-inline mt-20 ">
+                    {/* <span className="prefix">{currency?.prefix}$</span> */}
+                    <div className="inner-input-box">
+                      <Input
+                        className="chose-payment"
+                        value={transferForm.values.customAmount || ""}
+                        placeholder="5000"
+                        max="5000"
+                        min="50"
+                        onChange={e => {
+                          transferForm.handleChange(e)
+                          setcustompay(e.target.value)
+                        }}
+                        onBlur={(e) => {
+                          transferForm.handleBlur,
+                            custompay > 5000 ? transferForm.values.customAmount = 5000 : custompay < 50 ? transferForm.values.customAmount = 50 : null
+                        }}
+                        invalid={
+                          transferForm.touched.customAmount &&
+                            transferForm.errors.customAmount
+                            ? true
+                            : false
+                        }
+                        type="number"
+                        name="customAmount"
+
+                        disabled={spinner}
+                      />
+
+                      {transferForm.touched.customAmount &&
+                        transferForm.errors.customAmount ? (
+                        <>
+                          <FormFeedback type="invalid">
+                            <img
+                              className="form-error-icon"
+                              src={rederror}
+                              alt=""
+                              height={15}
+                            />
+                            {transferForm.errors.customAmount}
+                          </FormFeedback>
+                        </>
+                      ) : null}
+                    </div>
+                  </div>
+                  <span className="billing-max-amt">*Maximum amount: 5000</span>
+
                 </Col>
               </Row>
               <br />
-              <Row>
+              {/* <Row>
                 <Col lg="6">
                   <label>Password</label>
                   <div className="mb-3 form-g position-relative">
@@ -255,14 +282,14 @@ const TransferFunds = props => {
                         name="password"
                         // autoComplete="off"
                         className="input-outline"
-                        value={validation.values.password || ""}
+                        value={transferForm.values.password || ""}
                         type={passwordInputType ? "password" : "text"}
                         placeholder="**********"
-                        onChange={validation.handleChange}
-                        onBlur={validation.handleBlur}
+                        onChange={transferForm.handleChange}
+                        onBlur={transferForm.handleBlur}
                         invalid={
-                          validation.touched.password &&
-                          validation.errors.password
+                          transferForm.touched.password &&
+                          transferForm.errors.password
                             ? true
                             : false
                         }
@@ -278,8 +305,8 @@ const TransferFunds = props => {
                         />
                       </div>
 
-                      {validation.touched.password &&
-                      validation.errors.password ? (
+                      {transferForm.touched.password &&
+                      transferForm.errors.password ? (
                         <>
                           <FormFeedback type="invalid">
                             <img
@@ -288,28 +315,29 @@ const TransferFunds = props => {
                               alt=""
                               height={15}
                             />
-                            {validation.errors.password}
+                            {transferForm.errors.password}
                           </FormFeedback>
                         </>
                       ) : null}
                     </div>
                 </Col>
-              </Row>
+              </Row> */}
             </CardBody>
           </Card>
           <div className="btn-group mt-30">
-            <button
+            {/* <button
               className="btn btn-primary w-100 waves-effect waves-light btn-cancel m-0"
               type="button"
-              onClick={() => validation.resetForm({ values: "" })}
+              onClick={() => transferForm.resetForm({ values: "" })}
             >
               Cancel
-            </button>
+            </button> */}
             <button
-              className="btn btn-primary w-100 waves-effect waves-light btn-save m-0"
+              className="btn btn-primary w-100 waves-effect waves-light btn-save font-normal btnv1"
               type="submit"
+              disabled={spinner}
             >
-              Transfer Request
+              {spinner ? <div className="ui active inline loader"></div> : "Deposit Funds"}
             </button>
           </div>
         </Form>

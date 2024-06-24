@@ -26,43 +26,68 @@ import { toast } from "react-toastify"
 import TextLoader from "../../components/textLoader"
 import PaymentModal from "../../components/Common/PaymentModal"
 import BankLogo from "../../assets/images/c2c/banklogo.png"
-import EthereumLogo from "../../assets/images/c2c/ethereum.png"
-import BitcoinLogo from "../../assets/images/c2c/bitcoinlogo.png"
+// import EthereumLogo from "../../assets/images/c2c/ethereum.png"
+// import BitcoinLogo from "../../assets/images/c2c/bitcoinlogo.png"
 import TetherLogo from "../../assets/images/c2c/tetherlogo.png"
-import file from "../../assets/images/file.png";
+import { handlePayents, loginData } from "../Authentication/store/apiServices"
+// import file from "../../assets/images/file.png";
 
 const WihtdrawFunds = props => {
+  const IMAGE_URL = process.env.REACT_APP_IMAGE_HOST
   const [loader, setLoader] = useState(false)
   const [custompay, setcustompay] = useState()
-  const [selectedMethod, setSelectedMethod] = useState("bankTransfer")
+  const [selectedMethod, setSelectedMethod] = useState("bank")
   const [spinner, setSpinner] = useState(false)
   const [loading, setLoading] = useState("")
   const [openModal, setOpenModal] = useState(false)
   const [selectedFile, setSelectedFile] = useState([]);
   const [inputKey, setInputKey] = useState(0);
   const [errorMsg, setErrorMsg] = useState("");
+  const [userInfo, setUserInfo] = useState("")
 
   useEffect(() => {
-    setPageTitle("Deposite Funds")
+    setPageTitle("Withdraw Funds")
+    const info = loginData()
+    console.log("info", info)
+    setUserInfo(info)
   }, [])
 
-  const DepositForm = useFormik({
+  const WithdrawForm = useFormik({
     enableReinitialize: true,
 
     initialValues: {
       customAmount: "",
-      paymentId: "",
     },
     validationSchema: Yup.object({
       customAmount: Yup.string()
         .required("Please enter amount.")
         .matches(customRegex?.amount, "Please valid amount"),
-      paymentId: Yup.string()
-        .required("Please enter payment id"),
     }),
 
-    onSubmit: values => {
+    onSubmit: async(values) => {
       console.log("values", values)
+      let data = new FormData()
+      data.append('payment_type', "withdraw");
+      data.append('method_type', selectedMethod);
+      data.append('amount', values?.customAmount);
+      if (!errorMsg) {
+        setLoader(true)
+        try {
+          const result = await handlePayents(data)
+          console.log("result", result)
+          setLoader(false)
+          toast.success(result?.data?.message, {
+						position: toast.POSITION.TOP_RIGHT,
+					})
+        } catch (error) {
+          console.log("Error", error?.message)
+          toast.error(error?.response?.data?.message, {
+            position: toast.POSITION.TOP_RIGHT,
+          })
+          setLoader(false)
+        }
+      }
+
       // return
       // let amount = ""
       // values?.customAmount ? amount = values?.customAmount : amount = selectedAmount
@@ -144,7 +169,7 @@ const WihtdrawFunds = props => {
                 className="form-horizontal user-management"
                 onSubmit={e => {
                   e.preventDefault()
-                  DepositForm.handleSubmit()
+                  WithdrawForm.handleSubmit()
                   return false
                 }}
               >
@@ -160,20 +185,20 @@ const WihtdrawFunds = props => {
                             <div className="form-check form-check-inline mt-20">
                               <Input
                                 type="radio"
-                                id="bankTransfer"
+                                id="bank"
                                 name="paymentMethod"
                                 className="form-check-input"
-                                value={"bankTransfer"}
-                                checked={selectedMethod === "bankTransfer"}
+                                value={"bank"}
+                                checked={selectedMethod === "bank"}
                                 onChange={() => { }}
                                 onClick={() => {
-                                  setSelectedMethod("bankTransfer")
+                                  setSelectedMethod("bank")
                                 }}
                               // disabled={spinner}
                               />
                               <Label
                                 className="form-check-label"
-                                htmlFor="bankTransfer"
+                                htmlFor="bank"
                               >
                                 <img src={BankLogo} />
                                 <p className="font-normal">India Local Banks</p>
@@ -261,13 +286,13 @@ const WihtdrawFunds = props => {
                   className="slide"
                   style={{
                     // height: selectedMethod === "stripe" ? selectedCard === "add_new"? "auto" : "450px" : "0px",
-                    height: selectedMethod !== "bankTransfer" ? "auto" : "0px",
+                    height: selectedMethod !== "bank" ? "auto" : "0px",
                     // height: "auto",
                     // height: stripeCardHeight,
                     overflow: "hidden",
                     maxHeight: "450px",
                     transition: "height 0.6s ease 0s",
-                    opacity: selectedMethod !== "bankTransfer" ? 1 : 0,
+                    opacity: selectedMethod !== "bank" ? 1 : 0,
                   }}
                 >
                   {/* <Card className="m-10 stripe-form">
@@ -288,13 +313,13 @@ const WihtdrawFunds = props => {
                   <div>
                     <div className="row">
                       <div className="col-md-12">
-                        <h5 className="info_heding firstLettercapital" >{selectedMethod}</h5>
+                        <h5 className="info_heding firstLettercapital">{selectedMethod}</h5>
                         <div className="tab_content tab-data-table">
                           <div className="row">
                             <div className="col-md-6">
                               <table className="w-100">
                                 <tbody>
-                                  <img src={LogoGreen} style={{ height: "100%", width: "100%" }} />
+                                  <img src={userInfo?.account_image ? (IMAGE_URL + userInfo?.account_image) : LogoGreen} style={{ height: "100%", width: "100%" }} />
                                 </tbody>
                               </table>
                             </div>
@@ -302,50 +327,10 @@ const WihtdrawFunds = props => {
                               <table className="w-100">
                                 <tbody>
                                   <tr>
-                                    <th>Bank Name</th>
+                                    <th>Crypto Id</th>
                                     <React.Fragment>
                                       <td className="text-right">
-                                        {/* {userInfo?.bank_name} */}
-                                      </td>
-                                    </React.Fragment>
-                                    <><td></td><td></td><td></td></>
-                                  </tr>
-                                  <tr></tr>
-                                  <tr>
-                                    <th>Account Number</th>
-                                    <React.Fragment>
-                                      <td className="text-right">
-                                        {/* {userInfo?.account_number} */}
-                                      </td>
-                                    </React.Fragment>
-                                    <><td></td><td></td><td></td></>
-                                  </tr>
-                                  <tr></tr>
-                                  <tr>
-                                    <th>{"Account Holder's Name"}</th>
-                                    <React.Fragment>
-                                      <td className="text-right">
-                                        {/* {FormatDate(userInfo?.account_holder_name)} */}
-                                      </td>
-                                    </React.Fragment>
-                                    <><td></td><td></td><td></td></>
-                                  </tr>
-                                  <tr></tr>
-                                  <tr>
-                                    <th>IFSC Code</th>
-                                    <React.Fragment>
-                                      <td className="text-right">
-                                        {/* {userInfo?.ifsc_code} */}
-                                      </td>
-                                    </React.Fragment>
-                                    <><td></td><td></td><td></td></>
-                                  </tr>
-                                  <tr></tr>
-                                  <tr>
-                                    <th>UPI ID</th>
-                                    <React.Fragment>
-                                      <td className="text-right">
-                                        {/* {userInfo?.upi_id} */}
+                                        {userInfo?.crypto_id}
                                       </td>
                                     </React.Fragment>
                                     <><td></td><td></td><td></td></>
@@ -364,13 +349,13 @@ const WihtdrawFunds = props => {
                   className="slide"
                   style={{
                     // height: selectedMethod === "stripe" ? selectedCard === "add_new"? "auto" : "450px" : "0px",
-                    height: selectedMethod === "bankTransfer" ? "auto" : "0px",
+                    height: selectedMethod === "bank" ? "auto" : "0px",
                     // height: "auto",
                     // height: stripeCardHeight,
                     overflow: "hidden",
                     maxHeight: "450px",
                     transition: "height 0.6s ease 0s",
-                    opacity: selectedMethod === "bankTransfer" ? 1 : 0,
+                    opacity: selectedMethod === "bank" ? 1 : 0,
                   }}
                 >
                   {/* <Card className="m-10 stripe-form">
@@ -397,7 +382,7 @@ const WihtdrawFunds = props => {
                             <div className="col-md-6">
                               <table className="w-100">
                                 <tbody>
-                                  <img src={LogoGreen} style={{ height: "100%", width: "100%" }} />
+                                  <img src={userInfo?.account_image ? (IMAGE_URL + userInfo?.account_image) : LogoGreen} style={{ height: "100%", width: "100%" }} />
                                 </tbody>
                               </table>
                             </div>
@@ -407,8 +392,8 @@ const WihtdrawFunds = props => {
                                   <tr>
                                     <th>Bank Name</th>
                                     <React.Fragment>
-                                      <td className="text-right">
-                                        {/* {userInfo?.bank_name} */}
+                                      <td className="text-right capitalize">
+                                        {userInfo?.bank_name}
                                       </td>
                                     </React.Fragment>
                                     <><td></td><td></td><td></td></>
@@ -418,7 +403,7 @@ const WihtdrawFunds = props => {
                                     <th>Account Number</th>
                                     <React.Fragment>
                                       <td className="text-right">
-                                        {/* {userInfo?.account_number} */}
+                                        {userInfo?.account_number}
                                       </td>
                                     </React.Fragment>
                                     <><td></td><td></td><td></td></>
@@ -427,8 +412,8 @@ const WihtdrawFunds = props => {
                                   <tr>
                                     <th>{"Account Holder's Name"}</th>
                                     <React.Fragment>
-                                      <td className="text-right">
-                                        {/* {FormatDate(userInfo?.account_holder_name)} */}
+                                      <td className="text-right firstLettercapital">
+                                        {userInfo?.account_holder_name}
                                       </td>
                                     </React.Fragment>
                                     <><td></td><td></td><td></td></>
@@ -438,7 +423,7 @@ const WihtdrawFunds = props => {
                                     <th>IFSC Code</th>
                                     <React.Fragment>
                                       <td className="text-right">
-                                        {/* {userInfo?.ifsc_code} */}
+                                        {userInfo?.ifsc_code}
                                       </td>
                                     </React.Fragment>
                                     <><td></td><td></td><td></td></>
@@ -448,7 +433,7 @@ const WihtdrawFunds = props => {
                                     <th>UPI ID</th>
                                     <React.Fragment>
                                       <td className="text-right">
-                                        {/* {userInfo?.upi_id} */}
+                                        {userInfo?.upi_id}
                                       </td>
                                     </React.Fragment>
                                     <><td></td><td></td><td></td></>
@@ -493,18 +478,21 @@ const WihtdrawFunds = props => {
                               <div className="inner-input-box">
                                 <Input
                                   className="chose-payment"
-                                  value={DepositForm.values.customAmount || ""}
+                                  value={WithdrawForm.values.customAmount || ""}
                                   placeholder="5000"
                                   max="5000"
                                   min="1"
                                   onChange={e => {
-                                    DepositForm.handleChange(e)
+                                    WithdrawForm.handleChange(e)
                                     setcustompay(e.target.value)
                                   }}
-                                  onBlur={(e) => { DepositForm.handleBlur, custompay > 5000 ? DepositForm.values.customAmount = 5000 : "" }}
+                                  onBlur={(e) => { 
+                                    WithdrawForm.handleBlur, 
+                                    custompay > 5000 ? WithdrawForm.values.customAmount = 5000 :custompay < 50? WithdrawForm.values.customAmount = 50 : null 
+                                  }}
                                   invalid={
-                                    DepositForm.touched.customAmount &&
-                                      DepositForm.errors.customAmount
+                                    WithdrawForm.touched.customAmount &&
+                                      WithdrawForm.errors.customAmount
                                       ? true
                                       : false
                                   }
@@ -514,8 +502,8 @@ const WihtdrawFunds = props => {
                                   disabled={spinner}
                                 />
                               
-                              {DepositForm.touched.customAmount &&
-                                DepositForm.errors.customAmount ? (
+                              {WithdrawForm.touched.customAmount &&
+                                WithdrawForm.errors.customAmount ? (
                                 <>
                                   <FormFeedback type="invalid">
                                     <img
@@ -524,7 +512,7 @@ const WihtdrawFunds = props => {
                                       alt=""
                                       height={15}
                                     />
-                                    {DepositForm.errors.customAmount}
+                                    {WithdrawForm.errors.customAmount}
                                   </FormFeedback>
                                 </>
                               ) : null}
@@ -582,18 +570,18 @@ const WihtdrawFunds = props => {
                               className="form-control"
                               id="paymentId"
                               name="paymentId"
-                              value={DepositForm?.values?.paymentId || ""}
-                              onChange={DepositForm.handleChange}
-                              onBlur={DepositForm.handleBlur}
+                              value={WithdrawFunds?.values?.paymentId || ""}
+                              onChange={WithdrawForm.handleChange}
+                              onBlur={WithdrawForm.handleBlur}
                               invalid={
-                                DepositForm.touched.paymentId &&
-                                  DepositForm.errors.paymentId
+                                WithdrawForm.touched.paymentId &&
+                                  WithdrawForm.errors.paymentId
                                   ? true
                                   : false
                               }
                             />
-                            {DepositForm.touched.paymentId &&
-                              DepositForm.errors.paymentId ? (
+                            {WithdrawForm.touched.paymentId &&
+                              WithdrawForm.errors.paymentId ? (
                               <>
                                 <FormFeedback type="invalid">
                                   <img
@@ -602,7 +590,7 @@ const WihtdrawFunds = props => {
                                     alt=""
                                     height={15}
                                   />
-                                  {DepositForm.errors.paymentId}
+                                  {WithdrawForm.errors.paymentId}
                                 </FormFeedback>
                               </>
                             ) : null}
