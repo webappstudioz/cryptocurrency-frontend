@@ -59,7 +59,6 @@ const DepositFunds = props => {
       setAdminInfo(result?.data?.data)
       setLoader(false)
     } catch (error) {
-      console.log("error", error)
       setLoader(false)
     }
   }

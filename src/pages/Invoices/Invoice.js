@@ -15,6 +15,10 @@ import {
   InvoiceStatus,
   PDF,
   Checks,
+  Action,
+  SendTo,
+  PaymentType,
+  Amount,
 } from "./InvoiceCustomerCol"
 
 //redux
@@ -23,12 +27,14 @@ import { useSelector, useDispatch } from "react-redux"
 import { Col, Row, DropdownMenu, DropdownItem, Dropdown } from "reactstrap"
 import Vector1 from "../../assets/images/Vector1.svg"
 import { getInvoice } from "../Authentication/store/apiServices"
-import PermissionDenied from "../Authentication/PermissionDenied"
+// import PermissionDenied from "../Authentication/PermissionDenied"
 import { toast } from "react-toastify"
 import { setPageTitle } from "../../helpers/api_helper_rs"
 function Invoice() {
   const dispatch = useDispatch()
   const [modal, setModal] = useState(false)
+  const [search, setSearch] = useState("")
+
   // const [modal1, setModal1] = useState(false);
   const [isEdit, setIsEdit] = useState(false)
   const [invoice, setinvoice] = useState()
@@ -44,30 +50,33 @@ function Invoice() {
   const [currentPage, setCurrentPage] = useState(1)
   const [page, setPage] = useState(1)
   const [pagination, setPageination] = useState({ state: false, action: "" })
-  const [permissionDen, setPermissionDen] = useState(false)
+  // const [permissionDen, setPermissionDen] = useState(false)
   const { invoicesList } = useSelector(state => ({
     // invoicesList: state.invoices.invoicesList,
   }))
 
   // for api integration
-  const [selectedDate, setselectedDate] = useState(0)
+  // const [selectedDate, setselectedDate] = useState(0)
 
   const [statusFilterOpen, setstatusFilterOpen] = useState(false)
   const [checkboxValues, setCheckboxValues] = useState({
     Paid: false,
-    Unpaid: false,
-    Refunded: false,
+    // Unpaid: false,
+    // Refunded: false,
     Cancelled: false,
-    Draft: false,
-    Overdue: false,
+    // Draft: false,
+    // Overdue: false,
     Payment_Pending: false,
-    Collections: false,
+    Self_Transfer: false
+    // Collections: false,
   })
   const [filterArray, setFilterArray] = useState({
     status: [],
     time: 0,
   })
-  const [dateFilterOpen, setdateFilterOpen] = useState(false)
+  // const [dateFilterOpen, setdateFilterOpen] = useState(false)
+  const [paymentTypeFilter, setPaymentTypeFilter] = useState(false)
+  const [selectedPaymentType, setSelectedPaymentType] = useState("all")
 
   useEffect(() => {
     let config = {
@@ -87,15 +96,15 @@ function Invoice() {
     getInvoiceList()
   }, [])
 
-  const getInvoiceList = async(data) => {
+  const getInvoiceList = async (data) => {
     try {
       let res = ""
-      if(data){
-       res = await getInvoice(data)
-      }else{
+      if (data) {
+        res = await getInvoice(data)
+      } else {
         res = await getInvoice()
       }
-     
+
       if (res) {
         setPageination({ state: false })
         setLoader(false)
@@ -112,10 +121,10 @@ function Invoice() {
       }
     } catch (err) {
       if (err?.response?.data?.status_code == 403) {
-        setPermissionDen(true)
+        // setPermissionDen(true)
       }
       if (err?.response?.data?.status_code != 401) {
-        setPermissionDen(true)
+        // setPermissionDen(true)
         setLoader(false)
         setLoading(false)
         toast.error(err?.response?.data?.message, {
@@ -124,24 +133,24 @@ function Invoice() {
       }
     }
   }
-  
+
   const handleInvoiceFilter = (status, time) => {
-    let data = "" 
-    if(status?.length){
+    let data = ""
+    if (status?.length) {
       data = new URLSearchParams({
-        status:status,
-        timeperiod:time,
-        pagination:pageSizes,
-        page:page
+        status: status,
+        timeperiod: time,
+        pagination: pageSizes,
+        page: page
       })
-    }else {
+    } else {
       data = new URLSearchParams({
-        timeperiod:time,
-        pagination:pageSizes,
-        page:page
+        timeperiod: time,
+        pagination: pageSizes,
+        page: page
       })
     }
-   
+
     getInvoiceList(data)
   }
   // useEffect(() => {
@@ -164,7 +173,7 @@ function Invoice() {
   }
 
   const filterApply = () => {
-    
+
     let arr = [...defaultinvoicelist]
     let filteredData = arr.filter(item => {
       if (
@@ -212,13 +221,13 @@ function Invoice() {
   const clearfilter = () => {
     setCheckboxValues({
       Paid: false,
-      Unpaid: false,
-      Refunded: false,
+      // Unpaid: false,
+      // Refunded: false,
       Cancelled: false,
-      Draft: false,
-      Overdue: false,
+      // Draft: false,
+      // Overdue: false,
       Payment_Pending: false,
-      Collections: false,
+      // Collections: false,
     })
     getInvoiceList()
   }
@@ -233,13 +242,13 @@ function Invoice() {
     handleInvoiceFilter(arr, filterArray?.time)
   }
 
-  const DateFilter = date => {
-    setdateFilterOpen(false)
-    setselectedDate(date)
-    setFilterArray({ ...filterArray, time: date })
-    // filterApply()
-    handleInvoiceFilter(filterArray?.status, date)
-  }
+  // const DateFilter = date => {
+  //   setdateFilterOpen(false)
+  //   setselectedDate(date)
+  //   setFilterArray({ ...filterArray, time: date })
+  //   // filterApply()
+  //   handleInvoiceFilter(filterArray?.status, date)
+  // }
 
   const handlePagination = async action => {
     setLoader(true)
@@ -276,6 +285,14 @@ function Invoice() {
     }
   }
 
+  const paymentFilter = type => {
+    setPaymentTypeFilter(false)
+    setSelectedPaymentType(type)
+    setFilterArray({ ...filterArray, payment: type })
+    // filterApply()
+    handleInvoiceFilter(filterArray?.status, filterArray?.date, type)
+  }
+
   const columns = useMemo(
     () => [
       {
@@ -288,6 +305,24 @@ function Invoice() {
         },
       },
       {
+        Header: "Send To",
+        accessor: "send_to",
+        disableFilters: true,
+        filterable: false,
+        Cell: cellProps => {
+          return <SendTo {...cellProps} />
+        },
+      },
+      {
+        Header: "Invoice Type",
+        accessor: "payment_type",
+        disableFilters: true,
+        filterable: false,
+        Cell: cellProps => {
+          return <PaymentType {...cellProps} />
+        },
+      },
+      {
         Header: "Invoice Date",
         accessor: "date",
         disableGlobalFilter: true,
@@ -297,20 +332,20 @@ function Invoice() {
           return <CurDate {...cellProps} />
         },
       },
+      // {
+      //   Header: "Due Date",
+      //   accessor: "duedate",
+      //   filterable: true,
+      //   Cell: cellProps => {
+      //     return <DueDate {...cellProps} />
+      //   },
+      // },
       {
-        Header: "Due Date",
-        accessor: "duedate",
-        filterable: true,
-        Cell: cellProps => {
-          return <DueDate {...cellProps} />
-        },
-      },
-      {
-        Header: "Total",
+        Header: "Amount",
         accessor: "subtotal",
         filterable: true,
         Cell: cellProps => {
-          return <Total {...cellProps} />
+          return <Amount {...cellProps} />
         },
       },
       {
@@ -321,15 +356,23 @@ function Invoice() {
           return <InvoiceStatus {...cellProps} />
         },
       },
+      // {
+      //   Header: "PDF",
+      //   accessor: "lastname",
+      //   filterable: false,
+      //   disableSortBy: true,
+      //   Cell: cellProps => {
+      //     return <PDF {...cellProps} />
+      //   },
+      // },
       {
-        Header: "PDF",
-        accessor: "lastname",
-        filterable: false,
-        disableSortBy: true,
+        Header: "Action",
+        accessor: "",
+        filterable: true,
         Cell: cellProps => {
-          return <PDF {...cellProps} />
+            return <Action {...cellProps} />
         },
-      },
+    },
     ],
     []
   )
@@ -349,40 +392,74 @@ function Invoice() {
               {" "}
               <strong>Invoices ✨</strong>
             </h2>
-            {!permissionDen && (
-              <div className="dropdown-group">
-                <div className="dropdown">
-                  <Dropdown
-                    isOpen={statusFilterOpen}
-                    toggle={() => setstatusFilterOpen(!statusFilterOpen)}
+
+            {/* {!permissionDen && ( */}
+            <div className="dropdown-group">
+              <div className="dropdown">
+                <div className="top-center search">
+                  <div className="app-search d-none d-lg-block p-0">
+                    <div className="position-relative">
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={search}
+                        placeholder={"Search"}
+                        onChange={e => {
+                          // handleSearch(e?.target?.value)
+                          setSearch(e?.target?.value)
+                          // handleDebounceVal(e?.target?.value)
+                        }}
+                      />
+                      {!search ? (
+                        <span className={"uil-search"}></span>
+                      ) : (
+                        <span
+                          className={"uil-times"}
+                          style={{ cursor: "pointer" }}
+                          onClick={e => {
+                            // handleSearch()
+                            // handleDebounceVal("")
+                            // dashBoardCall0(0)
+                            setSearch("")
+                          }}
+                        ></span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="dropdown">
+                <Dropdown
+                  isOpen={statusFilterOpen}
+                  toggle={() => setstatusFilterOpen(!statusFilterOpen)}
+                >
+                  <button
+                    className="btn btn-primary dropdown-toggle sm"
+                    type="button"
+                    data-toggle="dropdown"
+                    onClick={() => setstatusFilterOpen(!statusFilterOpen)}
                   >
-                    <button
-                      className="btn btn-primary dropdown-toggle sm"
-                      type="button"
-                      data-toggle="dropdown"
-                      onClick={() => setstatusFilterOpen(!statusFilterOpen)}
-                    >
-                      {" "}
-                      <img src={Vector1} alt="" />
-                      <span className="caret" />
-                    </button>
-                    <DropdownMenu className="outerdiv">
-                      <li>
-                        <div className="form-check">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            id="Paid"
-                            onClick={handleCheckboxChange}
-                            onChange={() => {}}
-                            checked={checkboxValues["Paid"]}
-                          />
-                          <label className="form-check-label" htmlFor="Paid">
-                            Paid
-                          </label>
-                        </div>
-                      </li>
-                      <li>
+                    {" "}
+                    <img src={Vector1} alt="" />
+                    <span className="caret" />
+                  </button>
+                  <DropdownMenu className="outerdiv">
+                    <li>
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          id="Paid"
+                          onClick={handleCheckboxChange}
+                          onChange={() => { }}
+                          checked={checkboxValues["Paid"]}
+                        />
+                        <label className="form-check-label" htmlFor="Paid">
+                          Paid
+                        </label>
+                      </div>
+                    </li>
+                    {/* <li>
                         <div className="form-check">
                           <input
                             className="form-check-input"
@@ -396,8 +473,8 @@ function Invoice() {
                             Unpaid
                           </label>
                         </div>
-                      </li>
-                      <li>
+                      </li> */}
+                    {/* <li>
                         <div className="form-check">
                           <input
                             className="form-check-input"
@@ -414,26 +491,26 @@ function Invoice() {
                             Refunded
                           </label>
                         </div>
-                      </li>
-                      <li>
-                        <div className="form-check">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            id="Cancelled"
-                            onChange={() => {}}
-                            checked={checkboxValues["Cancelled"]}
-                            onClick={handleCheckboxChange}
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="Cancelled"
-                          >
-                            Cancelled
-                          </label>
-                        </div>
-                      </li>
-                      <li>
+                      </li> */}
+                    <li>
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          id="Cancelled"
+                          onChange={() => { }}
+                          checked={checkboxValues["Cancelled"]}
+                          onClick={handleCheckboxChange}
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="Cancelled"
+                        >
+                          Cancelled
+                        </label>
+                      </div>
+                    </li>
+                    {/* <li>
                         <div className="form-check">
                           <input
                             className="form-check-input"
@@ -447,8 +524,8 @@ function Invoice() {
                             Draft
                           </label>
                         </div>
-                      </li>
-                      <li>
+                      </li> */}
+                    {/* <li>
                         <div className="form-check">
                           <input
                             className="form-check-input"
@@ -462,26 +539,41 @@ function Invoice() {
                             Overdue
                           </label>
                         </div>
-                      </li>
-                      <li>
-                        <div className="form-check">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            id="Payment_Pending"
-                            onChange={() => {}}
-                            checked={checkboxValues["Payment_Pending"]}
-                            onClick={handleCheckboxChange}
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="Payment_Pending"
-                          >
-                            Payment Pending
-                          </label>
-                        </div>
-                      </li>
-                      <li>
+                      </li> */}
+                    <li>
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          id="Payment_Pending"
+                          onChange={() => { }}
+                          checked={checkboxValues["Payment_Pending"]}
+                          onClick={handleCheckboxChange}
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="Payment_Pending"
+                        >
+                          Payment Pending
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          id="Self_Transfer"
+                          onClick={handleCheckboxChange}
+                          onChange={() => { }}
+                          checked={checkboxValues["Self_Transfer"]}
+                        />
+                        <label className="form-check-label" htmlFor="Self_Transfer">
+                        Self Transfer
+                        </label>
+                      </div>
+                    </li>
+                    {/* <li>
                         <div className="form-check">
                           <input
                             className="form-check-input"
@@ -498,117 +590,95 @@ function Invoice() {
                             Collections
                           </label>
                         </div>
-                      </li>
+                      </li> */}
 
-                      <li className="btn-groups">
-                        <div className="inner-btn-group">
-                          <button
-                            className="btn btn-clear"
-                            type="clear"
-                            name="button"
-                            onClick={clearfilter}
-                          >
-                            Clear
-                          </button>
-                          <button
-                            className="btn btn-primary"
-                            type="clear"
-                            name="button"
-                            onClick={applyFilter}
-                          >
-                            Apply
-                          </button>
-                        </div>
-                      </li>
-                    </DropdownMenu>
-                  </Dropdown>
-                </div>
-
-                <div className="dropdown">
+                    <li className="btn-groups">
+                      <div className="inner-btn-group">
+                        <button
+                          className="btn btn-clear"
+                          type="clear"
+                          name="button"
+                          onClick={clearfilter}
+                        >
+                          Clear
+                        </button>
+                        <button
+                          className="btn btn-primary"
+                          type="clear"
+                          name="button"
+                          onClick={applyFilter}
+                        >
+                          Apply
+                        </button>
+                      </div>
+                    </li>
+                  </DropdownMenu>
+                </Dropdown>
+              </div>
+              <div className="dropdown">
                   <Dropdown
-                    isOpen={dateFilterOpen}
-                    toggle={() => setdateFilterOpen(!dateFilterOpen)}
+                    isOpen={paymentTypeFilter}
+                    toggle={() => setPaymentTypeFilter(!paymentTypeFilter)}
                   >
                     <button
                       className="btn btn-primary dropdown-toggle"
                       type="button"
                       data-toggle="dropdown"
-                      onClick={() => setdateFilterOpen(!dateFilterOpen)}
+                      onClick={() => setPaymentTypeFilter(!paymentTypeFilter)}
                     >
-                      {/* {selectedDate == "all"
-                        ? "All Time"
-                        : selectedDate == "last_7days"
-                        ? "Last 7 Days"
-                        : selectedDate == "last_1month"
-                        ? "Last Month"
-                        : selectedDate == "last_12month"
-                        ? "Last 12 Months"
-                        : selectedDate == "today"
-                        ? "Today"
-                        : ""} */}
-                        {selectedDate == 0
-                        ? "All Time"
-                        : selectedDate == 2
-                        ? "Last 7 Days"
-                        : selectedDate == 3
-                        ? "Last Month"
-                        : selectedDate == 4
-                        ? "Last 12 Months"
-                        : selectedDate == 1
-                        ? "Today"
+                        {selectedPaymentType == "all"
+                        ? "All"
+                        : selectedPaymentType == "deposit"
+                        ? "Deposit"
+                        : selectedPaymentType == "transfer"
+                        ? "Transfer"
+                        : selectedPaymentType == "withdraw"
+                        ? "Withdraw"
                         : ""}
                       <span className="caret" />
                     </button>
                     <DropdownMenu className="outerdiv">
                       <>
-                        <li onClick={() => DateFilter(1)}>
+                        <li onClick={() => paymentFilter("all")}>
                           <div className="form-check custom-checkbox">
-                            <label className="form-check-label" htmlFor="today">
-                              Today
+                            <label
+                              className="form-check-label"
+                              htmlFor="All"
+                            >
+                              All
                             </label>
                           </div>
                         </li>
                         <DropdownItem divider />
-                        <li onClick={() => DateFilter(2)}>
+                        <li onClick={() => paymentFilter("deposit")}>
                           <div className="form-check custom-checkbox">
                             <label
                               className="form-check-label"
-                              htmlFor="7-days"
+                              htmlFor="Deposit"
                             >
-                              Last 7 Days
+                              Deposit
                             </label>
                           </div>
                         </li>
                         <DropdownItem divider />
-                        <li onClick={() => DateFilter(3)}>
+                        <li onClick={() => paymentFilter("transfer")}>
                           <div className="form-check custom-checkbox">
                             <label
                               className="form-check-label"
-                              htmlFor="last-month"
+                              htmlFor="Transfer"
                             >
-                              Last Month
+                              Transfer
                             </label>
                           </div>
                         </li>
                         <DropdownItem divider />
-                        <li onClick={() => DateFilter(4)}>
+                        <li onClick={() => paymentFilter("withdraw")}>
                           <div className="form-check custom-checkbox">
                             <label
                               className="form-check-label"
-                              htmlFor="12-months"
+                              htmlFor="Withdraw"
                             >
-                              Last 12 Months
-                            </label>
-                          </div>
-                        </li>
-                        <DropdownItem divider />
-                        <li onClick={() => DateFilter(0)}>
-                          <div className="form-check custom-checkbox">
-                            <label
-                              className="form-check-label"
-                              htmlFor="all-time"
-                            >
-                              All Time
+                              Withdraw
                             </label>
                           </div>
                         </li>
@@ -617,41 +687,41 @@ function Invoice() {
                     </DropdownMenu>
                   </Dropdown>
                 </div>
-              </div>
-            )}
+            </div>
+            {/* )} */}
           </div>
-          {!permissionDen ? (
-            <Row>
-              <Col xs="12">
-                <div className="table_v1 invoice-listing">
-                  <TableContainer
-                    tableClassName="product-table table-shadow"
-                    columns={columns}
-                    data={invoice == undefined ? [] : invoice}
-                    isGlobalFilter={true}
-                    isAddCustomer={true}
-                    isAddTableBorderStrap={true}
-                    totalCount={totalInvoices}
-                    setPageSizes={setPageSizes}
-                    hasMorePages={hasMorePages}
-                    totalPages={totalPages}
-                    currentPage={currentPage}
-                    handleCustomerClicks={handleCustomerClicks}
-                    setPage={setPage}
-                    setPageination={setPageination}
-                    getTablePropsC={() => ({
-                      className: "product-table ",
-                    })}
-                  />
-                </div>
-              </Col>
-            </Row>
-          ) : (
+          {/* {!permissionDen ? ( */}
+          <Row>
+            <Col xs="12">
+              <div className="table_v1 invoice-listing">
+                <TableContainer
+                  tableClassName="product-table table-shadow"
+                  columns={columns}
+                  data={invoice == undefined ? [] : invoice}
+                  isGlobalFilter={true}
+                  isAddCustomer={true}
+                  isAddTableBorderStrap={true}
+                  totalCount={totalInvoices}
+                  setPageSizes={setPageSizes}
+                  hasMorePages={hasMorePages}
+                  totalPages={totalPages}
+                  currentPage={currentPage}
+                  handleCustomerClicks={handleCustomerClicks}
+                  setPage={setPage}
+                  setPageination={setPageination}
+                  getTablePropsC={() => ({
+                    className: "product-table ",
+                  })}
+                />
+              </div>
+            </Col>
+          </Row>
+          {/* ) : (
             <PermissionDenied />
-          )}
+          )} */}
         </div>
       </div>
-      <TextLoader loading={loading} loader={loader}/>
+      <TextLoader loading={loading} loader={loader} />
     </React.Fragment>
   )
 }

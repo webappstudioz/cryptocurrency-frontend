@@ -40,13 +40,14 @@ const Authmiddleware = ({
             to={{ pathname: "/login" }}
           />
         );
-      }else if (!isAuthProtected && authToken) {
+      }else if (!isAuthProtected && authToken && info?.role === "User") {
         return (
           <Redirect
             to={{ pathname: "/dashboard" }}
           />
         );
-      }else if(isAuthProtected && authToken && info?.role !== "User"){
+      }else if(isAuthProtected && authToken && info?.role === "Admin"){
+
         return (
           <Redirect
             to={{ pathname: "/admin/results" }}

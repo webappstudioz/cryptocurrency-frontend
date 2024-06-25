@@ -139,9 +139,9 @@ const SidebarContent = props => {
               </Link>
             </li>
             <li>
-              <Link to="/payment-history" className="waves-effect">
+              <Link to="/invoice" className="waves-effect">
                 <img src={overview} alt="" />
-                <span>Payment History</span>
+                <span>Invoices</span>
               </Link>
             </li>
             {/* <li>

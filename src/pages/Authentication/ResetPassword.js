@@ -83,7 +83,6 @@ const ResetPassword = props => {
         history.push("/login")
       }
     }catch(error){
-      console.log("handleVerifyToken error", error)
     }
 
   }

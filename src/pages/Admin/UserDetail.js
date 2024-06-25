@@ -34,7 +34,6 @@ const UserDetail = () => {
                 position: toast.POSITION.TOP_RIGHT,
             })
         } catch (error) {
-            console.log("error", error)
             toast.success(error?.data?.message, {
                 position: toast.POSITION.TOP_RIGHT,
             })

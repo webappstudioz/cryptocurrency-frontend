@@ -35,7 +35,7 @@ const Adminmiddleware = ({
             to={{ pathname: "/login" }}
           />
         );
-      }else if (authToken && info?.role !== "Admin") {
+      }else if (authToken && info?.role === "User") {
         return (
           <Redirect
             to={{ pathname: "/dashboard" }}

@@ -96,7 +96,6 @@ const AcountStatus = cell => {
       const result = await updateUserStatus(data)
       setUserStatus(status)
     } catch (error) {
-      console.log("error", error)
     }
   }
 

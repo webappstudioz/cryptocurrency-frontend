@@ -99,6 +99,7 @@ const userRoutes = [
   { path: "/user-detail/:id", component: SingleUserDetail },
   { path: "/logout", component: Logout },
   { path: "/my-profile", component: MyAccount },
+  { path: "/invoice", component: Invoice },
 
 
   { path: "/services", component: ServiceList },
@@ -106,7 +107,6 @@ const userRoutes = [
   { path: "/invoice-detail/:id", component: InvoiceDetail },
   { path: "/invoice-detail/:id/:mode", component: InvoiceDetail },
   { path: "/invoice-checkout", component: InvoiceCheckout },
-  { path: "/invoice", component: Invoice },
   { path: "/reinstall-wizard-1", component: ReinstallWizard1 },
   { path: "/reinstall-wizard-2", component: ReinstallWizard2 },
   { path: "/reinstall-wizard-3", component: ReinstallWizard3 },
@@ -135,7 +135,7 @@ const userRoutes = [
   { path: "/deposite-funds", component: DepositFunds },
   { path: "/witdraw-funds", component: WithdrawFunds },
   { path: "/transfer-funds", component: TransferFunds },
-  { path: "/payment-history", component: PaymentHistory },
+  // { path: "/payment-history", component: PaymentHistory },
   { path: "/playandwin", component: PlayAndWin },
   // { path: "/users-list", component: UsersList },
 

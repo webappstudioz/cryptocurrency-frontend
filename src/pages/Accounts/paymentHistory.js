@@ -28,6 +28,7 @@ import { getInvoice } from "../Authentication/store/apiServices"
 import PermissionDenied from "../Authentication/PermissionDenied"
 import { toast } from "react-toastify"
 import { setPageTitle } from "../../helpers/api_helper_rs"
+import { result } from "lodash"
 function PaymentHistory() {
   const dispatch = useDispatch()
   const [modal, setModal] = useState(false)
@@ -74,6 +75,11 @@ function PaymentHistory() {
   const [paymentTypeFilter, setPaymentTypeFilter] = useState(false)
   const [selectedPaymentType, setSelectedPaymentType] = useState("all")
 
+  useEffect(async () => {
+    setPageTitle("Invoice")
+    getInvoiceList()
+  }, [])
+
   useEffect(() => {
     let config = {
       params: {
@@ -87,10 +93,6 @@ function PaymentHistory() {
     }
   }, [dispatch])
 
-  useEffect(async () => {
-    setPageTitle("Invoice")
-    // getInvoiceList()
-  }, [])
 
   const getInvoiceList = async(data) => {
     try {
@@ -101,11 +103,14 @@ function PaymentHistory() {
         res = await getInvoice()
       }
      
+      console.log("result", res)
       if (res) {
         setPageination({ state: false })
         setLoader(false)
         setLoading(false)
         let info = res?.data?.data
+      console.log("result", info)
+
         setCurrentPage(info?.current_page)
         setHasMorePages(info?.has_more_pages)
         setTotalPages(info?.total_pages)

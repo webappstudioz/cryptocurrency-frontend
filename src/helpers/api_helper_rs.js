@@ -140,9 +140,9 @@ export async function postDataImg(url, data, config = {}) {
   // return axios(config);
   return axios(config).catch(error => {
     // if (error?.response?.status === 401 || error?.response?.status === 500) {
-    // if (error?.response?.status === 401) {
-    // sessionExpired()
-    // }
+    if (error?.response?.status === 401) {
+    sessionExpired()
+    }
     throw error
   })
 }

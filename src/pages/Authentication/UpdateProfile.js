@@ -170,7 +170,6 @@ const UpdateProfile = props => {
       data.append('account_holder_name', values?.accountName);
       data.append('upi_id', values?.upiId);
       data.append('account_image', bankQR);
-      console.log("data", data)
       // if (!stateError) {
       try {
         setLoader(true)
@@ -196,7 +195,6 @@ const UpdateProfile = props => {
         }
 
       } catch (error) {
-        console.log("Eror", error)
         setLoader(false)
         toast.error(error?.response?.data?.message, {
           position: toast.POSITION.TOP_RIGHT,
@@ -207,7 +205,6 @@ const UpdateProfile = props => {
   })
 
   // useEffect(async () => {
-  //   console.log("userInfo", userInfo?.country_id)
   //     try {
   //       setLoader(true)
   //       if (user) {
@@ -278,10 +275,7 @@ const UpdateProfile = props => {
 
   const handleFileChange = (event, action) => {
 
-    // console.log("action",action)
-    // console.log("event",event)
     const file = event.target.files[0];
-    console.log("file", file)
     if (file) {
       const fileSize = file.size / 1024 / 1024; // in MB
       const fileType = file.type.split("/")[1]; // get file extension
@@ -340,8 +334,6 @@ const UpdateProfile = props => {
 
   }
 
-  console.log("crypto", cryptoQR)
-  console.log("bank", bankQR)
   return (
     <React.Fragment>
       <div

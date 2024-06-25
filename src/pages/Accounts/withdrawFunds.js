@@ -50,7 +50,6 @@ const WihtdrawFunds = props => {
   useEffect(() => {
     setPageTitle("Withdraw Funds")
     const info = loginData()
-    console.log("info", info)
     setUserInfo(info)
   }, [])
 
@@ -67,7 +66,6 @@ const WihtdrawFunds = props => {
     }),
 
     onSubmit: async(values) => {
-      console.log("values", values)
       let data = new FormData()
       data.append('payment_type', "withdraw");
       data.append('method_type', selectedMethod);

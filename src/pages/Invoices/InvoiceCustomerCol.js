@@ -6,6 +6,20 @@ import pdfnew from "../../assets/images/pdfnew.png"
 import { toast } from "react-toastify"
 import { loginData } from "../Authentication/store/apiServices"
 import { FormatDate } from "../../helpers/api_helper_rs"
+
+const Amount = cell => {
+  let info = loginData()
+  let currency = info?.currency
+  return (
+    <div className="d-flex align-items-center country">
+      {currency.prefix +
+        cell.row.original.total +
+        " " +
+        currency.suffix}
+    </div>
+  )
+}
+
 const Total = cell => {
   let info = loginData()
   let currency = info?.currency
@@ -27,6 +41,26 @@ const Checks = cell => {
 }
 
 const Number = cell => {
+  return (
+    <div className="d-flex align-items-center country">
+      <Link to={`/invoice-detail/${cell.row.original.viewid}`}>
+        #{cell.row.original.id}
+      </Link>
+    </div>
+  )
+}
+
+const SendTo = cell => {
+  return (
+    <div className="d-flex align-items-center country">
+      <Link to={`/invoice-detail/${cell.row.original.viewid}`}>
+        #{cell.row.original.id}
+      </Link>
+    </div>
+  )
+}
+
+const PaymentType = cell => {
   return (
     <div className="d-flex align-items-center country">
       <Link to={`/invoice-detail/${cell.row.original.viewid}`}>
@@ -66,8 +100,8 @@ const InvoiceStatus = cell => {
             ? "tableStatus-Cancelled"
             : cell?.row?.original?.status == "Cancelled"
             ? "tableStatus-Pending"
-            : cell?.row?.original?.status == "Refunded"
-            ? "tableStatus-Suspended"
+            // : cell?.row?.original?.status == "Refunded"
+            // ? "tableStatus-Suspended"
             : ""
         }
       >
@@ -84,6 +118,7 @@ const handleInvoice = async id => {
     })
   }
 }
+
 const PDF = cell => {
   return (
     <>
@@ -100,4 +135,12 @@ const PDF = cell => {
   )
 }
 
-export { CurDate, DueDate, Total, Number, InvoiceStatus, PDF, Checks }
+const Action = cell => {
+  return (
+    <Link to={`/Invoice-detail/${cell?.row?.original?.id}`}>
+      <img style={{ cursor: "pointer" }} src={rightarrow} />
+    </Link>
+  )
+}
+
+export { CurDate, DueDate, Total, Number, InvoiceStatus, PDF, Checks, Action, SendTo, PaymentType, Amount }

@@ -74,7 +74,6 @@ const TransferFunds = props => {
         setSpinner(true)
         try {
           const result = await handlePayents(data)
-          console.log("result", result)
           setLoader(false)
           setSpinner(false)
           navigate.push("/dashboard")
@@ -82,7 +81,6 @@ const TransferFunds = props => {
             position: toast.POSITION.TOP_RIGHT,
           })
         } catch (error) {
-          console.log("Error", error?.message)
           toast.error(error?.response?.data?.message, {
             position: toast.POSITION.TOP_RIGHT,
           })

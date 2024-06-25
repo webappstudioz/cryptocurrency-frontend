@@ -172,7 +172,6 @@ const AdminUpdateProfile = props => {
       data.append('account_holder_name', values?.accountName);
       data.append('upi_id', values?.upiId);
       data.append('account_image', bankQR);
-      console.log("data", data)
 
       try {
         setLoader(true)
@@ -198,7 +197,6 @@ const AdminUpdateProfile = props => {
         }
 
       } catch (error) {
-        console.log("Eror", error)
         setLoader(false)
         toast.error(error?.response?.data?.message, {
           position: toast.POSITION.TOP_RIGHT,
@@ -209,7 +207,6 @@ const AdminUpdateProfile = props => {
   })
 
   // useEffect(async () => {
-  //   console.log("userInfo", userInfo?.country_id)
   //     try {
   //       setLoader(true)
   //       if (user) {
@@ -279,9 +276,6 @@ const AdminUpdateProfile = props => {
   ]);
 
   const handleFileChange = (event, action) => {
-
-    // console.log("action",action)
-    // console.log("event",event)
     const file = event.target.files[0];
     if (file) {
       const fileSize = file.size / 1024 / 1024; // in MB

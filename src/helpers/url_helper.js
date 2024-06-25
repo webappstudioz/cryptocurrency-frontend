@@ -22,6 +22,7 @@ export const CHANGE_PASSWORD = "/user/change-password"
 export const PAYMENTS = "/payment"
 export const WITHDRAW_FUNDS = ""
 export const TRANSFER_FUNDS = ""
+export const GET_INVOICES = "/payment/list"
 
 //REGISTER
 export const GOOGLE_LOGIN = "/auth/google"
@@ -151,7 +152,7 @@ export const GET_WALLET = "/wallet"
 export const GET_CRYPTO_ORDERS = "/crypto/orders"
 
 //INVOICES
-export const GET_INVOICES = "/invoice/list"
+// export const GET_INVOICES = "/invoice/list"
 export const GET_INVOICE_DETAIL = "/invoice/view"
 export const GET_INVOICE_PREVIEW = "/invoice/check"
 export const GET_INVOICE_DOWNLOAD = "/invoice/download"
