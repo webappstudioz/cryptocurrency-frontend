@@ -155,6 +155,8 @@ const adminRoutes = [
   { path: "/changepassword", component: AdminChangePassword },
   // { path: "/admin-payment-history", component: PaymentHistory },
   { path: "/admin/results", component: StoreResulst },
+  { path: "/admin/invoice", component: Invoice },
+
 ]
 
 const userVerifyRoutes = [

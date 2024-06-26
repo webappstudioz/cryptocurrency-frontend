@@ -113,7 +113,7 @@ const SidebarContent = props => {
 
             <li>
               <Link to="/playandwin" className="waves-effect">
-                <img src={overview} alt="" />
+                <img src={billing} alt="" />
                 <span>Play & Win</span>
               </Link>
             </li>
@@ -122,25 +122,25 @@ const SidebarContent = props => {
             </li> */}
             <li>
               <Link to="/deposite-funds" className="waves-effect">
-                <img src={overview} alt="" />
+                <img src={Announcements} alt="" />
                 <span>Deposit</span>
               </Link>
             </li>
             <li>
               <Link to="/witdraw-funds" className="waves-effect">
-                <img src={overview} alt="" />
+                <img src={support} alt="" />
                 <span>Withdraw</span>
               </Link>
             </li>
             <li>
               <Link to="/transfer-funds" className="waves-effect">
-                <img src={overview} alt="" />
+                <img src={server} alt="" />
                 <span>Transfer</span>
               </Link>
             </li>
             <li>
               <Link to="/invoice" className="waves-effect">
-                <img src={overview} alt="" />
+                <img src={invoice} alt="" />
                 <span>Invoices</span>
               </Link>
             </li>

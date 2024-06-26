@@ -130,18 +130,18 @@ const SidebarContent = (props) => {
           {/* <li className="menu-title s-title sidebar-title-v2">
               {props.t("Pages")}
             </li> */}
-             <li>
+             {/* <li>
               <Link to="/admin/results" className="waves-effect">
-                {/* <img src={withdrow} alt="" /> */}
+                 <img src={withdrow} alt="" />
                 <span>Store Results</span>
               </Link>
-            </li>
-             <li>
+            </li> */}
+             {/* <li>
               <Link to="/add-accounts" className="waves-effect">
-                {/* <img src={withdrow} alt="" /> */}
+                <img src={withdrow} alt="" />
                 <span>Add Accounts</span>
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link to="/admin/users-list" className="waves-effect">
                 <img src={server} alt="" />
@@ -149,11 +149,17 @@ const SidebarContent = (props) => {
               </Link>
             </li>
             <li>
+              <Link to="/admin/invoice" className="waves-effect">
+                <img src={invoice} alt="" />
+                <span>Invoices</span>
+              </Link>
+            </li>
+            {/* <li>
               <Link to="/add-accounts" className="waves-effect">
                 <img src={server} alt="" />
                 <span>Add Accounts</span>
               </Link>
-            </li>
+            </li> */}
             {/* <li>
               <Link to="/payment-history" className="waves-effect">
                 <img src={server} alt="" />

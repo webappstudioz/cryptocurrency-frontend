@@ -59,6 +59,7 @@ const MyTeam = () => {
                 }
             })
 
+            console.log("info", info)
             setUsersList(users)
             setPageination({ state: false })
             setLoader(false)
@@ -66,7 +67,7 @@ const MyTeam = () => {
             setCurrentPage(info?.current_page)
             setHasMorePages(info?.has_more_pages)
             setTotalPages(info?.total_pages)
-            setTotalUsers(info?.total)
+            setTotalUsers(info?.total_record)
         } catch (error) {
             setLoader(false)
             //   setLoading(false)
@@ -205,6 +206,49 @@ const MyTeam = () => {
         setStartDate("")
         settoDate("")
         handleAllUsersList()
+    }
+
+    useEffect(() => {
+        console.log("pagination",pagination)
+        if (pagination?.state) {
+            handlePagination(pagination?.action)
+        }
+    }, [pagination])
+
+    const handlePagination = async action => {
+        setLoader(true)
+        // setLoading(true)
+        try {
+            let data = ""
+            if (action == "pageDropDown") {
+                data = new URLSearchParams({
+                    pagination: pageSizes,
+                    level: activeLevel
+                })
+            } else {
+                data = new URLSearchParams({
+                    page: page,
+                    pagination: pageSizes,
+                    level: activeLevel
+                })
+            }
+
+            let res = await getTeamList(data)
+            setPageination({ state: false })
+            let fullres = res
+            console.log("full", fullres)
+            // setUsersList(users)
+            // setPageination({ state: false })
+            // setLoader(false)
+            // setTotalUsers(fullres?.total_records)
+            // setHasMorePages(fullres?.has_more_pages)
+            // setTotalPages(fullres?.total_pages)
+            // setCurrentPage(fullres?.current_page)
+            setLoader(false)
+        } catch (error) {
+            console.log("errors", error)
+            setLoader(false)
+        }
     }
 
     return (
