@@ -410,6 +410,25 @@ export const findRange = (count, size) => {
   }
 }
 
+// this function add space after ","
+export const addSpace = (info) => {
+  if(info){
+    let addressArray = info.split(",")
+    let addressWithSpaces = addressArray.join(", ");
+    return addressWithSpaces
+  }
+}
+
+//this function return word with first letter capital and other letters small
+export const firstLetterCapital = (word) => {
+  if(word){
+    return word?.charAt(0)?.toUpperCase() + word?.slice(1).toLowerCase()
+  }else{
+    return word
+  }
+}
+
+
 // For GET requests
 const requestHelper = axios.create({
   baseURL: API_URL,

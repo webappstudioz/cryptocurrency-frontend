@@ -8,6 +8,7 @@ import cardLogo from "../../assets/images/ccard-logos-set.png"
 
 import crypto from "../../assets/images/crypto.png"
 import wise from "../../assets/images/wise.png"
+import banktransfer from "../../assets/images/bank-transfer.svg"
 import { setPageTitle } from "../../helpers/api_helper_rs"
 import TextLoader from "../../components/textLoader"
 import { checkUser, getPaymentForms } from "../Authentication/store/apiServices"
@@ -33,7 +34,7 @@ import CreditCard from "../Stripe/CreditCard"
 import PaymentModal from "../../components/Common/PaymentModal"
 const InvoiceCheckout = props => {
   const Razorpay = useRazorpay()
-  const params = useParams()
+  // const params = useParams()
   const navigate = useHistory()
   const location = useLocation()
   const [paymentType, setPaymentType] = useState("paypal")
@@ -41,7 +42,7 @@ const InvoiceCheckout = props => {
   const [loader, setLoader] = useState(true)
   const [loading, setLoading] = useState(true)
   const [currency, setCurrency] = useState()
-  const [paymentGateways, setPaymentGateways] = useState()
+  const [paymentGateways, setPaymentGateways] = useState([])
   const HOST_URL = process.env.REACT_APP_HOST
   // const [stripeInstances, setStripeInstances] = useState([])
   const [stripeKey, setstripeKey] = useState("")
@@ -60,6 +61,10 @@ const InvoiceCheckout = props => {
   const [selectedCard, setSelectedCard] = useState("")
   const [pay, setPay] = useState(false)
   const [payButtonReady, setPayButtonReady] = useState(false)
+  const [blockonomicsData, setBlockonomicsData] = useState("")
+  const [disableAddFundBtn, setDisableAddFundBtn] = useState(false)
+  const stripeElements = document.getElementsByClassName("StripeElement")
+
   // const [creditCardArray, setCreditCardArray] = useState("")
 
   useEffect(() => {
@@ -81,10 +86,13 @@ const InvoiceCheckout = props => {
           invoiceid: id
         })
         let res = await getPaymentForms(data)
+        setLoader(false)
+        setLoading(false)
         if (isMounted) {
           let info = res?.data?.data?.paymentDetails
           setRazorpayFormInfo(info?.razorpay)
           setPaypalForm(info?.paypalhtml)
+          setBlockonomicsData(info?.blockonomics)
         }
       }catch(error) {
         toast.error(error?.response?.data?.message, {
@@ -138,8 +146,8 @@ const InvoiceCheckout = props => {
       })
       let info = await getPaymentMethodList(data)
       if(info){
-        setLoader(false)
-        setLoading(false)
+        // setLoader(false)
+        // setLoading(false)
         let data = info?.data?.data
         setPaymentGateways(data)
         data?.map((el, index) => {
@@ -159,24 +167,39 @@ const InvoiceCheckout = props => {
   useEffect(() => {
     if(pay && paymentType === "paypal" && payPalForm && payButtonReady){
       paypalFormSubmit()
-    }else if(pay && paymentType === "razorpay" && razorpayFormInfo && payButtonReady){
+    }else if(pay && paymentType === "razorpay" && razorpayFormInfo){
       setSubmitRazorPayForm(true)
       setOpenModal(false)
     }
   },[razorpayFormInfo, payPalForm, pay, paymentType, payButtonReady])
 
   const handlePayButton = async () => {
-    if (paymentType === "paypal") {
+    if(paymentType === "paypal") {
       setSpinner({ pay: true })
       setLoading(true)
       setPay(true)
       setOpenModal(true)
-    } else if (paymentType === "razorpay") {
+    }else if(paymentType === "razorpay") {
       setSpinner({ pay: true })
       setLoading(true)
       setPay(true)
       setOpenModal(true)
-    } else {
+    }else if(paymentType === "blockonomics") {
+      setSpinner({ pay: true })
+      setLoading(true)
+      setOpenModal(true)
+      const paymentInfo = {
+        invoiceDetails: invoiceData,
+        invoiceId: invoiceId,
+        payment_button: blockonomicsData,
+        payment_method: paymentType
+      } 
+  
+      navigate.push({
+        pathname:"/bitpay",
+        state:{paymentInfo:paymentInfo}
+      })
+    }else{
       try {
         let data = new URLSearchParams({
           payment_method: paymentType,
@@ -184,7 +207,6 @@ const InvoiceCheckout = props => {
         })
         let result = await InvoicePay(data)
         let info = result?.data?.data
-
         toast.success(result?.data?.message, {
           position: toast.POSITION.TOP_RIGHT,
         })
@@ -200,7 +222,13 @@ const InvoiceCheckout = props => {
         } else if (info?.redirect === false) {
           setSpinner({ pay: false })
           setLoading(false)
-          navigate.push(`/confirm`)
+          navigate.push({
+            pathname: `/confirmation`,
+            state: { 
+              orders: info?.orders,
+              serviceid: info?.serviceid
+            },
+          });
         }
       } catch (error) {
         setSpinner({ pay: false })
@@ -240,7 +268,6 @@ const InvoiceCheckout = props => {
           url2.value = `${HOST_URL}/invoice-detail/${invoiceId}/${SETTINGS.cancelkey}`
         }
       }, 2000)
-
       if(isMounted){
         setPayButtonReady(true)
       }
@@ -265,9 +292,7 @@ const InvoiceCheckout = props => {
     return () => {
       isMounted = false; // Update the flag when the component is unmounted
     };
-  }, [payPalForm])
-
- 
+  }, [payPalForm]) 
 
   const paypalFormSubmit = () => {
     setTimeout(() => {
@@ -379,6 +404,27 @@ const InvoiceCheckout = props => {
     }
   }
 
+  useEffect(() => {
+    if(!userData || paymentType === "banktransfer" || spinner?.applycredit || spinner?.pay || !paymentGateways?.length){
+      setDisableAddFundBtn(true)
+    }else if(paymentType === "stripe" && selectedCard === "add_new" && stripeElements[0] === undefined){
+      setDisableAddFundBtn(true)
+    }else if(selectedCard === undefined && stripeElements[0] === undefined) {
+      setDisableAddFundBtn(true)
+    }else{
+      setDisableAddFundBtn(false)
+    }
+
+  },[userData, stripeElements[0], paymentType, selectedCard, spinner?.applycredit, spinner?.pay, paymentGateways?.length])
+
+  // useEffect(() => {
+  //   if(paymentType === "stripe" && !stripecondition){
+  //     setOpenModal(stripecondition)
+  //     setSpinner(false)
+  //     setLoading(false)
+  //   }
+  // },[paymentType, stripecondition, openModal])
+ 
   return (
     <div>
       <section className="rs-payment-section rs-product-section">
@@ -404,7 +450,13 @@ const InvoiceCheckout = props => {
                 <div style={{ padding: "20px 0 20px 0" }}>
                   <h2 className="payment-heading">Payment Methods✨</h2>
                 </div>
-                {paymentGateways?.map((paymentMethod, index) => {
+                {!paymentGateways?.length? 
+                  <div className="rs-product-left-box rs-product-left-download">
+                    <div className="form-check no-paymentgateways">
+                      No any active payment gateway. please contact to support.
+                    </div>
+                  </div>
+              : paymentGateways?.map((paymentMethod, index) => {
                   if (paymentMethod?.value === "paypal") {
                     return (
                       <div
@@ -475,14 +527,13 @@ const InvoiceCheckout = props => {
                       </div>
                     )
                   }
-
-                  if (paymentMethod?.value === "crypto") {
+                  if (paymentMethod?.value === "blockonomics") {
                     return (
                       <div
                         className="rs-product-left-box rs-product-left-download"
                         key={index}
                       >
-                        <h5>Credit/Debit Card</h5>
+                        <h5>{paymentMethod?.name}</h5>
                         <div
                           className="form-check"
                           onClick={(e) => {
@@ -497,9 +548,9 @@ const InvoiceCheckout = props => {
                             onClick={e => {
                               (spinner?.applycredit || spinner?.pay)? e?.preventDefault() : handlePaymentType(e.target.value)
                             }}
-                            id="crypto"
-                            value="crypto"
-                            checked={paymentType == "crypto"}
+                            id={paymentMethod?.value}
+                            value={paymentMethod?.value}
+                            checked={paymentType == paymentMethod?.value}
                             onChange={() => {}}
                           />
                         </div>
@@ -562,7 +613,8 @@ const InvoiceCheckout = props => {
                             (spinner?.applycredit || spinner?.pay)? e?.preventDefault() : handlePaymentType(paymentMethod?.value)
                           }}
                         >
-                          <img src={wise} />
+                          
+                          <img src={banktransfer} />
                           <input
                             className="form-check-input"
                             type="radio"
@@ -582,16 +634,16 @@ const InvoiceCheckout = props => {
                             style={{ paddingTop: "10px" }}
                             key={index}
                           >
-                            <h3 style={{ paddingBottom: "10px" }}>
+                            {/* <h3 style={{ paddingBottom: "10px" }}>
                               Bank Details
-                            </h3>
+                            </h3> */}
                             {paymentMethod?.config?.map((obj, index) =>
                               Object.entries(obj)?.map(([key, value]) => (
                                 <div key={key}>
-                                  <strong className="bank-details">
+                                  <span className="bank-details">
                                     {key}:{" "}
-                                  </strong>
-                                  <span>{value}</span>
+                                  </span>
+                                  <span className="bank-details-values">{value}</span>
                                 </div>
                               ))
                             )}
@@ -617,11 +669,11 @@ const InvoiceCheckout = props => {
                           }}
                         >
                           {/* <img className="credit-card"  src={cardLogo} /> */}
-                          {paymentType === paymentGateways[index]?.value ? (
+                          {/* {paymentType === paymentGateways[index]?.value ? (
                             ""
-                          ) : (
+                          ) : ( */}
                             <img className="credit-card" src={cardLogo} />
-                          )}
+                          {/* )} */}
 
                           <p></p>
                           <input
@@ -653,7 +705,10 @@ const InvoiceCheckout = props => {
                             setOpenModal={setOpenModal}
                             paymentId={invoiceId}
                             setSelectedCard={setSelectedCard}
+                            selectedCard={selectedCard} //4-12-23
                             page={"invoiceCheckout"}
+                            creditCardApplied={""}
+                            cartToken={""}
                           /> : ""}
                       </div>
                     )
@@ -850,7 +905,8 @@ const InvoiceCheckout = props => {
                       </li>
                     </ul>
                   </div>
-                  {invoiceData?.clientsdetails?.credit > 0 && (
+
+                  {(invoiceData?.invoiceitems?.find((item) => item?.type != "AddFunds") && invoiceData?.clientsdetails?.credit > 0) && (
                     <>
                       <div className="rs-product-payment">
                         <h5>Apply Credit</h5>
@@ -884,12 +940,14 @@ const InvoiceCheckout = props => {
                   <div className="rs-product-left-price-btn">
                     <button
                       className="btn btn-primary w-100 waves-effect waves-light"
-                      disabled={
-                        !userData ||
-                        paymentType == "banktransfer" ||
-                        spinner?.applycredit ||
-                        spinner?.pay
-                      }
+                      // disabled={
+                      //   !userData ||
+                      //   paymentType == "banktransfer" ||
+                      //   spinner?.applycredit ||
+                      //   spinner?.pay ||
+                      //   !paymentGateways?.length
+                      // }
+                      disabled={disableAddFundBtn}
                       style={{
                         cursor:
                           !userData || paymentType == "banktransfer"
@@ -907,7 +965,7 @@ const InvoiceCheckout = props => {
                       ) : (
                         <span>
                           Pay {currency?.prefix}
-                          {invoiceData?.total} {currency?.suffix}{" "}
+                          {invoiceData?.balance} {currency?.suffix}{" "}
                         </span>
                       )}
                     </button>
@@ -924,7 +982,7 @@ const InvoiceCheckout = props => {
           </div>
         </div>
         <TextLoader loading={loading} loader={loader}/>
-        <PaymentModal openModal={openModal} message={"Payment"}/>
+        {openModal && <PaymentModal openModal={openModal} message={"Payment"}/>}
       </section>
     </div>
   )

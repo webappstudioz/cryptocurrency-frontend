@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import TextLoader from "../textLoader";
 import {
   useTable,
   useGlobalFilter,
@@ -13,36 +14,36 @@ import {
 } from "react-table";
 import { Table, Row, Col, Button } from "reactstrap";
 import { Filter, DefaultColumnFilter } from "./filters";
-import left from "../../../../assets/images/left.svg";
-import right from "../../../../assets/images/right.svg";
-import { findRange } from "../../../../helpers/api_helper_rs";
+import left from "../../assets/images/left.svg";
+import right from "../../assets/images/right.svg";
+import { findRange } from "../../helpers/api_helper_rs";
+import { getStoredServersList, getServiceStatus, getWarningMessage, handleFetchedService } from "../../pages/Service/Component/ServiceCustomerCol";
+import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 
 const defaultTablePropGetter = () => ({})
-const TableContainer = ({
-  tableClassName = "",
+const InvoiceTableContainer = ({
   columns,
   data,
-  totalCount,
   isGlobalFilter,
   isAddOrder,
   isAddTableWithoutBorderStrap,
   handleOrderClicks,
-  // isAddCustomer,
+  isAddCustomer,
   isAddUsers,
   handleUserClicks,
-  // handleCustomerClicks,
+  handleCustomerClicks,
   isAddTableBorderStrap,
   isAddInvoice,
   handleInvoiceClicks,
+  totalCount,
+  setPageSizes,
+  // pageSize,
   hasMorePages,
-  setPage,
-  setPageination,
-  currentPage,
   totalPages,
-
-  // tableLoader,
-  // getTableProps = defaultTablePropGetter,
+  currentPage,
+  setPage,
+  setPageination
 }) => {
   const {
     getTableProps,
@@ -50,19 +51,20 @@ const TableContainer = ({
     headerGroups,
     page,
     prepareRow,
-    // canPreviousPage,
-    // canNextPage,
-    // pageOptions,
-    // pageCount,
-    // gotoPage,
-    // nextPage,
-    // previousPage,
-    // setPageSize,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
     state,
     preGlobalFilteredRows,
     setGlobalFilter,
     state: { pageIndex, pageSize },
-    // action
+  action
+
   } = useTable(
     {
       columns,
@@ -85,36 +87,33 @@ const TableContainer = ({
   const [itemSubtract, setItemSubtract] = useState(1)
   const [pageAction, setPageAction] = useState("")
   const [range, setRange] = useState("")
-  const tableSize = [10, 20, 30, 40, 50]
+  const tableSize = [10,20,30,40,50]
   const navigate = useHistory()
 
-  useEffect(() => {
-    if (totalCount) {
-      let res = findRange(totalCount, tableSize)
-      setRange(res)
-    }
-
-  }, [totalCount])
-
+  useEffect(() =>{
+    let res = findRange(totalCount, tableSize)
+    setRange(res)
+}, [totalCount])
+  
   useEffect(() => {
     handlePageCount()
-  }, [pageIndex, pageSize, totalCount])
+  },[currentPage, pageSize, totalCount])
 
   const handlePageCount = () => {
     let starting = ""
     let ending = ""
-    if (pageIndex + 1 === 1) {
-      starting = pageIndex + 1 > totalCount ? totalCount : 1
-      ending = pageSize > totalCount ? totalCount : pageSize
+    if(currentPage === 1){
+      starting = currentPage > totalCount? totalCount : 1
+      ending = pageSize > totalCount? totalCount : pageSize
       setItemSubtract(pageSize)
-    } else if (pageIndex + 1 > 1) {
-      starting = pageAction == "next" ? itemStarting + pageSize : itemStarting - pageSize
-      if (pageAction == "next") {
-        ending = itemEnding + pageSize > totalCount ? totalCount : itemEnding + pageSize
-        setItemSubtract(itemEnding + pageSize)
-      } else if (pageAction == "back") {
+    }else if(currentPage > 1){
+      starting = pageAction == "next"? itemStarting + pageSize : itemStarting - pageSize
+      if(pageAction == "next"){
+        ending = itemEnding  + pageSize > totalCount? totalCount :  itemEnding  + pageSize
+        setItemSubtract(itemEnding  + pageSize)
+      }else if(pageAction == "back"){
         ending = itemSubtract - pageSize
-        setItemSubtract(itemEnding + pageSize)
+        setItemSubtract(itemEnding  + pageSize)
       }
     }
     setItemStarting(starting)
@@ -122,37 +121,29 @@ const TableContainer = ({
   }
 
   const generateSortingIndicator = (column) => {
-    return !column?.disableSortBy && <div className="sort-icons"><UpIcon color={column?.isSorted && column?.isSortedDesc ? "#3F3D65" : '#9F9EB2'} /><DownIcon color={column.isSorted && !column.isSortedDesc ? "#3F3D65" : '#9F9EB2'} /></div>
+    return !column?.disableSortBy && <div className="sort-icons"><UpIcon color={column?.isSorted && column?.isSortedDesc ? "#3F3D65": '#9F9EB2'}/><DownIcon color={column.isSorted && !column.isSortedDesc ? "#3F3D65": '#9F9EB2'}/></div> 
   };
 
-  // const onChangeInSelect = (event) => {
-  //   setPageSize(Number(event?.target?.value));
-  //   setPageination({ state: true, action: "pageDropDown" })
-  // };
+  const onChangeInSelect = (event) => {
+    setPageSize(Number(event.target.value));
+    setPageSizes(Number(event.target.value))
+    setPageination({state:true, action: "pageDropDown"})
+  };
 
-  // const onChangeInInput = (event) => {
-  //   const page = event?.target?.value ? Number(event?.target?.value) - 1 : 0;
-  //   gotoPage(page);
-  // };
-
-  // const handleAction = (row) => {
-  //   const status = getStoredServersList(row?.original?.id)
-  //   let cellStatus = getServiceStatus(status?.status || row?.original?.status)
-  //   let message = getWarningMessage(cellStatus)
-  //   return message || null
-  // }
+  const onChangeInInput = (event) => {
+    const page = event?.target?.value ? Number(event?.target?.value) - 1 : 0;
+    gotoPage(page);
+  };
 
   const handlePreviousClick = (previous) => {
-    setPage(previous - 1)
-    setPageination({ state: true, action: "pageBtn" })
+    setPage(previous -1)
+    setPageination({state:true, action: "pageBtn"})
   }
 
   const handleNextClick = (next) => {
     setPage(next)
-    setPageination({ state: true, action: "pageBtn" })
+    setPageination({state:true, action: "pageBtn"})
   }
-
-
   return (
     <Fragment>
 
@@ -214,7 +205,7 @@ const TableContainer = ({
 
       {isAddTableWithoutBorderStrap && (
         <div className="table-responsive">
-          <Table bordered hover {...getTableProps()} className={`react_table ${tableClassName}`}>
+          <Table bordered hover {...getTableProps()} className="react_table">
             <thead className="table-nowrap">
               {headerGroups.map((headerGroup) => (
                 <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()} >
@@ -232,7 +223,7 @@ const TableContainer = ({
             </thead>
 
             <tbody {...getTableBodyProps()}>
-              {page.length ? page.map((row) => {
+              {page.length?page.map((row) => {
                 prepareRow(row);
                 return (
                   <Fragment key={row.getRowProps().key}>
@@ -247,9 +238,9 @@ const TableContainer = ({
                     </tr>
                   </Fragment>
                 );
-              }) : (
+              }):(
                 <TableCell>
-                  No data to display
+                No data to display
                 </TableCell>
               )}
             </tbody>
@@ -260,7 +251,7 @@ const TableContainer = ({
       {isAddTableBorderStrap && (
         <div className="table-responsive">
           <Table
-            className={`table-centered datatable dt-responsive nowrap table-card-list react_table ${tableClassName}`}
+            className="table-centered datatable dt-responsive nowrap table-card-list react_table"
             {...getTableProps()}
           >
             <thead className="table-nowrap">
@@ -268,7 +259,7 @@ const TableContainer = ({
                 <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
                     <th key={column.id}>
-                      <div {...column.getSortByToggleProps()}>
+                      <div className="mb-2" {...column.getSortByToggleProps()}>
                         {column.render("Header")}
                         {generateSortingIndicator(column)}
                       </div>
@@ -277,98 +268,87 @@ const TableContainer = ({
                 </tr>
               ))}
             </thead>
-            {/* className={tableLoader? "overlayerloader" : ""} */}
+{/* className={tableLoader? "overlayerloader" : ""} */}
             <tbody {...getTableBodyProps()} >
-              {page?.length > 0 ? page?.map((row) => {
+              {page?.length > 0? page?.map((row) => {
                 prepareRow(row);
                 return (
                   <Fragment key={row.getRowProps().key}>
-                    <tr
-                    // style={{cursor:"pointer"}} 
-                    // onClick={(e) => {
-                    //   navigate?.push({
-                    //     pathname:`/user-detail/${row?.original?.id}`, 
-                    //     // state:{
-                    //     //   product: handleFetchedService(row?.original?.id)
-                    //     // }
-                    //   })
-                    // }}
+                    <tr 
+                      style={{cursor:"pointer"}}
+                      onClick={(e) => {
+                        e.target.classList.contains("not-redirect")? e?.preventDefault() :
+                        navigate?.push({
+                          pathname:`/invoice-detail/${row.original.viewid}`, 
+                        })
+                      }}
                     >
                       {row?.cells.map((cell) => {
                         return (
                           <td key={cell?.id} {...cell?.getCellProps()}>
-                            {cell?.render("Cell")}
+                            {cell?.render("Cell")} 
                           </td>
                         );
                       })}
                     </tr>
                   </Fragment>
                 );
-              }) :
-                (<Fragment>
-                  <tr className="record-found">
-                    <td colSpan="7">
-                      No Record Found
-                    </td>
-                  </tr>
-                </Fragment>)
+              }) : 
+              (<Fragment>
+                <tr className="record-found">      
+                  <td colSpan="7">
+                    No Record Found
+                  </td>               
+                </tr>
+              </Fragment>)
               }
             </tbody>
           </Table>
-          {/* {tableLoader? <TextLoader /> : ""} */}
+              {/* {tableLoader? <TextLoader /> : ""} */}
         </div>
       )}
 
       <Row className="table_footer">
         <Col md="6">
-          <p className="total-page text-black-v2 font-small font-semibold">
-            {itemStarting} - {itemEnding} of {totalCount || 0}
-          </p>
+          
+          <p className="total-page text-black-v2 font-small font-semibold">{itemStarting} - {itemEnding} of {totalCount || 0}</p>
           {/* <p className="total-page text-black-v2 font-small font-semibold">Total Records: {totalCount || 0}</p> */}
         </Col>
         <Col md="6">
           <div className="table-footer-right-content d-flex align-items-center justify-content-end">
             <div className="d-flex table-footer-right-content">
               <div className="table-page-select d-flex align-items-center">
-                <p className="m-0 pr-2">Rows per page: {pageSize}</p>
-                {/* <select
+                <p className="m-0 pr-2">Rows per page:</p>
+                <select
                   className="form-select"
                   value={pageSize}
                   onChange={onChangeInSelect}
                 >
                   {tableSize.map((pageSize) => (
-                    pageSize > range ? <option key={pageSize} value={pageSize} disabled style={{ color: "grey" }}>
+                    pageSize > range? <option key={pageSize} value={pageSize} disabled style={{color:"grey"}}>
                       {pageSize}
                     </option>
-                      :
-                      <option key={pageSize} value={pageSize} style={{ color: "black" }}>
-                        {pageSize}
-                      </option>
+                    :
+                    <option key={pageSize} value={pageSize} style={{color:"black"}}>
+                      {pageSize}
+                    </option>
                   ))}
-                </select> */}
+                </select>
               </div>
             </div>
 
             <div className="d-flex gap-1">
               <Button
                 color="primary"
-                onClick={() => { handlePreviousClick(currentPage) }}
-                disabled={currentPage == 1 ? true : false}
+                onClick={() => {handlePreviousClick(currentPage), setPageAction("back")}}
+                disabled={currentPage == 1? true : false}
               >
                 {<img src={left} alt="" />}
               </Button>
             </div>
-            <div className="page_index">
-              <p className="page-index text-blue font-semibold">
-                {currentPage}/{totalPages || 1}
-              </p>
-            </div>
+            <div className="page_index"> <p className="page-index text-blue font-semibold"> {currentPage}/{totalPages || 1}</p></div>
             <div className="d-flex gap-1">
-              <Button
-                color="primary"
-                onClick={() => { handleNextClick(currentPage + 1) }}
-                disabled={!hasMorePages}
-              >
+              <Button color="primary" onClick={() => {handleNextClick(currentPage +1), setPageAction("next")}} disabled={!hasMorePages}>
                 {<img src={right} alt="" />}
               </Button>
             </div>
@@ -423,20 +403,20 @@ function GlobalFilter({
   );
 }
 
-TableContainer.propTypes = {
+InvoiceTableContainer.propTypes = {
   preGlobalFilteredRows: PropTypes.any,
 };
 
-export default TableContainer;
+export default InvoiceTableContainer;
 
-const DownIcon = ({ color }) => {
+const DownIcon = ({color}) => {
   return <svg width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M4.39043 4.51196C4.19027 4.76216 3.80973 4.76216 3.60957 4.51196L0.649878 0.812348C0.387973 0.484966 0.621059 0 1.04031 0H6.95969C7.37894 0 7.61203 0.484966 7.35012 0.812348L4.39043 4.51196Z" fill={color} />
+  <path d="M4.39043 4.51196C4.19027 4.76216 3.80973 4.76216 3.60957 4.51196L0.649878 0.812348C0.387973 0.484966 0.621059 0 1.04031 0H6.95969C7.37894 0 7.61203 0.484966 7.35012 0.812348L4.39043 4.51196Z" fill={color}/>
   </svg>
 }
-const UpIcon = ({ color }) => {
+const UpIcon = ({color}) => {
   return <svg width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M4.39043 0.488043C4.19027 0.23784 3.80973 0.23784 3.60957 0.488043L0.649878 4.18765C0.387973 4.51503 0.621059 5 1.04031 5H6.95969C7.37894 5 7.61203 4.51503 7.35012 4.18765L4.39043 0.488043Z" fill={color} />
+  <path d="M4.39043 0.488043C4.19027 0.23784 3.80973 0.23784 3.60957 0.488043L0.649878 4.18765C0.387973 4.51503 0.621059 5 1.04031 5H6.95969C7.37894 5 7.61203 4.51503 7.35012 4.18765L4.39043 0.488043Z" fill={color}/>
   </svg>
-
+  
 }

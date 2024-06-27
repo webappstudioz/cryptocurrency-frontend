@@ -30,6 +30,8 @@ export const GOOGLE_LOGIN = "/auth/google"
 //LOGIN
 // export const FORGET_PASSWORD = "/forgot/password"
 // export const RESET_PASSWORD = "/reset/password"
+export const FORCE_REMOTE = "/invoice/view" //sync invoice data from whcms
+
 export const RESEND_PASS_LINK = "/resend/password/"
 export const POST_FAKE_JWT_PASSWORD_FORGET = "/jwt-forget-pwd"
 export const SOCIAL_LOGIN = "/social-login"

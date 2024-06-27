@@ -1,7 +1,4 @@
 import React, { useState, useMemo, useEffect } from "react"
-// import LevelOne from "./LevelOne"
-// import LevelTwo from "./LevelTwo"
-// import LevelThree from "./LevelThree"
 import { Col, Row, DropdownMenu, DropdownItem, Dropdown } from "reactstrap"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
@@ -25,11 +22,11 @@ const MyTeam = () => {
     const [search, setSearch] = useState("")
     const [isUserStatusFilter, setIsUserStatusFilter] = useState(false)
     const [selectedUserStatus, setSelectedUserStatus] = useState("all")
-    const [startDate, setStartDate] = useState()
-    const [toDate, settoDate] = useState()
+    const [startDate, setStartDate] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), 1))
+    const [toDate, settoDate] = useState(new Date())
     const [spinner, setSpinner] = useState(false)
     const [activeLevel, setActiveLevel] = useState(1)
-    const [pageSizes, setPageSizes] = useState(10)
+    const [pageSize, setPageSize] = useState(10)
     const [hasMorePages, setHasMorePages] = useState(false)
     const [totalPages, setTotalPages] = useState()
     const [currentPage, setCurrentPage] = useState(1)
@@ -48,7 +45,6 @@ const MyTeam = () => {
 
     const handleAllUsersList = async (level) => {
         setLoader(true)
-        // setLoading(true)
         try {
             const result = await getTeamList(level)
             let info = result?.data?.data
@@ -59,18 +55,15 @@ const MyTeam = () => {
                 }
             })
 
-            console.log("info", info)
             setUsersList(users)
             setPageination({ state: false })
             setLoader(false)
-            //   setLoading(false)
             setCurrentPage(info?.current_page)
             setHasMorePages(info?.has_more_pages)
             setTotalPages(info?.total_pages)
             setTotalUsers(info?.total_record)
         } catch (error) {
             setLoader(false)
-            //   setLoading(false)
         }
     }
 
@@ -171,12 +164,20 @@ const MyTeam = () => {
                     position: toast.POSITION.TOP_RIGHT,
                 })
             } else {
+                // let data = {
+                //     page: page,
+                //     pagination: pageSize,
+                // }
+
                 let param = new URLSearchParams({
+                    page: page,
+                    pagination: pageSize,
                     Search_keyword: search,
                     Status: selectedUserStatus,
                     from: from,
                     to: to,
                 })
+                console.log("param", param)
                 // setSpinner(true)
                 setLoader(true)
                 // setLoading(true)
@@ -191,6 +192,7 @@ const MyTeam = () => {
                 }
             }
         } catch (error) {
+            console.log("error", error)
             setLoader(false)
             // setLoading(true)
             toast.error(error?.response?.data?.message, {
@@ -205,11 +207,10 @@ const MyTeam = () => {
         setSelectedUserStatus("all")
         setStartDate("")
         settoDate("")
-        handleAllUsersList()
+        handleAllUsersList(activeLevel)
     }
 
     useEffect(() => {
-        console.log("pagination",pagination)
         if (pagination?.state) {
             handlePagination(pagination?.action)
         }
@@ -217,34 +218,26 @@ const MyTeam = () => {
 
     const handlePagination = async action => {
         setLoader(true)
-        // setLoading(true)
         try {
-            let data = ""
-            if (action == "pageDropDown") {
-                data = new URLSearchParams({
-                    pagination: pageSizes,
-                    level: activeLevel
-                })
-            } else {
-                data = new URLSearchParams({
-                    page: page,
-                    pagination: pageSizes,
-                    level: activeLevel
-                })
+            let data = {
+                page: page,
+                pagination: pageSize,
             }
-
-            let res = await getTeamList(data)
+            let result = await getTeamList(activeLevel, data)
+            let info = result?.data?.data
+            let users = info?.data.map((user, index) => {
+                return {
+                    ...user,
+                    serialNumber: index + 1
+                }
+            })
+            setUsersList(users)
             setPageination({ state: false })
-            let fullres = res
-            console.log("full", fullres)
-            // setUsersList(users)
-            // setPageination({ state: false })
-            // setLoader(false)
-            // setTotalUsers(fullres?.total_records)
-            // setHasMorePages(fullres?.has_more_pages)
-            // setTotalPages(fullres?.total_pages)
-            // setCurrentPage(fullres?.current_page)
             setLoader(false)
+            setCurrentPage(info?.current_page)
+            setHasMorePages(info?.has_more_pages)
+            setTotalPages(info?.total_pages)
+            setTotalUsers(info?.total_record)
         } catch (error) {
             console.log("errors", error)
             setLoader(false)
@@ -529,7 +522,7 @@ const MyTeam = () => {
                                     isAddCustomer={true}
                                     isAddTableBorderStrap={true}
                                     totalCount={totalUsers}
-                                    setPageSizes={setPageSizes}
+                                    setPageSize={setPageSize}
                                     hasMorePages={hasMorePages}
                                     totalPages={totalPages}
                                     currentPage={currentPage}

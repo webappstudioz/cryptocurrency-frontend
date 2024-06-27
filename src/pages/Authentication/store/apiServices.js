@@ -401,7 +401,11 @@ export const updateUserProfile = async (userId, data) => {
 }
 
 export const getTeamList = async (level, data) => {
+  // if (data && params) {
+  //   return await getNew(url.GET_TEAM_LIST + level + `?page=${data?.page}&pagination=${data?.pagination}`, params)
+  // } 
   if (data) {
+    // return await getNew(url.GET_TEAM_LIST + level + `?page=${data?.page}&pagination=${data?.pagination}`)
     return await getNew(url.GET_TEAM_LIST + level, data)
   } else {
     return await getNew(url.GET_TEAM_LIST + level)
@@ -414,6 +418,10 @@ export const adminAccountsDetails = async () => {
 
 export const handlePayents = async (data) => {
   return await postDataImg(url.PAYMENTS, data)
+}
+
+export const invoiceForceRemote = async (invoiceId, action) => {
+  return await postNew(url.FORCE_REMOTE + `/${invoiceId}/${action}`)
 }
 
 // export const withDrawFunds = async (data) => {
