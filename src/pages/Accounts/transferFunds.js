@@ -154,7 +154,7 @@ const TransferFunds = props => {
                 </Col>
               </Row>
               <br />
-              <Row>
+              {/* <Row>
                 <Col lg="6">
                   <label>{"Account Holder's Name"}</label>
                   <Input
@@ -188,7 +188,7 @@ const TransferFunds = props => {
                   ) : null}
                 </Col>
               </Row>
-              <br />
+              <br /> */}
               <div className="my-account-header">
                 <h6 className="font16  font-semibold">
                   Transfer By
@@ -210,7 +210,7 @@ const TransferFunds = props => {
                 </Col>
               </Row>
               <br />
-              <Row>
+              {/* <Row>
                 <Col lg="6">
                   <label>{"Account Holder's Name"}</label>
                   <Input
@@ -223,7 +223,7 @@ const TransferFunds = props => {
                   />
                 </Col>
               </Row>
-              <br />
+              <br /> */}
               <Row>
                 <Col>
                   <div className="test form-check form-check-inline mt-20 ">
