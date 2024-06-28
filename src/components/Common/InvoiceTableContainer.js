@@ -278,7 +278,7 @@ const InvoiceTableContainer = ({
                       onClick={(e) => {
                         e.target.classList.contains("not-redirect") ? e?.preventDefault() :
                           navigate?.push({
-                            pathname: `/invoice-detail/${row.original.viewid}`,
+                            pathname: `/invoice-detail/${row.original.id}`,
                           })
                       }}
                     >

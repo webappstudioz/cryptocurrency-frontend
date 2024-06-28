@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import TextLoader from "../textLoader";
+// import TextLoader from "../textLoader";
 import {
   useTable,
   useGlobalFilter,
@@ -17,9 +17,9 @@ import { Filter, DefaultColumnFilter } from "./filters";
 import left from "../../assets/images/left.svg";
 import right from "../../assets/images/right.svg";
 import { findRange } from "../../helpers/api_helper_rs";
-import { getStoredServersList, getServiceStatus, getWarningMessage, handleFetchedService } from "../../pages/Service/Component/ServiceCustomerCol";
-import { toast } from "react-toastify";
-import { useHistory } from "react-router-dom";
+// import { getStoredServersList, getServiceStatus, getWarningMessage, handleFetchedService } from "../../pages/Service/Component/ServiceCustomerCol";
+// import { toast } from "react-toastify";
+// import { useHistory } from "react-router-dom";
 
 const defaultTablePropGetter = () => ({})
 const TableContainer = ({
@@ -31,13 +31,17 @@ const TableContainer = ({
   isAddOrder,
   isAddTableWithoutBorderStrap,
   handleOrderClicks,
-  isAddCustomer,
+  // isAddCustomer,
   isAddUsers,
   handleUserClicks,
-  handleCustomerClicks,
+  // handleCustomerClicks,
   isAddTableBorderStrap,
   isAddInvoice,
   handleInvoiceClicks,
+  hasMorePages,
+  setPageination,
+  currentPage,
+  setPage
   // tableLoader,
   // getTableProps = defaultTablePropGetter,
 }) => {
@@ -48,18 +52,18 @@ const TableContainer = ({
     page,
     prepareRow,
     canPreviousPage,
-    canNextPage,
+    // canNextPage,
     pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
+    // pageCount,
+    // gotoPage,
+    // nextPage,
     previousPage,
     setPageSize,
     state,
     preGlobalFilteredRows,
     setGlobalFilter,
     state: { pageIndex, pageSize },
-  action
+    // action
 
   } = useTable(
     {
@@ -83,36 +87,36 @@ const TableContainer = ({
   const [itemSubtract, setItemSubtract] = useState(1)
   const [pageAction, setPageAction] = useState("")
   const [range, setRange] = useState("")
-  const tableSize = [10,20,30,40,50]
-  const navigate = useHistory()
+  const tableSize = [10, 20, 30, 40, 50]
+  // const navigate = useHistory()
 
-  useEffect(() =>{
-    if(totalCount){
+  useEffect(() => {
+    if (totalCount) {
       let res = findRange(totalCount, tableSize)
       setRange(res)
     }
-      
+
   }, [totalCount])
-  
+
   useEffect(() => {
     handlePageCount()
-  },[pageIndex, pageSize, totalCount])
+  }, [pageIndex, pageSize, totalCount])
 
   const handlePageCount = () => {
     let starting = ""
     let ending = ""
-    if(pageIndex + 1 === 1){
-      starting = pageIndex + 1 > totalCount? totalCount : 1
-      ending = pageSize > totalCount? totalCount : pageSize
+    if (pageIndex + 1 === 1) {
+      starting = pageIndex + 1 > totalCount ? totalCount : 1
+      ending = pageSize > totalCount ? totalCount : pageSize
       setItemSubtract(pageSize)
-    }else if(pageIndex + 1 > 1){
-      starting = pageAction == "next"? itemStarting + pageSize : itemStarting - pageSize
-      if(pageAction == "next"){
-        ending = itemEnding  + pageSize > totalCount? totalCount :  itemEnding  + pageSize
-        setItemSubtract(itemEnding  + pageSize)
-      }else if(pageAction == "back"){
+    } else if (pageIndex + 1 > 1) {
+      starting = pageAction == "next" ? itemStarting + pageSize : itemStarting - pageSize
+      if (pageAction == "next") {
+        ending = itemEnding + pageSize > totalCount ? totalCount : itemEnding + pageSize
+        setItemSubtract(itemEnding + pageSize)
+      } else if (pageAction == "back") {
         ending = itemSubtract - pageSize
-        setItemSubtract(itemEnding  + pageSize)
+        setItemSubtract(itemEnding + pageSize)
       }
     }
     setItemStarting(starting)
@@ -120,23 +124,28 @@ const TableContainer = ({
   }
 
   const generateSortingIndicator = (column) => {
-    return !column?.disableSortBy && <div className="sort-icons"><UpIcon color={column?.isSorted && column?.isSortedDesc ? "#3F3D65": '#9F9EB2'}/><DownIcon color={column.isSorted && !column.isSortedDesc ? "#3F3D65": '#9F9EB2'}/></div> 
+    return !column?.disableSortBy && <div className="sort-icons"><UpIcon color={column?.isSorted && column?.isSortedDesc ? "#3F3D65" : '#9F9EB2'} /><DownIcon color={column.isSorted && !column.isSortedDesc ? "#3F3D65" : '#9F9EB2'} /></div>
   };
 
   const onChangeInSelect = (event) => {
     setPageSize(Number(event?.target?.value));
   };
 
-  const onChangeInInput = (event) => {
-    const page = event?.target?.value ? Number(event?.target?.value) - 1 : 0;
-    gotoPage(page);
-  };
+  // const onChangeInInput = (event) => {
+  //   const page = event?.target?.value ? Number(event?.target?.value) - 1 : 0;
+  //   gotoPage(page);
+  // };
 
-  const handleAction = (row) => {
-    const status = getStoredServersList(row?.original?.id)
-    let cellStatus = getServiceStatus(status?.status || row?.original?.status)
-    let message = getWarningMessage(cellStatus)
-    return message || null
+  // const handleAction = (row) => {
+  //   const status = getStoredServersList(row?.original?.id)
+  //   let cellStatus = getServiceStatus(status?.status || row?.original?.status)
+  //   let message = getWarningMessage(cellStatus)
+  //   return message || null
+  // }
+
+  const handleNextClick = (next) => {
+    setPage(next)
+    setPageination({ state: true, action: "pageBtn" })
   }
 
   return (
@@ -218,7 +227,7 @@ const TableContainer = ({
             </thead>
 
             <tbody {...getTableBodyProps()}>
-              {page.length?page.map((row) => {
+              {page.length ? page.map((row) => {
                 prepareRow(row);
                 return (
                   <Fragment key={row.getRowProps().key}>
@@ -233,9 +242,9 @@ const TableContainer = ({
                     </tr>
                   </Fragment>
                 );
-              }):(
+              }) : (
                 <TableCell>
-                No data to display
+                  No data to display
                 </TableCell>
               )}
             </tbody>
@@ -263,45 +272,45 @@ const TableContainer = ({
                 </tr>
               ))}
             </thead>
-{/* className={tableLoader? "overlayerloader" : ""} */}
+            {/* className={tableLoader? "overlayerloader" : ""} */}
             <tbody {...getTableBodyProps()} >
-              {page?.length > 0? page?.map((row) => {
+              {page?.length > 0 ? page?.map((row) => {
                 prepareRow(row);
                 return (
                   <Fragment key={row.getRowProps().key}>
-                    <tr 
-                      // style={{cursor:"pointer"}} 
-                      // onClick={(e) => {
-                      //   navigate?.push({
-                      //     pathname:`/user-detail/${row?.original?.id}`, 
-                      //     // state:{
-                      //     //   product: handleFetchedService(row?.original?.id)
-                      //     // }
-                      //   })
-                      // }}
+                    <tr
+                    // style={{cursor:"pointer"}} 
+                    // onClick={(e) => {
+                    //   navigate?.push({
+                    //     pathname:`/user-detail/${row?.original?.id}`, 
+                    //     // state:{
+                    //     //   product: handleFetchedService(row?.original?.id)
+                    //     // }
+                    //   })
+                    // }}
                     >
                       {row?.cells.map((cell) => {
                         return (
                           <td key={cell?.id} {...cell?.getCellProps()}>
-                            {cell?.render("Cell")} 
+                            {cell?.render("Cell")}
                           </td>
                         );
                       })}
                     </tr>
                   </Fragment>
                 );
-              }) : 
-              (<Fragment>
-                <tr className="record-found">      
-                  <td colSpan="7">
-                    No Record Found
-                  </td>               
-                </tr>
-              </Fragment>)
+              }) :
+                (<Fragment>
+                  <tr className="record-found">
+                    <td colSpan="7">
+                      No Record Found
+                    </td>
+                  </tr>
+                </Fragment>)
               }
             </tbody>
           </Table>
-              {/* {tableLoader? <TextLoader /> : ""} */}
+          {/* {tableLoader? <TextLoader /> : ""} */}
         </div>
       )}
 
@@ -323,13 +332,13 @@ const TableContainer = ({
                   onChange={onChangeInSelect}
                 >
                   {tableSize.map((pageSize) => (
-                    pageSize > range? <option key={pageSize} value={pageSize} disabled style={{color:"grey"}}>
+                    pageSize > range ? <option key={pageSize} value={pageSize} disabled style={{ color: "grey" }}>
                       {pageSize}
                     </option>
-                    :
-                    <option key={pageSize} value={pageSize} style={{color:"black"}}>
-                      {pageSize}
-                    </option>
+                      :
+                      <option key={pageSize} value={pageSize} style={{ color: "black" }}>
+                        {pageSize}
+                      </option>
                   ))}
                 </select>
               </div>
@@ -338,7 +347,7 @@ const TableContainer = ({
             <div className="d-flex gap-1">
               <Button
                 color="primary"
-                onClick={() => {previousPage(), setPageAction("back")}}
+                onClick={() => { previousPage(), setPageAction("back") }}
                 disabled={!canPreviousPage}
               >
                 {<img src={left} alt="" />}
@@ -346,7 +355,7 @@ const TableContainer = ({
             </div>
             <div className="page_index"> <p className="page-index text-blue font-semibold"> {pageIndex + 1} / {pageOptions.length || 1}</p></div>
             <div className="d-flex gap-1">
-              <Button color="primary" onClick={() => {nextPage(), setPageAction("next")}} disabled={!canNextPage}>
+              <Button color="primary" onClick={() => { handleNextClick(currentPage + 1), setPageAction("next") }} disabled={!hasMorePages}>
                 {<img src={right} alt="" />}
               </Button>
             </div>
@@ -407,14 +416,14 @@ TableContainer.propTypes = {
 
 export default TableContainer;
 
-const DownIcon = ({color}) => {
+const DownIcon = ({ color }) => {
   return <svg width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M4.39043 4.51196C4.19027 4.76216 3.80973 4.76216 3.60957 4.51196L0.649878 0.812348C0.387973 0.484966 0.621059 0 1.04031 0H6.95969C7.37894 0 7.61203 0.484966 7.35012 0.812348L4.39043 4.51196Z" fill={color}/>
+    <path d="M4.39043 4.51196C4.19027 4.76216 3.80973 4.76216 3.60957 4.51196L0.649878 0.812348C0.387973 0.484966 0.621059 0 1.04031 0H6.95969C7.37894 0 7.61203 0.484966 7.35012 0.812348L4.39043 4.51196Z" fill={color} />
   </svg>
 }
-const UpIcon = ({color}) => {
+const UpIcon = ({ color }) => {
   return <svg width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M4.39043 0.488043C4.19027 0.23784 3.80973 0.23784 3.60957 0.488043L0.649878 4.18765C0.387973 4.51503 0.621059 5 1.04031 5H6.95969C7.37894 5 7.61203 4.51503 7.35012 4.18765L4.39043 0.488043Z" fill={color}/>
+    <path d="M4.39043 0.488043C4.19027 0.23784 3.80973 0.23784 3.60957 0.488043L0.649878 4.18765C0.387973 4.51503 0.621059 5 1.04031 5H6.95969C7.37894 5 7.61203 4.51503 7.35012 4.18765L4.39043 0.488043Z" fill={color} />
   </svg>
-  
+
 }

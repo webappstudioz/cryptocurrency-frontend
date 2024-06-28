@@ -5,28 +5,28 @@ import TableContainer from "../../components/Common/AllUsersTable"
 import TextLoader from "../../components/textLoader"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
-import { customRegex } from "../../helpers/validation_helpers"
-import {
-  deleteCustomer as onDeleteCustomer,
-  getInvoicesList as onGetInvoicesList,
-} from "../../store/actions"
+// import { customRegex } from "../../helpers/validation_helpers"
+// import {
+//   deleteCustomer as onDeleteCustomer,
+//   getInvoicesList as onGetInvoicesList,
+// } from "../../store/actions"
 import {
   SerialNumber,
-  CustomerId,
-  Location,
-  NotifiationDate,
-  Time,
-  CustomerName,
+  // CustomerId,
+  // Location,
+  // NotifiationDate,
+  // Time,
+  // CustomerName,
   // Date,
   Email,
-  CustomerStatus,
+  // CustomerStatus,
   //   CurDate,
-  DueDate,
-  Total,
-  Number,
-  InvoiceStatus,
-  PDF,
-  Checks,
+  // DueDate,
+  // Total,
+  // Number,
+  // InvoiceStatus,
+  // PDF,
+  // Checks,
   UserName,
   Name,
   AcountStatus,
@@ -38,61 +38,61 @@ import {
 } from "../Common/CommonCol"
 
 //redux
-import { useSelector, useDispatch } from "react-redux"
+// import { useSelector, useDispatch } from "react-redux"
 
 import { Col, Row, DropdownMenu, DropdownItem, Dropdown } from "reactstrap"
-import Vector1 from "../../assets/images/Vector1.svg"
-import { getInvoice, getAllUsersList } from "../Authentication/store/apiServices"
-import PermissionDenied from "../Authentication/PermissionDenied"
+// import Vector1 from "../../assets/images/Vector1.svg"
+import { getAllUsersList } from "../Authentication/store/apiServices"
+// import PermissionDenied from "../Authentication/PermissionDenied"
 import { toast } from "react-toastify"
 import { setPageTitle } from "../../helpers/api_helper_rs"
-import { debounce } from "lodash-es";
+// import { debounce } from "lodash-es";
 
 function UsersList() {
-  const dispatch = useDispatch()
-  const [modal, setModal] = useState(false)
+  // const dispatch = useDispatch()
+  // const [modal, setModal] = useState(false)
   // const [modal1, setModal1] = useState(false);
-  const [isEdit, setIsEdit] = useState(false)
-  const [invoice, setinvoice] = useState()
-  const [defaultinvoicelist, setdefaultinvoicelist] = useState([])
-  const [customerList, setCustomerList] = useState([])
-  const [customer, setCustomer] = useState([])
+  // const [isEdit, setIsEdit] = useState(false)
+  // const [invoice, setinvoice] = useState()
+  // const [defaultinvoicelist, setdefaultinvoicelist] = useState([])
+  // const [customerList, setCustomerList] = useState([])
+  // const [customer, setCustomer] = useState([])
   const [loader, setLoader] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [totalInvoices, setTotalInvoices] = useState()
+  // const [totalInvoices, setTotalInvoices] = useState()
   const [pageSizes, setPageSizes] = useState(10)
   const [hasMorePages, setHasMorePages] = useState(false)
   const [totalPages, setTotalPages] = useState()
   const [currentPage, setCurrentPage] = useState(1)
   const [page, setPage] = useState(1)
   const [pagination, setPageination] = useState({ state: false, action: "" })
-  const [permissionDen, setPermissionDen] = useState(false)
-  const { invoicesList } = useSelector(state => ({
-    // invoicesList: state.invoices.invoicesList,
-  }))
+  // const [permissionDen, setPermissionDen] = useState(false)
+  // const { invoicesList } = useSelector(state => ({
+  //   // invoicesList: state.invoices.invoicesList,
+  // }))
 
   // for api integration
-  const [selectedDate, setselectedDate] = useState(0)
+  // const [selectedDate, setselectedDate] = useState(0)
 
-  const [statusFilterOpen, setstatusFilterOpen] = useState(false)
-  const [checkboxValues, setCheckboxValues] = useState({
-    Paid: false,
-    // Unpaid: false,
-    // Refunded: false,
-    Cancelled: false,
-    // Draft: false,
-    // Overdue: false,
-    Payment_Pending: false,
-    // Collections: false,
-  })
-  const [filterArray, setFilterArray] = useState({
-    status: [],
-    time: 0,
-    payment: "all"
-  })
-  const [dateFilterOpen, setdateFilterOpen] = useState(false)
-  const [paymentTypeFilter, setPaymentTypeFilter] = useState(false)
-  const [selectedPaymentType, setSelectedPaymentType] = useState("all")
+  // const [statusFilterOpen, setstatusFilterOpen] = useState(false)
+  // const [checkboxValues, setCheckboxValues] = useState({
+  //   Paid: false,
+  //   // Unpaid: false,
+  //   // Refunded: false,
+  //   Cancelled: false,
+  //   // Draft: false,
+  //   // Overdue: false,
+  //   Payment_Pending: false,
+  //   // Collections: false,
+  // })
+  // const [filterArray, setFilterArray] = useState({
+  //   status: [],
+  //   time: 0,
+  //   payment: "all"
+  // })
+  // const [dateFilterOpen, setdateFilterOpen] = useState(false)
+  // const [paymentTypeFilter, setPaymentTypeFilter] = useState(false)
+  // const [selectedPaymentType, setSelectedPaymentType] = useState("all")
 
   const [allUsers, setAllUsers] = useState()
   const [totalUsers, setTotalUsers] = useState()
@@ -108,11 +108,17 @@ function UsersList() {
     handleAllUsersList()
   }, [])
 
-  const handleAllUsersList = async () => {
+  const handleAllUsersList = async (data) => {
     setLoader(true)
     setLoading(true)
     try {
-      const result = await getAllUsersList()
+      let result = ""
+      if (data) {
+        result = await getAllUsersList(data)
+      } else {
+        result = await getAllUsersList()
+      }
+      
       let info = result?.data?.data
       let users = info?.data.map((user, index) => {
         return {
@@ -128,8 +134,9 @@ function UsersList() {
       setCurrentPage(info?.current_page)
       setHasMorePages(info?.has_more_pages)
       setTotalPages(info?.total_pages)
-      setTotalUsers(info?.total)
+      setTotalUsers(info?.total_record)
     } catch (error) {
+      console.log("error", error)
       setLoader(false)
       setLoading(false)
     }
@@ -163,26 +170,28 @@ function UsersList() {
           position: toast.POSITION.TOP_RIGHT,
         })
       } else {
-        let param = new URLSearchParams({
+        let data = new URLSearchParams({
           Search_keyword : search,
           Status: selectedUserStatus,
           // Daterange_filter : result,
           from: from,
           to: to,
         })
-        // setSpinner(true)
-        setLoader(true)
-        setLoading(true)
-        let res = await getAllUsersList(param)
 
-        if (res) {
-          setLoader(false)
-          setLoading(false)
-          // setddata(res?.data?.data?.data?.down)
-          // setudata(res?.data?.data?.data?.up)
-          // setdates(res?.data?.data?.data)
-          // setunit(res?.data?.data?.data?.unit)
-        }
+        handleAllUsersList(data)
+        // setSpinner(true)
+        // setLoader(true)
+        // setLoading(true)
+        // let res = await getAllUsersList(param)
+
+        // if (res) {
+        //   setLoader(false)
+        //   setLoading(false)
+        //   // setddata(res?.data?.data?.data?.down)
+        //   // setudata(res?.data?.data?.data?.up)
+        //   // setdates(res?.data?.data?.data)
+        //   // setunit(res?.data?.data?.data?.unit)
+        // }
       }
     } catch (error) {
       setLoader(false)
@@ -202,37 +211,38 @@ function UsersList() {
     handleAllUsersList()
   }
 
-  const handleDebounceVal = debounce(async (search) => {
-    setLoading(true)
-    const ipRegex = customRegex?.ipAddress
-    if (ipRegex.test(search)) {
-      let param = new URLSearchParams({
-        service_id: params?.id,
-        action: "ips",
-        ips: search,
-      });
-      try {
-        // setLoader(true);
-        // setLoading(true);
-        let res = await deviceDetails(param);
-        if (res) {
-          setLoader(false);
-          setLoading(false);
-          let data = res?.data?.data;
-          setIpv4Data(data);
-        }
-      } catch (err) {
-        setLoader(false);
-        setLoading(false);
-        setIpv4Data([]);
-      }
-    } else {
-      setLoading(false)
-      toast.error("Please enter a valid IP Address", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    }
-  }, 500);
+  // const handleDebounceVal = debounce(async (search) => {
+  //   setLoading(true)
+  //   const ipRegex = customRegex?.ipAddress
+  //   if (ipRegex.test(search)) {
+  //     let param = new URLSearchParams({
+  //       service_id: params?.id,
+  //       action: "ips",
+  //       ips: search,
+  //     });
+  //     try {
+  //       // setLoader(true);
+  //       // setLoading(true);
+  //       let res = await deviceDetails(param);
+  //       if (res) {
+  //         setLoader(false);
+  //         setLoading(false);
+  //         let data = res?.data?.data;
+  //         setIpv4Data(data);
+  //       }
+  //     } catch (err) {
+  //       setLoader(false);
+  //       setLoading(false);
+  //       setIpv4Data([]);
+  //     }
+  //   } else {
+  //     setLoading(false)
+  //     toast.error("Please enter a valid IP Address", {
+  //       position: toast.POSITION.TOP_RIGHT,
+  //     });
+  //   }
+  // }, 500);
+
   // useEffect(() => {
   //   let config = {
   //     params: {
@@ -284,25 +294,25 @@ function UsersList() {
   //   }
   // }
 
-  const handleInvoiceFilter = (status, time) => {
-    let data = ""
-    if (status?.length) {
-      data = new URLSearchParams({
-        status: status,
-        timeperiod: time,
-        pagination: pageSizes,
-        page: page
-      })
-    } else {
-      data = new URLSearchParams({
-        timeperiod: time,
-        pagination: pageSizes,
-        page: page
-      })
-    }
+  // const handleInvoiceFilter = (status, time) => {
+  //   let data = ""
+  //   if (status?.length) {
+  //     data = new URLSearchParams({
+  //       status: status,
+  //       timeperiod: time,
+  //       pagination: pageSizes,
+  //       page: page
+  //     })
+  //   } else {
+  //     data = new URLSearchParams({
+  //       timeperiod: time,
+  //       pagination: pageSizes,
+  //       page: page
+  //     })
+  //   }
 
-    getInvoiceList(data)
-  }
+  //   getInvoiceList(data)
+  // }
   // useEffect(() => {
   //   filterApply()
   // }, [filterArray])
@@ -313,100 +323,100 @@ function UsersList() {
     }
   }, [pagination])
 
-  const toggle = () => {
-    if (modal) {
-      setModal(false)
-      setCustomer(null)
-    } else {
-      setModal(true)
-    }
-  }
+  // const toggle = () => {
+  //   if (modal) {
+  //     setModal(false)
+  //     setCustomer(null)
+  //   } else {
+  //     setModal(true)
+  //   }
+  // }
 
-  const filterApply = () => {
+  // const filterApply = () => {
 
-    let arr = [...defaultinvoicelist]
-    let filteredData = arr.filter(item => {
-      if (
-        filterArray.status.length > 0 &&
-        !filterArray.status.includes(item.status)
-      ) {
-        return false
-      }
+  //   let arr = [...defaultinvoicelist]
+  //   let filteredData = arr.filter(item => {
+  //     if (
+  //       filterArray.status.length > 0 &&
+  //       !filterArray.status.includes(item.status)
+  //     ) {
+  //       return false
+  //     }
 
-      if (filterArray.time === "today") {
-        return item.datetime === new Date().toISOString().slice(0, 10)
-      } else if (filterArray.time === "last_7days") {
-        let last7Days = new Date()
-        last7Days.setDate(last7Days.getDate() - 7)
-        return new Date(item.datetime) >= last7Days
-      } else if (filterArray.time === "last_1month") {
-        let lastMonth = new Date()
-        lastMonth.setMonth(lastMonth.getMonth() - 1)
-        return new Date(item.datetime) >= lastMonth
-      } else if (filterArray.time === "last_12month") {
-        let last12Months = new Date()
-        last12Months.setFullYear(last12Months.getFullYear() - 1)
-        return new Date(item.datetime) >= last12Months
-      } else {
-        return true
-      }
-    })
-    setinvoice(filteredData)
-  }
+  //     if (filterArray.time === "today") {
+  //       return item.datetime === new Date().toISOString().slice(0, 10)
+  //     } else if (filterArray.time === "last_7days") {
+  //       let last7Days = new Date()
+  //       last7Days.setDate(last7Days.getDate() - 7)
+  //       return new Date(item.datetime) >= last7Days
+  //     } else if (filterArray.time === "last_1month") {
+  //       let lastMonth = new Date()
+  //       lastMonth.setMonth(lastMonth.getMonth() - 1)
+  //       return new Date(item.datetime) >= lastMonth
+  //     } else if (filterArray.time === "last_12month") {
+  //       let last12Months = new Date()
+  //       last12Months.setFullYear(last12Months.getFullYear() - 1)
+  //       return new Date(item.datetime) >= last12Months
+  //     } else {
+  //       return true
+  //     }
+  //   })
+  //   setinvoice(filteredData)
+  // }
 
-  const handleCustomerClicks = () => {
-    setCustomerList("")
-    setIsEdit(false)
-    toggle()
-  }
+  // const handleCustomerClicks = () => {
+  //   setCustomerList("")
+  //   setIsEdit(false)
+  //   toggle()
+  // }
 
-  const handleCheckboxChange = event => {
-    const { id } = event.target
-    setCheckboxValues(prevState => ({
-      ...prevState,
-      [id]: !prevState[id],
-    }))
-  }
+  // const handleCheckboxChange = event => {
+  //   const { id } = event.target
+  //   setCheckboxValues(prevState => ({
+  //     ...prevState,
+  //     [id]: !prevState[id],
+  //   }))
+  // }
 
-  const clearfilter = () => {
-    // setCheckboxValues({
-    //   Paid: false,
-    //   // Unpaid: false,
-    //   // Refunded: false,
-    //   Cancelled: false,
-    //   // Draft: false,
-    //   // Overdue: false,
-    //   Payment_Pending: false,
-    //   // Collections: false,
-    // })
-    // getInvoiceList()
-  }
+  // const clearfilter = () => {
+  //   // setCheckboxValues({
+  //   //   Paid: false,
+  //   //   // Unpaid: false,
+  //   //   // Refunded: false,
+  //   //   Cancelled: false,
+  //   //   // Draft: false,
+  //   //   // Overdue: false,
+  //   //   Payment_Pending: false,
+  //   //   // Collections: false,
+  //   // })
+  //   // getInvoiceList()
+  // }
 
-  const applyFilter = async () => {
-    setstatusFilterOpen(false)
-    const arr = Object.entries(checkboxValues)
-      .filter(([key, value]) => value === true)
-      .map(([key]) => key)
-    setFilterArray({ ...filterArray, status: arr })
-    // filterApply()
-    handleInvoiceFilter(arr, filterArray?.time)
-  }
+  // const applyFilter = async () => {
+  //   setstatusFilterOpen(false)
+  //   const arr = Object.entries(checkboxValues)
+  //     .filter(([key, value]) => value === true)
+  //     .map(([key]) => key)
+  //   setFilterArray({ ...filterArray, status: arr })
+  //   // filterApply()
+  //   handleInvoiceFilter(arr, filterArray?.time)
+  // }
 
-  const DateFilter = date => {
-    setdateFilterOpen(false)
-    setselectedDate(date)
-    setFilterArray({ ...filterArray, time: date })
-    // filterApply()
-    handleInvoiceFilter(filterArray?.status, date)
-  }
+  // const DateFilter = date => {
+  //   setdateFilterOpen(false)
+  //   setselectedDate(date)
+  //   setFilterArray({ ...filterArray, time: date })
+  //   // filterApply()
+  //   handleInvoiceFilter(filterArray?.status, date)
+  // }
 
-  const paymentFilter = type => {
-    setPaymentTypeFilter(false)
-    setSelectedPaymentType(type)
-    setFilterArray({ ...filterArray, payment: type })
-    // filterApply()
-    handleInvoiceFilter(filterArray?.status, filterArray?.date, type)
-  }
+  // const paymentFilter = type => {
+  //   setPaymentTypeFilter(false)
+  //   setSelectedPaymentType(type)
+  //   setFilterArray({ ...filterArray, payment: type })
+  //   // filterApply()
+  //   handleInvoiceFilter(filterArray?.status, filterArray?.date, type)
+  // }
 
   const handlePagination = async action => {
     setLoader(true)
@@ -424,19 +434,20 @@ function UsersList() {
         })
       }
 
-      let res = await getInvoice(data)
-      setPageination({ state: false })
-      let info = res?.data?.data
-      setinvoice(info?.invoices)
-      setCurrentPage(info?.current_page)
-      setHasMorePages(info?.has_more_pages)
-      setTotalPages(info?.total_pages)
-      setTotalInvoices(info?.total_records)
-      setdefaultinvoicelist(
-        JSON.parse(JSON.stringify(info?.invoices))
-      )
-      setLoader(false)
-      setLoading(false)
+      handleAllUsersList(data)
+      // let res = await getInvoice(data)
+      // setPageination({ state: false })
+      // let info = res?.data?.data
+      // setinvoice(info?.invoices)
+      // setCurrentPage(info?.current_page)
+      // setHasMorePages(info?.has_more_pages)
+      // setTotalPages(info?.total_pages)
+      // setTotalInvoices(info?.total_records)
+      // setdefaultinvoicelist(
+      //   JSON.parse(JSON.stringify(info?.invoices))
+      // )
+      // setLoader(false)
+      // setLoading(false)
     } catch (error) {
       setLoader(false)
       setLoading(false)
@@ -899,7 +910,7 @@ function UsersList() {
                   hasMorePages={hasMorePages}
                   totalPages={totalPages}
                   currentPage={currentPage}
-                  handleCustomerClicks={handleCustomerClicks}
+                  // handleCustomerClicks={handleCustomerClicks}
                   setPage={setPage}
                   setPageination={setPageination}
                   getTablePropsC={() => ({
