@@ -3,22 +3,24 @@ import PropTypes from "prop-types"
 import "bootstrap/dist/css/bootstrap.min.css"
 // import TableContainer from "../../components/Common/TableContainer"
 import TextLoader from "../../components/textLoader"
-import {
-  deleteCustomer as onDeleteCustomer,
-  getInvoicesList as onGetInvoicesList,
-} from "../../store/actions"
+// import {
+//   deleteCustomer as onDeleteCustomer,
+//   getInvoicesList as onGetInvoicesList,
+// } from "../../store/actions"
 import {
   CurDate,
-  DueDate,
+  // DueDate,
   Total,
   Number,
   InvoiceStatus,
-  PDF,
-  Checks,
+  // PDF,
+  // Checks,
+  SendTo,
+  PaymentType,
 } from "./InvoiceCustomerCol"
 
 //redux
-import { useSelector, useDispatch } from "react-redux"
+// import { useSelector, useDispatch } from "react-redux"
 
 import { Col, Row, DropdownMenu, DropdownItem, Dropdown } from "reactstrap"
 import Vector1 from "../../assets/images/Vector1.svg"
@@ -28,14 +30,14 @@ import { toast } from "react-toastify"
 import { setPageTitle } from "../../helpers/api_helper_rs"
 import InvoiceTableContainer from "../../components/Common/InvoiceTableContainer"
 function Invoice() {
-  const dispatch = useDispatch()
-  const [modal, setModal] = useState(false)
+  // const dispatch = useDispatch()
+  // const [modal, setModal] = useState(false)
   // const [modal1, setModal1] = useState(false);
-  const [isEdit, setIsEdit] = useState(false)
-  const [invoice, setinvoice] = useState()
-  const [defaultinvoicelist, setdefaultinvoicelist] = useState([])
-  const [customerList, setCustomerList] = useState([])
-  const [customer, setCustomer] = useState([])
+  // const [isEdit, setIsEdit] = useState(false)
+  const [invoice, setInvoice] = useState()
+  // const [defaultinvoicelist, setdefaultinvoicelist] = useState([])
+  // const [customerList, setCustomerList] = useState([])
+  // const [customer, setCustomer] = useState([])
   const [loader, setLoader] = useState(true)
   const [loading, setLoading] = useState(true)
   const [totalInvoices, setTotalInvoices] = useState()
@@ -46,12 +48,12 @@ function Invoice() {
   const [page, setPage] = useState(1)
   const [pagination, setPageination] = useState({ state: false, action: "" })
   // const [permissionDen, setPermissionDen] = useState(false)
-  const { invoicesList } = useSelector(state => ({
-    // invoicesList: state.invoices.invoicesList,
-  }))
+  // const { invoicesList } = useSelector(state => ({
+  //   // invoicesList: state.invoices.invoicesList,
+  // }))
 
   // for api integration
-  const [selectedDate, setselectedDate] = useState(0)
+  // const [selectedDate, setselectedDate] = useState(0)
   const [selectedPaymentType, setSelectedPaymentType] = useState("All")
 
   const [statusFilterOpen, setstatusFilterOpen] = useState(false)
@@ -62,23 +64,23 @@ function Invoice() {
   })
   const [filterArray, setFilterArray] = useState({
     status: [],
-    time: 0,
+    paymentType: "all",
   })
-  const [dateFilterOpen, setdateFilterOpen] = useState(false)
+  // const [dateFilterOpen, setdateFilterOpen] = useState(false)
   const [paymentTypeFilter, setPaymentTypeFilter] = useState(false)
 
-  useEffect(() => {
-    let config = {
-      params: {
-        command: "whmcs_invoicelist",
-        debug: 1,
-      },
-    }
+  // useEffect(() => {
+  //   let config = {
+  //     params: {
+  //       command: "whmcs_invoicelist",
+  //       debug: 1,
+  //     },
+  //   }
 
-    if (invoicesList && !invoicesList.length) {
-      dispatch(onGetInvoicesList(config))
-    }
-  }, [dispatch])
+  //   if (invoicesList && !invoicesList.length) {
+  //     dispatch(onGetInvoicesList(config))
+  //   }
+  // }, [dispatch])
 
   useEffect(async () => {
     setPageTitle("Invoice")
@@ -99,48 +101,54 @@ function Invoice() {
         setLoader(false)
         setLoading(false)
         let info = res?.data?.data
-
+        let invoices = info?.data.map((invoice, index) => {
+          return {
+            ...invoice,
+            serialNumber: index + 1
+          }
+        })
         // setCurrentPage(info?.current_page)
-        setCurrentPage(1)
+        setCurrentPage(info?.current_page)
         setHasMorePages(info?.has_more_pages)
         setTotalPages(info?.total_pages)
-        setTotalInvoices(info?.total_records)
-        setinvoice(info?.invoices)
-        setdefaultinvoicelist(
-          JSON.parse(JSON.stringify(info?.invoices))
-        )
+        setTotalInvoices(info?.total_record)
+        setInvoice(invoices)
+        // setdefaultinvoicelist(
+        //   JSON.parse(JSON.stringify(info?.invoices))
+        // )
       }
-    } catch (err) {
-      if (err?.response?.data?.status_code == 403) {
+    } catch (error) {
+      console.log("error", error)
+      if (error?.response?.data?.status_code == 403) {
         // setPermissionDen(true)
       }
-      if (err?.response?.data?.status_code != 401) {
+      if (error?.response?.data?.status_code != 401) {
         // setPermissionDen(true)
         setLoader(false)
         setLoading(false)
-        toast.error(err?.response?.data?.message, {
+        toast.error(error?.response?.data?.message, {
           position: toast.POSITION.TOP_RIGHT,
         })
       }
     }
   }
 
-  const handleInvoiceFilter = (status, time) => {
+  const handleInvoiceFilter = (status, paymentType) => {
     let data = ""
     if (status?.length) {
       data = new URLSearchParams({
         status: status,
-        timeperiod: time,
+        payment_type: paymentType,
         pagination: pageSizes,
-        // page:page
-        page: 1
+        page:page
+        // page: 1
       })
     } else {
       data = new URLSearchParams({
-        timeperiod: time,
+        payment_type: paymentType,
         pagination: pageSizes,
-        // page:page
-        page: 1
+        page:page
+        // page: 1
       })
     }
 
@@ -156,52 +164,52 @@ function Invoice() {
     }
   }, [pagination])
 
-  const toggle = () => {
-    if (modal) {
-      setModal(false)
-      setCustomer(null)
-    } else {
-      setModal(true)
-    }
-  }
+  // const toggle = () => {
+  //   if (modal) {
+  //     setModal(false)
+  //     setCustomer(null)
+  //   } else {
+  //     setModal(true)
+  //   }
+  // }
 
-  const filterApply = () => {
+  // const filterApply = () => {
 
-    let arr = [...defaultinvoicelist]
-    let filteredData = arr.filter(item => {
-      if (
-        filterArray.status.length > 0 &&
-        !filterArray.status.includes(item.status)
-      ) {
-        return false
-      }
+  //   let arr = [...defaultinvoicelist]
+  //   let filteredData = arr.filter(item => {
+  //     if (
+  //       filterArray.status.length > 0 &&
+  //       !filterArray.status.includes(item.status)
+  //     ) {
+  //       return false
+  //     }
 
-      if (filterArray.time === "today") {
-        return item.datetime === new Date().toISOString().slice(0, 10)
-      } else if (filterArray.time === "last_7days") {
-        let last7Days = new Date()
-        last7Days.setDate(last7Days.getDate() - 7)
-        return new Date(item.datetime) >= last7Days
-      } else if (filterArray.time === "last_1month") {
-        let lastMonth = new Date()
-        lastMonth.setMonth(lastMonth.getMonth() - 1)
-        return new Date(item.datetime) >= lastMonth
-      } else if (filterArray.time === "last_12month") {
-        let last12Months = new Date()
-        last12Months.setFullYear(last12Months.getFullYear() - 1)
-        return new Date(item.datetime) >= last12Months
-      } else {
-        return true
-      }
-    })
-    setinvoice(filteredData)
-  }
+  //     if (filterArray.time === "today") {
+  //       return item.datetime === new Date().toISOString().slice(0, 10)
+  //     } else if (filterArray.time === "last_7days") {
+  //       let last7Days = new Date()
+  //       last7Days.setDate(last7Days.getDate() - 7)
+  //       return new Date(item.datetime) >= last7Days
+  //     } else if (filterArray.time === "last_1month") {
+  //       let lastMonth = new Date()
+  //       lastMonth.setMonth(lastMonth.getMonth() - 1)
+  //       return new Date(item.datetime) >= lastMonth
+  //     } else if (filterArray.time === "last_12month") {
+  //       let last12Months = new Date()
+  //       last12Months.setFullYear(last12Months.getFullYear() - 1)
+  //       return new Date(item.datetime) >= last12Months
+  //     } else {
+  //       return true
+  //     }
+  //   })
+  //   setInvoice(filteredData)
+  // }
 
-  const handleCustomerClicks = () => {
-    setCustomerList("")
-    setIsEdit(false)
-    toggle()
-  }
+  // const handleCustomerClicks = () => {
+  //   setCustomerList("")
+  //   setIsEdit(false)
+  //   toggle()
+  // }
 
   const handleCheckboxChange = event => {
     const { id } = event.target
@@ -228,7 +236,7 @@ function Invoice() {
       .map(([key]) => key)
     setFilterArray({ ...filterArray, status: arr })
     // filterApply()
-    handleInvoiceFilter(arr, filterArray?.time)
+    handleInvoiceFilter(arr, filterArray?.paymentType)
   }
 
   // const DateFilter = date => {
@@ -256,41 +264,42 @@ function Invoice() {
         data = new URLSearchParams({
           pagination: pageSizes,
           status: filterArray?.status,
-          time: filterArray.time
+          payment_type: filterArray.paymentType
         })
       } else {
         data = new URLSearchParams({
           page: page,
           pagination: pageSizes,
           status: filterArray?.status,
-          time: filterArray.time
+          payment_type: filterArray.paymentType
         })
       }
-
-      let res = await getInvoice(data)
-      setPageination({ state: false })
-      let info = res?.data?.data
-      setinvoice(info?.invoices)
-      setCurrentPage(info?.current_page)
-      setHasMorePages(info?.has_more_pages)
-      setTotalPages(info?.total_pages)
-      setTotalInvoices(info?.total_records)
-      setdefaultinvoicelist(
-        JSON.parse(JSON.stringify(info?.invoices))
-      )
-      setLoader(false)
-      setLoading(false)
+      getInvoiceList(data)
+      // let res = await getInvoice(data)
+      // setPageination({ state: false })
+      // let info = res?.data?.data
+      // setInvoice(info?.invoices)
+      // setCurrentPage(info?.current_page)
+      // setHasMorePages(info?.has_more_pages)
+      // setTotalPages(info?.total_pages)
+      // setTotalInvoices(info?.total_records)
+      // setdefaultinvoicelist(
+      //   JSON.parse(JSON.stringify(info?.invoices))
+      // )
+      // setLoader(false)
+      // setLoading(false)
     } catch (error) {
-      setLoader(false)
-      setLoading(false)
+      console.log("error", error)
+      // setLoader(false)
+      // setLoading(false)
     }
   }
 
   const columns = useMemo(
     () => [
       {
-        Header: "Invoice #",
-        accessor: "id",
+        Header: "Invoice",
+        accessor: "serialNumber",
         disableFilters: true,
         filterable: false,
         Cell: cellProps => {
@@ -298,8 +307,28 @@ function Invoice() {
         },
       },
       {
+        Header: "Send To",
+        accessor: "send_to",
+        disableGlobalFilter: true,
+        disableSortBy: false, // if true the sortBy is disabled and remove sort icons
+        filterable: true,
+        Cell: cellProps => {
+          return <SendTo {...cellProps} />
+        },
+      },
+      {
+        Header: "Payment Type",
+        accessor: "payment_type",
+        disableGlobalFilter: true,
+        disableSortBy: false, // if true the sortBy is disabled and remove sort icons
+        filterable: true,
+        Cell: cellProps => {
+          return <PaymentType {...cellProps} />
+        },
+      },
+      {
         Header: "Invoice Date",
-        accessor: "date",
+        accessor: "created_at",
         disableGlobalFilter: true,
         disableSortBy: false, // if true the sortBy is disabled and remove sort icons
         filterable: true,
@@ -308,16 +337,8 @@ function Invoice() {
         },
       },
       {
-        Header: "Due Date",
-        accessor: "duedate",
-        filterable: true,
-        Cell: cellProps => {
-          return <DueDate {...cellProps} />
-        },
-      },
-      {
-        Header: "Total",
-        accessor: "total",
+        Header: "Amount",
+        accessor: "amount",
         filterable: true,
         Cell: cellProps => {
           return <Total {...cellProps} />
@@ -329,15 +350,6 @@ function Invoice() {
         filterable: true,
         Cell: cellProps => {
           return <InvoiceStatus {...cellProps} />
-        },
-      },
-      {
-        Header: "PDF",
-        accessor: "lastname",
-        filterable: false,
-        disableSortBy: true,
-        Cell: cellProps => {
-          return <PDF {...cellProps} />
         },
       },
     ],
@@ -462,7 +474,7 @@ function Invoice() {
                     data-toggle="dropdown"
                     onClick={() => setPaymentTypeFilter(!paymentTypeFilter)}
                   >
-                    <span className="firstLettercapital">{selectedPaymentType === "self-transfer"? "Self Transfer" : selectedPaymentType}</span>
+                    <span className="firstLettercapital">{selectedPaymentType === "self-transfer" ? "Self Transfer" : selectedPaymentType}</span>
                     <span className="caret" />
                   </button>
                   <DropdownMenu className="outerdiv">
@@ -540,7 +552,7 @@ function Invoice() {
                   hasMorePages={hasMorePages}
                   totalPages={totalPages}
                   currentPage={currentPage}
-                  handleCustomerClicks={handleCustomerClicks}
+                  // handleCustomerClicks={handleCustomerClicks}
                   setPage={setPage}
                   setPageination={setPageination}
                   getTablePropsC={() => ({

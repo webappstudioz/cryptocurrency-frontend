@@ -1,20 +1,22 @@
 import React from "react"
-import { Link } from "react-router-dom"
+// import { Link } from "react-router-dom"
 import { downloadInvoice } from "../Authentication/store/apiServices"
 import pdfdown from "../../assets/images/pdfdown.png"
 import pdfnew from "../../assets/images/pdfnew.png"
 import { toast } from "react-toastify"
-import { loginData } from "../Authentication/store/apiServices"
+// import { loginData } from "../Authentication/store/apiServices"
 import { FormatDate } from "../../helpers/api_helper_rs"
+
 const Total = cell => {
-  let info = loginData()
-  let currency = info?.currency
+  // let info = loginData()
+  // let currency = info?.currency
   return (
     <div className="d-flex align-items-center country">
-      {currency.prefix +
+      {/* {currency.prefix +
         cell.row.original.total +
         " " +
-        currency.suffix}
+        currency.suffix} */}
+        {cell.row.original.amount}
     </div>
   )
 }
@@ -30,15 +32,31 @@ const Number = cell => {
   return (
     <div className="d-flex align-items-center country">
       {/* <Link to={`/invoice-detail/${cell.row.original.viewid}`}> */}
-        #{cell.row.original.id}
+        {cell.row.original.serialNumber}
       {/* </Link> */}
     </div>
   )
 }
 
 const CurDate = cell => {
-  let formatedDate = FormatDate(cell?.row?.original?.date)
+  let formatedDate = FormatDate(cell?.row?.original?.created_at)
   return formatedDate
+}
+
+const SendTo = cell => {
+  return (
+    <div className="d-flex align-items-center firstLettercapital">
+        {cell.row.original.send_to}
+    </div>
+  )
+}
+
+const PaymentType = cell => {
+  return (
+    <div className="d-flex align-items-center firstLettercapital">
+        {cell.row.original.payment_type}
+    </div>
+  )
 }
 
 const DueDate = cell => {
@@ -51,15 +69,16 @@ const InvoiceStatus = cell => {
     <div className="status-icon-container">
       <div
         className={
-          cell?.row?.original?.status == "Paid"
+          `firstLettercapital
+          ${cell?.row?.original?.status == "paid"
             ? "tableStatus-Active"
             : cell?.row?.original?.status == "Unpaid"
             ? "tableStatus-Cancelled"
-            : cell?.row?.original?.status == "Cancelled"
+            : cell?.row?.original?.status == "pending"
             ? "tableStatus-Pending"
             : cell?.row?.original?.status == "Refunded"
             ? "tableStatus-Suspended"
-            : ""
+            : ""}`
         }
       >
         {cell?.row?.original?.status}
@@ -91,4 +110,4 @@ const PDF = cell => {
   )
 }
 
-export { CurDate, DueDate, Total, Number, InvoiceStatus, PDF, Checks }
+export { CurDate, DueDate, Total, Number, InvoiceStatus, PDF, Checks, SendTo, PaymentType }
