@@ -69,6 +69,8 @@ import UpdateProfile from "../pages/Authentication/UpdateProfile"
 import MyTeam from "../pages/User/MyTeam/MyTeam"
 import AdminUpdateProfile from "../pages/Admin/AdminUpdateProfile"
 import SingleUserDetail from "../pages/Authentication/SingleUserDetail"
+import { components } from "react-select/dist/react-select.cjs.prod"
+import SelfTransfer from "../pages/Accounts/SelfTransfer"
 
 const authRoutes = [
   { path: "/login", component: Login },
@@ -100,7 +102,7 @@ const userRoutes = [
   { path: "/logout", component: Logout },
   { path: "/my-profile", component: MyAccount },
   { path: "/invoice", component: Invoice },
-
+  { path: "/self-transfer", component: SelfTransfer},
 
   { path: "/services", component: ServiceList },
   { path: "/server-management/:id", component: ServerManagement },

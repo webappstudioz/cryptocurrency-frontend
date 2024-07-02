@@ -153,7 +153,7 @@ const UserDetail = () => {
                                                         <th>Account Status</th>
                                                         <React.Fragment>
                                                             <td className="text-right">
-
+                                                                {userInfo?.status === 1? "Active" : userInfo?.status === 0? "In-active" : "-"}
                                                             </td>
                                                         </React.Fragment>
                                                         <><td></td><td></td><td></td></>

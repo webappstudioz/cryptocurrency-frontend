@@ -43,10 +43,17 @@ const MyTeam = () => {
         handleAllUsersList(level)
     }
 
-    const handleAllUsersList = async (level) => {
+    const handleAllUsersList = async (level, data) => {
         setLoader(true)
         try {
-            const result = await getTeamList(level)
+            let result = ""
+            if(data){
+                result = await getTeamList(level, data)
+
+            }else {
+                result = await getTeamList(level)
+            }
+            
             let info = result?.data?.data
             let users = info?.data.map((user, index) => {
                 return {
@@ -60,7 +67,7 @@ const MyTeam = () => {
             setLoader(false)
             setCurrentPage(info?.current_page)
             setHasMorePages(info?.has_more_pages)
-            setTotalPages(info?.total_pages)
+            setTotalPages(info?.last_page)
             setTotalUsers(info?.total_record)
         } catch (error) {
             setLoader(false)
@@ -169,19 +176,20 @@ const MyTeam = () => {
                 //     pagination: pageSize,
                 // }
 
-                let param = new URLSearchParams({
+                let data = new URLSearchParams({
                     page: page,
                     pagination: pageSize,
-                    Search_keyword: search,
-                    Status: selectedUserStatus,
+                    search_keyword: search,
+                    status: selectedUserStatus,
                     from: from,
                     to: to,
                 })
-                console.log("param", param)
+                console.log("data", data)
                 // setSpinner(true)
                 setLoader(true)
                 // setLoading(true)
-                let res = await getTeamList(activeLevel, param)
+                // let res = await getTeamList(activeLevel, data)
+                handleAllUsersList(activeLevel, data)
                 if (res) {
                     setLoader(false)
                     // setLoading(true)
@@ -219,10 +227,12 @@ const MyTeam = () => {
     const handlePagination = async action => {
         setLoader(true)
         try {
-            let data = {
+            let data = new URLSearchParams({
                 page: page,
                 pagination: pageSize,
-            }
+            })
+            handleAllUsersList(activeLevel, data)
+            return
             let result = await getTeamList(activeLevel, data)
             let info = result?.data?.data
             let users = info?.data.map((user, index) => {

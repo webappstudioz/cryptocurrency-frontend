@@ -139,6 +139,12 @@ const SidebarContent = props => {
               </Link>
             </li>
             <li>
+              <Link to="/self-transfer" className="waves-effect">
+                <img src={server} alt="" />
+                <span>Self Transfer</span>
+              </Link>
+            </li>
+            <li>
               <Link to="/invoice" className="waves-effect">
                 <img src={invoice} alt="" />
                 <span>Invoices</span>

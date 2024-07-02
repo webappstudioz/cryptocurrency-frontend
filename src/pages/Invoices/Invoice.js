@@ -54,13 +54,13 @@ function Invoice() {
 
   // for api integration
   // const [selectedDate, setselectedDate] = useState(0)
-  const [selectedPaymentType, setSelectedPaymentType] = useState("All")
+  const [selectedPaymentType, setSelectedPaymentType] = useState("all")
 
   const [statusFilterOpen, setstatusFilterOpen] = useState(false)
   const [checkboxValues, setCheckboxValues] = useState({
-    Paid: false,
-    Cancelled: false,
-    Pending: false,
+    paid: false,
+    cancelled: false,
+    pending: false,
   })
   const [filterArray, setFilterArray] = useState({
     status: [],
@@ -110,7 +110,7 @@ function Invoice() {
         // setCurrentPage(info?.current_page)
         setCurrentPage(info?.current_page)
         setHasMorePages(info?.has_more_pages)
-        setTotalPages(info?.total_pages)
+        setTotalPages(info?.last_page)
         setTotalInvoices(info?.total_record)
         setInvoice(invoices)
         // setdefaultinvoicelist(
@@ -222,9 +222,9 @@ function Invoice() {
   const clearfilter = () => {
     setstatusFilterOpen(false)
     setCheckboxValues({
-      Paid: false,
-      Cancelled: false,
-      Pending: false,
+      paid: false,
+      cancelled: false,
+      pending: false,
     })
     getInvoiceList()
   }
@@ -394,12 +394,12 @@ function Invoice() {
                         <input
                           className="form-check-input"
                           type="checkbox"
-                          id="Paid"
+                          id="paid"
                           onClick={handleCheckboxChange}
                           onChange={() => { }}
-                          checked={checkboxValues["Paid"]}
+                          checked={checkboxValues["paid"]}
                         />
-                        <label className="form-check-label" htmlFor="Paid">
+                        <label className="form-check-label" htmlFor="paid">
                           Paid
                         </label>
                       </div>
@@ -409,14 +409,14 @@ function Invoice() {
                         <input
                           className="form-check-input"
                           type="checkbox"
-                          id="Cancelled"
+                          id="cancelled"
                           onChange={() => { }}
-                          checked={checkboxValues["Cancelled"]}
+                          checked={checkboxValues["cancelled"]}
                           onClick={handleCheckboxChange}
                         />
                         <label
                           className="form-check-label"
-                          htmlFor="Cancelled"
+                          htmlFor="cancelled"
                         >
                           Cancelled
                         </label>
@@ -427,14 +427,14 @@ function Invoice() {
                         <input
                           className="form-check-input"
                           type="checkbox"
-                          id="Pending"
+                          id="pending"
                           onChange={() => { }}
-                          checked={checkboxValues["Pending"]}
+                          checked={checkboxValues["pending"]}
                           onClick={handleCheckboxChange}
                         />
                         <label
                           className="form-check-label"
-                          htmlFor="Pending"
+                          htmlFor="pending"
                         >
                           Pending
                         </label>
@@ -479,7 +479,7 @@ function Invoice() {
                   </button>
                   <DropdownMenu className="outerdiv">
                     <>
-                      <li onClick={() => paymentFilter("All")}>
+                      <li onClick={() => paymentFilter("all")}>
                         <div className="form-check custom-checkbox">
                           <label className="form-check-label" htmlFor="all">
                             All

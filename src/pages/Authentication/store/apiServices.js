@@ -406,9 +406,9 @@ export const getTeamList = async (level, data) => {
   // } 
   if (data) {
     // return await getNew(url.GET_TEAM_LIST + level + `?page=${data?.page}&pagination=${data?.pagination}`)
-    return await getNew(url.GET_TEAM_LIST + level, data)
+    return await postNew(url.GET_TEAM_LIST + level, data)
   } else {
-    return await getNew(url.GET_TEAM_LIST + level)
+    return await postNew(url.GET_TEAM_LIST + level)
   }
 }
 
