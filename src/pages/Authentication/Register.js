@@ -107,8 +107,6 @@ const Register = props => {
   //   }
   // }
 
-  console.log("countryList",countryList)
-
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,

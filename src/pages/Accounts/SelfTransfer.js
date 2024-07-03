@@ -8,14 +8,14 @@ import {
     Label,
     Input,
     Form,
-    FormFeedback
+    FormFeedback,
+    DropdownMenu, DropdownItem, Dropdown
 } from "reactstrap"
 
 // Formik Validation
 import * as Yup from "yup"
 import { useFormik } from "formik"
 import { withRouter } from "react-router-dom"
-import LogoGreen from "../../assets/images/c2c/logoGreen.jpg"
 //Import Breadcrumb
 
 import Breadcrumb from "../../components/Common/Breadcrumb"
@@ -25,54 +25,27 @@ import { customRegex } from "../../helpers/validation_helpers"
 import { toast } from "react-toastify"
 import TextLoader from "../../components/textLoader"
 import PaymentModal from "../../components/Common/PaymentModal"
-import BankLogo from "../../assets/images/c2c/banklogo.png"
-import EthereumLogo from "../../assets/images/c2c/ethereum.png"
-import BitcoinLogo from "../../assets/images/c2c/bitcoinlogo.png"
-import TetherLogo from "../../assets/images/c2c/tetherlogo.png"
-import file from "../../assets/images/file.png";
+
 import { adminAccountsDetails, handlePayents } from "../Authentication/store/apiServices"
 import { useHistory } from "react-router-dom"
-import { FocusError } from 'focus-formik-error'
-import { Dropdown } from "semantic-ui-react"
-
-const AccountOptions = [
-    { text: "C2C Wallet", value: "c2c_wallet" },
-    { text: "Fixed Wallet", value: "fixed_wallet" },
-    { text: "Monthly Return", value: "monthly_return" },
-    { text: "Comision Income", value: "comision_income" },
-]
 
 const SelfTransfer = props => {
     let navigate = useHistory()
-    const IMAGE_URL = process.env.REACT_APP_IMAGE_HOST
-    const [loader, setLoader] = useState(true)
+    const [loader, setLoader] = useState(false)
     const [custompay, setcustompay] = useState()
-    const [selectedMethod, setSelectedMethod] = useState("bank")
     const [spinner, setSpinner] = useState(false)
-    const [loading, setLoading] = useState("")
     const [openModal, setOpenModal] = useState(false)
-    const [selectedFile, setSelectedFile] = useState([]);
-    const [inputKey, setInputKey] = useState(0);
     const [errorMsg, setErrorMsg] = useState("");
-    const [adminInfo, setAdminInfo] = useState("")
+    const [sendTo, setSendTo] = useState({ name: "C2C Wallet", value: "c2c_wallet" })
+    const [sendFrom, setSendFrom] = useState({ name: "Fixed Wallet", value: "fixed_wallet" })
+    const [isSendFrom, setIsSendFrom] = useState(false)
+    const [isSendTo, setIsSendTo] = useState(false)
 
     useEffect(() => {
-        setPageTitle("Deposite Funds")
-        getAdminAccountsDetails()
+        setPageTitle("Self Transfer")
     }, [])
 
-    const getAdminAccountsDetails = async () => {
-        try {
-            let result = await adminAccountsDetails()
-            // const info = result?.data?.data
-            setAdminInfo(result?.data?.data)
-            setLoader(false)
-        } catch (error) {
-            setLoader(false)
-        }
-    }
-
-    const DepositForm = useFormik({
+    const SelfTransferForm = useFormik({
         enableReinitialize: true,
 
         initialValues: {
@@ -84,16 +57,12 @@ const SelfTransfer = props => {
             customAmount: Yup.string()
                 .required("Please enter amount.")
                 .matches(customRegex?.amount, "Please valid amount"),
-            paymentId: Yup.string()
-                .required("Please enter payment id"),
         }),
 
         onSubmit: async (values) => {
             let data = new FormData()
-            data.append('image', selectedFile);
-            data.append('payment_id', values?.paymentId);
-            data.append('payment_type', "deposit");
-            data.append('method_type', selectedMethod);
+            data.append('send-from', sendFrom?.value);
+            data.append('send-to', sendTo?.value);
             data.append('amount', values?.customAmount);
             if (!errorMsg) {
                 setLoader(true)
@@ -111,68 +80,9 @@ const SelfTransfer = props => {
                     setLoader(false)
                 }
             }
-            // return
-            // let amount = ""
-            // values?.customAmount ? amount = values?.customAmount : amount = selectedAmount
-            // if (selectedMethod == "stripe" && amount) {
-            //   if (values?.customAmount) {
-            //     setstripecondition(true)
-            //     setSpinner(true)
-            //     setLoading(true)
-            //     setOpenModal(true)
-            //   } else if (selectedAmount != "custom") {
-            //     setstripecondition(true)
-            //     setSpinner(true)
-            //     setLoading(true)
-            //     setOpenModal(true)
-            //   }
-            // } else {
-            //   if (values?.customAmount) {
-            //     HandleAddWalletAmount(values?.customAmount)
-            //   } else if (selectedAmount != "custom") {
-            //     HandleAddWalletAmount(selectedAmount)
-            //   }
-            // }
 
-            // if (!values?.customAmount && selectedAmount === "custom") {
-            //   toast.error("Please select or enter an amount to wallet", {
-            //     position: toast.POSITION.TOP_RIGHT,
-            //   })
-            // }
         },
     })
-
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const fileSize = file.size / 1024 / 1024; // in MB
-            const fileType = file.type.split("/")[1]; // get file extension
-
-            // Validate file size (10MB max)
-            if (fileSize > 20) {
-                setErrorMsg("File size should be less than 20 MB");
-            } else {
-                // Validate file extension
-                if (
-                    fileType === "jpg" ||
-                    fileType === "jpeg" ||
-                    fileType === "png" ||
-                    fileType === "pdf" ||
-                    fileType === "doc"
-                    // fileType === "xls" ||
-                    // fileType === "zip"
-                ) {
-                    // setSelectedFile([...selectedFile, file]);
-                    setSelectedFile(file)
-                    setErrorMsg("");
-                } else {
-                    setErrorMsg(
-                        "Only JPG, PNG, PDF, and DOC files are allowed"
-                    );
-                }
-            }
-        }
-    };
 
     return (
         <React.Fragment>
@@ -190,7 +100,7 @@ const SelfTransfer = props => {
                         className="form-horizontal user-management"
                         onSubmit={e => {
                             e.preventDefault()
-                            DepositForm.handleSubmit(selectedFile.length === 0 && setErrorMsg("Payment's Screen shot is required1"))
+                            SelfTransferForm.handleSubmit()
                             return false
                         }}
                     >
@@ -199,61 +109,144 @@ const SelfTransfer = props => {
                                 <Row>
                                     <Col lg="6">
                                         <Label>Send From</Label>
-                                        {/* {selectedCountry && ( */}
                                         <Dropdown
-                                            placeholder="Select Country"
-                                            fluid
-                                            search
-                                            className="country-Drop input-outline"
-                                            // value={selectedCountry}
-                                            // onChange={handleCountryChange}
-                                            options={AccountOptions}
-                                        />
-                                        {/* )} */}
-                                        {/* {countryError && ( */}
-                                        <div style={{ display: "flex" }}>
-                                            <img
-                                                className="form-error-icon"
-                                                src={rederror}
-                                                alt=""
-                                                height={15}
-                                            />
-                                            <span style={{ color: "red", marginLeft: "3px" }}>
-                                                Country required
-                                            </span>
-                                        </div>
-                                        {/* )} */}
+                                            isOpen={isSendFrom}
+                                            toggle={() => setIsSendFrom(!isSendFrom)}
+                                        >
+                                            <button
+                                                className="btn btn-primary dropdown-toggle"
+                                                type="button"
+                                                data-toggle="dropdown"
+                                                onClick={() => setIsSendFrom(!isSendFrom)}
+                                            >
+                                                <span className="firstLettercapital">{sendFrom?.name}</span>
+                                                <span className="caret" />
+                                            </button>
+                                            <DropdownMenu className="outerdiv">
+                                                <>
+                                                    {sendTo?.value !== "c2c_wallet" && <>
+                                                        <li disabled onClick={() => setSendFrom({ name: "C2C Wallet", value: "c2c_wallet" })}>
+                                                            <div className="form-check custom-checkbox">
+                                                                <label className="form-check-label" htmlFor="c2c_wallet">
+                                                                    C2C Wallet
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                        <DropdownItem divider />
+                                                    </>}
+                                                    {sendTo?.value !== "fixed_wallet" && <>
+                                                        <li onClick={() => setSendFrom({ name: "Fixed Wallet", value: "fixed_wallet" })}>
+                                                            <div className="form-check custom-checkbox">
+                                                                <label
+                                                                    className="form-check-label"
+                                                                    htmlFor="fixed_wallet"
+                                                                >
+                                                                    Fixed Wallet
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                        <DropdownItem divider />
+                                                    </>}
+                                                    {sendTo?.value !== "monthly_return" && <>
+                                                        <li onClick={() => setSendFrom({ name: "Monthly Return", value: "monthly_return" })}>
+                                                            <div className="form-check custom-checkbox">
+                                                                <label
+                                                                    className="form-check-label"
+                                                                    htmlFor="monthly_return"
+                                                                >
+                                                                    Monthly Return
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                        <DropdownItem divider />
+                                                    </>}
+                                                    {sendTo?.value !== "comision_income" && <>
+                                                        <li onClick={() => setSendFrom({ name: "Comision Income", value: "comision_income" })}>
+                                                            <div className="form-check custom-checkbox">
+                                                                <label
+                                                                    className="form-check-label"
+                                                                    htmlFor="comision_income"
+                                                                >
+                                                                    Comision Income
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                        <DropdownItem divider />
+                                                    </>}
+                                                </>
+                                            </DropdownMenu>
+                                        </Dropdown>
                                     </Col>
                                     <Col lg="6">
                                         <Label>Send To</Label>
                                         <Dropdown
-                                            placeholder="Select Country"
-                                            fluid
-                                            search
-                                            className="country-Drop input-outline"
-                                            options={AccountOptions}
-
-                                        // value={selectedCountry}
-                                        // onChange={handleCountryChange}
-                                        // options={countryList}
-                                        />
-                                        {/* )} */}
-                                        {/* {countryError && ( */}
-                                        <div style={{ display: "flex" }}>
-                                            <img
-                                                className="form-error-icon"
-                                                src={rederror}
-                                                alt=""
-                                                height={15}
-                                            />
-                                            <span style={{ color: "red", marginLeft: "3px" }}>
-                                                Country required
-                                            </span>
-                                        </div>
-                                        {/* )} */}
+                                            isOpen={isSendTo}
+                                            toggle={() => setIsSendTo(!isSendTo)}
+                                        >
+                                            <button
+                                                className="btn btn-primary dropdown-toggle"
+                                                type="button"
+                                                data-toggle="dropdown"
+                                                onClick={() => setIsSendTo(!isSendTo)}
+                                            >
+                                                <span className="firstLettercapital">{sendTo?.name}</span>
+                                                <span className="caret" />
+                                            </button>
+                                            <DropdownMenu className="outerdiv">
+                                                <>
+                                                    {sendFrom?.value !== "c2c_wallet" && <>
+                                                        <li onClick={() => setSendTo({ name: "C2C Wallet", value: "c2c_wallet" })}>
+                                                            <div className="form-check custom-checkbox">
+                                                                <label className="form-check-label" htmlFor="c2c_wallet">
+                                                                    C2C Wallet
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                        <DropdownItem divider />
+                                                    </>}
+                                                    {sendFrom?.value !== "fixed_wallet" && <>
+                                                        <li onClick={() => setSendTo({ name: "Fixed Wallet", value: "fixed_wallet" })}>
+                                                            <div className="form-check custom-checkbox">
+                                                                <label className="form-check-label"
+                                                                    htmlFor="fixed_wallet"
+                                                                >
+                                                                    Fixed Wallet
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                        <DropdownItem divider />
+                                                    </>}
+                                                    {sendFrom?.value !== "monthly_return" && <>
+                                                        <li onClick={() => setSendTo({ name: "Monthly Return", value: "monthly_return" })}>
+                                                            <div className="form-check custom-checkbox">
+                                                                <label
+                                                                    className="form-check-label"
+                                                                    htmlFor="monthly_return"
+                                                                >
+                                                                    Monthly Return
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                        <DropdownItem divider />
+                                                    </>}
+                                                    {sendFrom?.value !== "comision_income" && <>
+                                                        <li onClick={() => setSendTo({ name: "Comision Income", value: "comision_income" })}>
+                                                            <div className="form-check custom-checkbox">
+                                                                <label
+                                                                    className="form-check-label"
+                                                                    htmlFor="comision_income"
+                                                                >
+                                                                    Comision Income
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                        <DropdownItem divider />
+                                                    </>}
+                                                </>
+                                            </DropdownMenu>
+                                        </Dropdown>
                                     </Col>
-                                    {/* </Row>
-                                <Row> */}
+
                                     <Col lg="6">
                                         <Label>Amount</Label>
                                         <div className="test form-check form-check-inline mt-20 ">
@@ -261,21 +254,21 @@ const SelfTransfer = props => {
                                             <div className="inner-input-box">
                                                 <Input
                                                     className="chose-payment"
-                                                    value={DepositForm.values.customAmount || ""}
+                                                    value={SelfTransferForm.values.customAmount || ""}
                                                     placeholder="5000"
                                                     max="5000"
                                                     min="50"
                                                     onChange={e => {
-                                                        DepositForm.handleChange(e)
+                                                        SelfTransferForm.handleChange(e)
                                                         setcustompay(e.target.value)
                                                     }}
                                                     onBlur={(e) => {
-                                                        DepositForm.handleBlur,
-                                                            custompay > 5000 ? DepositForm.values.customAmount = 5000 : custompay < 50 ? DepositForm.values.customAmount = 50 : null
+                                                        SelfTransferForm.handleBlur,
+                                                            custompay > 5000 ? SelfTransferForm.values.customAmount = 5000 : custompay < 50 ? SelfTransferForm.values.customAmount = 50 : null
                                                     }}
                                                     invalid={
-                                                        DepositForm.touched.customAmount &&
-                                                            DepositForm.errors.customAmount
+                                                        SelfTransferForm.touched.customAmount &&
+                                                            SelfTransferForm.errors.customAmount
                                                             ? true
                                                             : false
                                                     }
@@ -285,8 +278,8 @@ const SelfTransfer = props => {
                                                     disabled={spinner}
                                                 />
 
-                                                {DepositForm.touched.customAmount &&
-                                                    DepositForm.errors.customAmount ? (
+                                                {SelfTransferForm.touched.customAmount &&
+                                                    SelfTransferForm.errors.customAmount ? (
                                                     <>
                                                         <FormFeedback type="invalid">
                                                             <img
@@ -295,7 +288,7 @@ const SelfTransfer = props => {
                                                                 alt=""
                                                                 height={15}
                                                             />
-                                                            {DepositForm.errors.customAmount}
+                                                            {SelfTransferForm.errors.customAmount}
                                                         </FormFeedback>
                                                     </>
                                                 ) : null}
@@ -324,8 +317,8 @@ const SelfTransfer = props => {
                     </Form>
                 </Container>
             </div >
-            <TextLoader loading={loading} loader={loader} />
-            <PaymentModal openModal={openModal} message={"Payment"} />
+            {/* <TextLoader loading={loading} loader={loader} /> */}
+            < PaymentModal openModal={openModal} message={"Payment"} />
         </React.Fragment >
     )
 }
