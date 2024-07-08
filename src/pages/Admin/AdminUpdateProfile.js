@@ -498,7 +498,7 @@ const AdminUpdateProfile = props => {
                     ) : null}
                   </Col> */}
                   <Col lg="6">
-                    <div className="form-group">
+                    <div className="form-group mt-3 edit-pro-phone">
                       <Input
                         type="tel"
                         id="phone"
@@ -758,29 +758,32 @@ const AdminUpdateProfile = props => {
                     ) : null}
                   </Col>
                   <Col lg="6">
-                    <input
-                      // disabled={spinner}
-                      // key={inputKey}
-                      id="file-upload"
-                      type="file"
-                      // accept=".jpg,.jpeg,.png,.pdf,.doc,.xls,.zip"
-                      accept=".jpg,.jpeg,.png"
-                      onChange={(e) => { handleFileChange(e, "cryptoQR") }}
-                      onClick={(event) => {
-                        if (
-                          event.target.files.length === 1 &&
-                          event.target.files[0].name ===
-                          cryptoQR?.name
-                        ) {
-                          event.target.value = null;
-                        }
-                      }}
-                    // multiple
-                    />
-                    <span className="file-formats">
-                      Please select files to attach (20 MB max, .jpg, .jpeg,
-                      .png,)
-                    </span>
+                    <div className="edit-pro-upload">
+                        <input
+                          // disabled={spinner}
+                          // key={inputKey}
+                          id="file-upload"
+                          className="mt-3 form-control"
+                          type="file"
+                          // accept=".jpg,.jpeg,.png,.pdf,.doc,.xls,.zip"
+                          accept=".jpg,.jpeg,.png"
+                          onChange={(e) => { handleFileChange(e, "cryptoQR") }}
+                          onClick={(event) => {
+                            if (
+                              event.target.files.length === 1 &&
+                              event.target.files[0].name ===
+                              cryptoQR?.name
+                            ) {
+                              event.target.value = null;
+                            }
+                          }}
+                        // multiple
+                        />
+                        <span className="file-formats">
+                          Please select files to attach (20 MB max, .jpg, .jpeg,
+                          .png,)
+                        </span>
+                    </div>
                     {cryptoQRError && (
                       <span className="ticket-validaton-error">
                         {" "}
@@ -954,29 +957,32 @@ const AdminUpdateProfile = props => {
                     ) : null}
                   </Col>
                   <Col lg="6">
-                    <input
-                      // disabled={spinner}
-                      // key={inputKey}
-                      id="file-upload"
-                      type="file"
-                      // accept=".jpg,.jpeg,.png,.pdf,.doc,.xls,.zip"
-                      accept=".jpg,.jpeg,.png"
-                      onChange={(e) => { handleFileChange(e, "bankQR") }}
-                      onClick={(event) => {
-                        if (
-                          event.target.files.length === 1 &&
-                          event.target.files[0].name ===
-                          bankQR?.name
-                        ) {
-                          event.target.value = null;
-                        }
-                      }}
-                    // multiple
-                    />
-                    <span className="file-formats">
-                      Please select files to attach (20 MB max, .jpg, .jpeg,
-                      .png,)
-                    </span>
+                    <div className="edit-pro-upload">
+                        <input
+                          // disabled={spinner}
+                          // key={inputKey}
+                          id="file-upload"
+                          className="mt-3 form-control"
+                          type="file"
+                          // accept=".jpg,.jpeg,.png,.pdf,.doc,.xls,.zip"
+                          accept=".jpg,.jpeg,.png"
+                          onChange={(e) => { handleFileChange(e, "bankQR") }}
+                          onClick={(event) => {
+                            if (
+                              event.target.files.length === 1 &&
+                              event.target.files[0].name ===
+                              bankQR?.name
+                            ) {
+                              event.target.value = null;
+                            }
+                          }}
+                        // multiple
+                        />
+                        <span className="file-formats">
+                          Please select files to attach (20 MB max, .jpg, .jpeg,
+                          .png,)
+                        </span>
+                    </div>
                     {bankQRError && (
                       <span className="ticket-validaton-error">
                         {" "}

@@ -466,30 +466,29 @@ const DepositFunds = props => {
                 <Card className="m-0  ">
                   <CardBody>
                     <div className="inner-content invite-user rd-group">
-                      <div className="radio-btn amount">
+                      <div className="radio-btn amount imp-how-text">
                         <h6 className="font16  font-semibold">
                           Important to know
                         </h6>
-                        <div>
+                        <div className="imp-how-para">
                           <span>The minimum deposit amount is 50t. All deposit below the limit will be lost.</span>
-                        </div>
-                        <div>
                           <span>Carefully check the address. The transaction will be lost if the address is incorrect.</span>
                         </div>
+                       
                         <h6 className="font16  font-semibold">
                           How it works
                         </h6>
-                        <div>
+                        <div className="imp-how-para">
                           <span>Copy the address, then go to your crypto waller application, paste the address, specify the deposit amount, and complete the transfer</span>
-                        </div>
-                        <div>
                           <span>Carefully check the address. The transaction will be lost if the address is incorrect.</span>
                         </div>
+                        
                         <Row>
                           <Col>
-                            <div className="test form-check form-check-inline mt-20 ">
+                            <div className="form-check-inline mt-20 w-100">
                               {/* <span className="prefix">{currency?.prefix}$</span> */}
-                              <div className="inner-input-box">
+                              <div className="inner-input-box withdraw-amt-box">
+                                <label>Amount <span className="billing-max-amt"> *Maximum amount: 5000</span></label>
                                 <Input
                                   className="chose-payment"
                                   value={DepositForm.values.customAmount || ""}
@@ -532,7 +531,7 @@ const DepositFunds = props => {
                                 ) : null}
                               </div>
                             </div>
-                            <span className="billing-max-amt">*Maximum amount: 5000</span>
+                            
 
                           </Col>
                         </Row>
@@ -540,15 +539,15 @@ const DepositFunds = props => {
                     </div>
                   </CardBody>
                 </Card>
-                <Card className="m-0">
+                <Card className="m-0 mt-3">
                   <CardBody>
                     <Row>
                       <Col>
-                        <div className="inner-content invite-user rd-group">
+                        <div className="inner-content invite-user rd-group  upload-ss-box">
                           <h6 className="font16  font-semibold">
                             Complete Your Payment
                           </h6>
-                          <div className="col-lg-6 form-group mb-4">
+                          <div className="col-lg-6 form-group mb-4 upload-from-main">
                             <p className="place-holder">Upload Screen Short</p>
                             <label
                               htmlFor="file-upload"
@@ -593,7 +592,7 @@ const DepositFunds = props => {
                               .png,)
                             </span>
                           </div>
-                          <div className="col-lg-6 form-group">
+                          <div className="col-lg-6 form-group payment-id-box" >
                             <p className="place-holder">Payment id</p>
                             <Input
                               type="text"

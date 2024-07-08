@@ -777,40 +777,42 @@ function UsersList() {
                       dateFormat={"yyyy/MM/dd"}
                     />
                   </span>
-                  <button
-                    // title={
-                    //   comparefromDate >= comparetoDate
-                    //     ? "To date must be greater than Start date"
-                    //     : ""
-                    // }
-                    onClick={() => handleFilterUsers()}
-                    className="filter usage-filter"
-                    disabled={spinner}
-                  // style={{
-                  //   cursor:
-                  //     (comparefromDate >= comparetoDate || spinner) ? "not-allowed" : "pointer",
-                  // }}
-                  >
-                    {/* {spinner ? <div className="ui active inline loader"></div> : "Filter"} */}
-                    Filter
-                  </button>
-                  <button
-                    // title={
-                    //   comparefromDate >= comparetoDate
-                    //     ? "To date must be greater than Start date"
-                    //     : ""
-                    // }
-                    onClick={() => handleClearFilters()}
-                    className="filter usage-filter"
-                    disabled={spinner}
-                  // style={{
-                  //   cursor:
-                  //     (comparefromDate >= comparetoDate || spinner) ? "not-allowed" : "pointer",
-                  // }}
-                  >
-                    {/* {spinner ? <div className="ui active inline loader"></div> : "Filter"} */}
-                    Clear
-                  </button>
+                  <div className="filter-clear-btns">
+                    <button
+                      // title={
+                      //   comparefromDate >= comparetoDate
+                      //     ? "To date must be greater than Start date"
+                      //     : ""
+                      // }
+                      onClick={() => handleFilterUsers()}
+                      className=" btn btn-primary filter usage-filter"
+                      disabled={spinner}
+                    // style={{
+                    //   cursor:
+                    //     (comparefromDate >= comparetoDate || spinner) ? "not-allowed" : "pointer",
+                    // }}
+                    >
+                      {/* {spinner ? <div className="ui active inline loader"></div> : "Filter"} */}
+                      Filter
+                    </button>
+                    <button
+                      // title={
+                      //   comparefromDate >= comparetoDate
+                      //     ? "To date must be greater than Start date"
+                      //     : ""
+                      // }
+                      onClick={() => handleClearFilters()}
+                      className="btn btn-primary filter usage-filter"
+                      disabled={spinner}
+                    // style={{
+                    //   cursor:
+                    //     (comparefromDate >= comparetoDate || spinner) ? "not-allowed" : "pointer",
+                    // }}
+                    >
+                      {/* {spinner ? <div className="ui active inline loader"></div> : "Filter"} */}
+                      Clear
+                    </button>
+                  </div>
                 </div>
                 {/* <Dropdown
                     isOpen={dateFilterOpen}
@@ -899,7 +901,7 @@ function UsersList() {
             <Col xs="12">
               <div className="table_v1 invoice-listing">
                 <TableContainer
-                  tableClassName="product-table table-shadow"
+                  tableClassName="product-table table-shadow admin-user-list-table"
                   columns={columns}
                   data={allUsers == undefined ? [] : allUsers}
                   isGlobalFilter={true}

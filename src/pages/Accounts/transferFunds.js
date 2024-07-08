@@ -225,10 +225,11 @@ const TransferFunds = props => {
               </Row>
               <br /> */}
               <Row>
-                <Col>
-                  <div className="test form-check form-check-inline mt-20 ">
+                <Col lg="6">
+                  <div className=" form-check-inline mt-20 w-100">
                     {/* <span className="prefix">{currency?.prefix}$</span> */}
-                    <div className="inner-input-box">
+                    <div className="inner-input-box transfer-amt-box">
+                      <label>Amount <span className="billing-max-amt">*Maximum amount: 5000</span></label>
                       <Input
                         className="chose-payment"
                         value={transferForm.values.customAmount || ""}
@@ -271,7 +272,7 @@ const TransferFunds = props => {
                       ) : null}
                     </div>
                   </div>
-                  <span className="billing-max-amt">*Maximum amount: 5000</span>
+                  
 
                 </Col>
               </Row>

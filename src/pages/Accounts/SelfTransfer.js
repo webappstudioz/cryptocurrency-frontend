@@ -106,8 +106,8 @@ const SelfTransfer = props => {
                     >
                         <Card>
                             <CardBody>  
-                                <Row >
-                                    <Col lg="4">
+                                <Row className="self-tran-form">
+                                    <Col lg="6">
                                         <Label>Send From</Label>
                                         <Dropdown
                                             isOpen={isSendFrom}
@@ -177,7 +177,7 @@ const SelfTransfer = props => {
                                             </DropdownMenu>
                                         </Dropdown>
                                     </Col>
-                                    <Col lg="4">
+                                    <Col lg="6">
                                         <Label>Send To</Label>
                                         <Dropdown
                                             isOpen={isSendTo}
@@ -246,8 +246,8 @@ const SelfTransfer = props => {
                                             </DropdownMenu>
                                         </Dropdown>
                                     </Col>
-                                    <Col lg="4">
-                                        <Label>Send To</Label>
+                                    <Col lg="6">
+                                        <Label>Option</Label>
                                         <Dropdown
                                             isOpen={isSendTo}
                                             toggle={() => setIsSendTo(!isSendTo)}
@@ -266,8 +266,8 @@ const SelfTransfer = props => {
                                                     {sendFrom?.value !== "c2c_wallet" && <>
                                                         <li onClick={() => setSendTo({ name: "C2C Wallet", value: "c2c_wallet" })}>
                                                             <div className="form-check custom-checkbox">
-                                                                <label className="form-check-label" htmlFor="c2c_wallet">
-                                                                    C2C Wallet
+                                                                <label className="form-check-label" htmlFor="option">
+                                                                    Mutual Fund
                                                                 </label>
                                                             </div>
                                                         </li>
@@ -364,24 +364,27 @@ const SelfTransfer = props => {
                                         </div>
                                         <span className="billing-max-amt">*Maximum amount: 5000</span>
                                     </Col>
+                                    <Col lg="12" >
+                                        <div className="btn-group mt-30">
+                                            {/* <button
+                                                className="btn btn-primary w-100 waves-effect waves-light btn-cancel m-0"
+                                                type="button"
+                                                onClick={() => { validation.resetForm({ values: "" }), navigate.push("/my-profile") }}
+                                            >
+                                                Cancel
+                                            </button> */}
+                                            <button
+                                                className="btn btn-primary w-100 waves-effect waves-light btn-save m-0"
+                                                type="submit"
+                                            >
+                                                Transfer
+                                            </button>
+                                        </div>    
+                                    </Col>
                                 </Row>
                             </CardBody>
                         </Card>
-                        <div className="btn-group mt-30">
-                            {/* <button
-                                className="btn btn-primary w-100 waves-effect waves-light btn-cancel m-0"
-                                type="button"
-                                onClick={() => { validation.resetForm({ values: "" }), navigate.push("/my-profile") }}
-                            >
-                                Cancel
-                            </button> */}
-                            <button
-                                className="btn btn-primary w-100 waves-effect waves-light btn-save m-0"
-                                type="submit"
-                            >
-                                Transfer
-                            </button>
-                        </div>
+                        
                     </Form>
                 </Container>
             </div >

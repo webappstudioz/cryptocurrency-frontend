@@ -401,30 +401,32 @@ const MyTeam = () => {
                                             dateFormat={"yyyy/MM/dd"}
                                         />
                                     </span>
-                                    <button
-                                        // title={
-                                        //   comparefromDate >= comparetoDate
-                                        //     ? "To date must be greater than Start date"
-                                        //     : ""
-                                        // }
-                                        onClick={() => handleFilterUsers()}
-                                        className="filter usage-filter"
-                                        disabled={spinner}
-                                    // style={{
-                                    //   cursor:
-                                    //     (comparefromDate >= comparetoDate || spinner) ? "not-allowed" : "pointer",
-                                    // }}
-                                    >
-                                        {/* {spinner ? <div className="ui active inline loader"></div> : "Filter"} */}
-                                        Filter
-                                    </button>
-                                    <button
-                                        onClick={() => handleClearFilters()}
-                                        className="filter usage-filter"
-                                        disabled={spinner}
-                                    >
-                                        Clear
-                                    </button>
+                                    <div className="filter-clear-btns">
+                                        <button
+                                            // title={
+                                            //   comparefromDate >= comparetoDate
+                                            //     ? "To date must be greater than Start date"
+                                            //     : ""
+                                            // }
+                                            onClick={() => handleFilterUsers()}
+                                            className="btn btn-primary filter usage-filter"
+                                            disabled={spinner}
+                                        // style={{
+                                        //   cursor:
+                                        //     (comparefromDate >= comparetoDate || spinner) ? "not-allowed" : "pointer",
+                                        // }}
+                                        >
+                                            {/* {spinner ? <div className="ui active inline loader"></div> : "Filter"} */}
+                                            Filter
+                                        </button>
+                                        <button
+                                            onClick={() => handleClearFilters()}
+                                            className="btn btn-primary filter usage-filter"
+                                            disabled={spinner}
+                                        >
+                                            Clear
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

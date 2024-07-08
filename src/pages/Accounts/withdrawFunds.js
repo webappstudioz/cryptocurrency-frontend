@@ -448,33 +448,30 @@ const WihtdrawFunds = props => {
                   </div>
                 </div>
 
-                <Card className="m-0  ">
+                <Card className="m-0  mt-3">
                   <CardBody>
                     <div className="inner-content invite-user rd-group">
-                      <div className="radio-btn amount">
+                      <div className="radio-btn amount imp-how-text">
                         <h6 className="font16  font-semibold">
                           Important to know
                         </h6>
-                        <div>
+                        <div className="imp-how-para">
                           <span>The minimum deposit amount is 50t. All deposit below the limit will be lost.</span>
-                        </div>
-                        <div>
                           <span>Carefully check the address. The transaction will be lost if the address is incorrect.</span>
                         </div>
                         <h6 className="font16  font-semibold">
                           How it works
                         </h6>
-                        <div>
+                        <div className="imp-how-para">
                           <span>Copy the address, then go to your crypto waller application, paste the address, specify the deposit amount, and complete the transfer</span>
-                        </div>
-                        <div>
                           <span>Carefully check the address. The transaction will be lost if the address is incorrect.</span>
                         </div>
                         <Row>
                           <Col>
-                            <div className="test form-check form-check-inline mt-20 ">
+                            <div className="form-check-inline mt-20 w-100">
                               {/* <span className="prefix">{currency?.prefix}$</span> */}
-                              <div className="inner-input-box">
+                              <div className="inner-input-box withdraw-amt-box">
+                                <label>Amount <span className="billing-max-amt"> *Maximum amount: 5000</span></label>
                                 <Input
                                   className="chose-payment"
                                   value={WithdrawForm.values.customAmount || ""}
@@ -517,7 +514,7 @@ const WihtdrawFunds = props => {
                               ) : null}
                               </div>
                             </div>
-                            <span className="billing-max-amt">*Maximum amount: 5000</span>
+                            
 
                           </Col>
                         </Row>

@@ -7335,21 +7335,167 @@ html, body{
     line-height: 1.5;
 }
 .wallet-dropdown-toggle{
-  padding: 6px 10px;
-  border-radius: 12px;
-  background-color: #285a3d;
-  border: 1px solid #285a3d;
-  padding-right: 30px;
+  color: #5c5c5c;
+  padding: 10px 20px 10px 20px;
+  width: 200px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #dfdfe5;
+  box-shadow: 0px 2px 4px rgba(200, 215, 228, 0.14);
+  border-radius: 8px;
   position: relative;
-  color: #fff;
 }
 .wallet-dropdown-toggle span.caret {
   width: 10px;
   height: 10px;
-  border-left: 1px solid #fff;
-  border-bottom: 1px solid #fff;
+  border-left: 1px solid #000;
+  border-bottom: 1px solid #000;
   transform: rotate(315deg);
   position: absolute;
-  top: 8px;
+  top: 13px;
   right: 11px;
 }
+.self-tran-form .chose-payment.form-control {
+  border: 1px solid #ddd;
+  max-width: 200px;
+  border-radius: 10px !important;
+  max-height: 40px;
+  min-width: 200px;
+  font-size: 14px;
+  margin: 10px 0 0;
+}
+.self-tran-form{
+  row-gap: 20px;
+}
+.filter-clear-btns{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.filter-clear-btns button {
+  background-color: #285a3d !important;
+  color: #fff !important;
+  text-align: center !important;
+  justify-content: center !important;
+  max-width: 200px !important;
+  width: 100% !important;
+}
+.filter-clear-btns button:last-child{
+  background-color: #ddd !important;
+  color: #000 !important;
+}
+.table_v1.invoice-listing table tr td a, .table_v1.invoice-listing table tr td div, .table_v1.invoice-listing table tr td{
+  font-size: 16px;
+}
+.form-switch .form-check-input{
+  max-width: 50px;
+  width: 100%;
+  height: 24px;
+}
+.form-switch .form-check-input:checked {
+  background-position: right 13% bottom 3px;
+  background-size: 34% 73%;
+}
+.transfer-amt-box input.form-control, .withdraw-amt-box input.form-control{
+  background: #f8f8fa;
+  border: 0;
+  font-size: 14px;
+  height: 60px;
+  border-radius: 12px;
+  min-height: 60px;
+  width: 100%;
+  margin: 0;
+  max-width: 50%;
+}
+.transfer-amt-box .billing-max-amt, .withdraw-amt-box .billing-max-amt{
+  display: inline-block !important;
+}
+.withdraw-amt-box label{
+  position: relative !important;
+  text-align: left !important;
+}
+.withdraw-amt-box .invalid-feedback{
+  display: flex !important;
+}
+.imp-how-text h6, .upload-ss-box h6 {
+  font-size: 20px;
+  line-height: 24px;
+  margin: 0 0 10px;
+}
+.imp-how-para span{
+  font-size: 14px;
+  line-height: 20px;
+}
+.imp-how-para {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+.upload-from-main > p{
+  font-weight: 500;
+  font-size: 14px;
+  color: #9f9eb2;
+  margin: 0 0 10px;
+}
+.upload-from-main > label {
+  border: 1px dashed #ced4da;
+  border-radius: 15px;
+  padding: 40px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.upload-from-main  > label input{
+  display: none;
+}
+.payment-id-box input{
+  background: #f8f8fa;
+  border: 0;
+  font-size: 14px;
+  height: 60px;
+  border-radius: 12px;
+  min-height: 60px;
+  width: 100%;
+  margin: 0;
+  max-width: 100%;
+  padding: 10px;
+}
+.payment-id-box label{
+  font-weight: 500;
+  font-size: 14px;
+  color: #9f9eb2;
+  margin: 0 0 10px;
+}
+.edit-pro-phone input{
+  width: 100%;
+}
+.edit-pro-phone .iti{
+  width: 100%;
+}
+.edit-pro-phone .iti .iti__flag-container{
+  min-height: 60px;
+  height: 100%;
+}
+.edit-pro-phone .iti .iti__flag-container .iti__selected-flag{
+  border-radius: 12px 0px 0px 12px !important;
+}
+.edit-pro-upload {
+  display: flex;
+  flex-direction: column;
+}
+.account-pages.register .right_content .ragister .form-group .iti {
+
+  width: 100%;
+}
+
+.account-pages.register .right_content .ragister .form-group .iti .iti__selected-flag{
+  border-radius: 12px 0px 0px 12px !important;
+}
+.admin-user-list-table{
+  min-width: 1150px;
+}
+
