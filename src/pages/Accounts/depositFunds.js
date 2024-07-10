@@ -33,22 +33,22 @@ import file from "../../assets/images/file.png";
 import { adminAccountsDetails, handlePayents } from "../Authentication/store/apiServices"
 import { useHistory } from "react-router-dom"
 
-const DepositFunds = props => {
+const DepositFunds = () => {
   let navigate = useHistory()
   const IMAGE_URL = process.env.REACT_APP_IMAGE_HOST
   const [loader, setLoader] = useState(true)
   const [custompay, setcustompay] = useState()
   const [selectedMethod, setSelectedMethod] = useState("bank")
-  const [spinner, setSpinner] = useState(false)
-  const [loading, setLoading] = useState("")
+  // const [spinner, setSpinner] = useState(false)
+  // const [loading, setLoading] = useState("")
   const [openModal, setOpenModal] = useState(false)
   const [selectedFile, setSelectedFile] = useState([]);
-  const [inputKey, setInputKey] = useState(0);
+  // const [inputKey, setInputKey] = useState(0);
   const [errorMsg, setErrorMsg] = useState("");
   const [adminInfo, setAdminInfo] = useState("")
 
   useEffect(() => {
-    setPageTitle("Deposite Funds")
+    setPageTitle("Deposits Funds")
     getAdminAccountsDetails()
   }, [])
 
@@ -87,10 +87,10 @@ const DepositFunds = props => {
       data.append('method_type', selectedMethod);
       data.append('amount', values?.customAmount);
       if (!errorMsg) {
-        setLoader(true)
+        setOpenModal(true)
         try {
           const result = await handlePayents(data)
-          setLoader(false)
+          setOpenModal(false)
           navigate.push("/dashboard")
           toast.success(result?.data?.message, {
 						position: toast.POSITION.TOP_RIGHT,
@@ -99,7 +99,7 @@ const DepositFunds = props => {
           toast.error(error?.response?.data?.message, {
             position: toast.POSITION.TOP_RIGHT,
           })
-          setLoader(false)
+          setOpenModal(false)
         }
       }
       // return
@@ -512,7 +512,7 @@ const DepositFunds = props => {
                                   type="number"
                                   name="customAmount"
 
-                                  disabled={spinner}
+                                  // disabled={spinner}
                                 />
 
                                 {DepositForm.touched.customAmount &&
@@ -555,8 +555,8 @@ const DepositFunds = props => {
                             >
                               <img src={file} alt="Upload file icon" />
                               <input
-                                disabled={spinner}
-                                key={inputKey}
+                                // disabled={spinner}
+                                // key={inputKey}
                                 id="file-upload"
                                 type="file"
                                 accept=".jpg,.jpeg,.png,.pdf,.doc"
@@ -634,9 +634,9 @@ const DepositFunds = props => {
                   <button
                     className="btn btn-primary w-100 waves-effect waves-light btn-save font-normal btnv1"
                     type="submit"
-                    disabled={spinner}
+                    disabled={openModal}
                   >
-                    {spinner ? <div className="ui active inline loader"></div> : "Deposit Funds"}
+                    {openModal ? <div className="ui active inline loader"></div> : "Deposit Funds"}
                   </button>
                 </div>
               </Form>
@@ -644,7 +644,7 @@ const DepositFunds = props => {
           </Row>
         </Container>
       </div>
-      <TextLoader loading={loading} loader={loader} />
+      <TextLoader loading={loader || openModal} loader={loader} />
       <PaymentModal openModal={openModal} message={"Payment"} />
     </React.Fragment>
   )

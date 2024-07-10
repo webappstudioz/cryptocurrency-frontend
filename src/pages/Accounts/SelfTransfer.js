@@ -25,17 +25,13 @@ import { customRegex } from "../../helpers/validation_helpers"
 import { toast } from "react-toastify"
 import TextLoader from "../../components/textLoader"
 import PaymentModal from "../../components/Common/PaymentModal"
-
-import { adminAccountsDetails, handlePayents } from "../Authentication/store/apiServices"
+import { handlePayents } from "../Authentication/store/apiServices"
 import { useHistory } from "react-router-dom"
 
-const SelfTransfer = props => {
+const SelfTransfer = () => {
     let navigate = useHistory()
-    const [loader, setLoader] = useState(false)
     const [custompay, setcustompay] = useState()
-    const [spinner, setSpinner] = useState(false)
     const [openModal, setOpenModal] = useState(false)
-    const [errorMsg, setErrorMsg] = useState("");
     const [sendTo, setSendTo] = useState({ name: "C2C Wallet", value: "c2c_wallet" })
     const [sendFrom, setSendFrom] = useState({ name: "Fixed Wallet", value: "fixed_wallet" })
     const [isSendFrom, setIsSendFrom] = useState(false)
@@ -69,23 +65,20 @@ const SelfTransfer = props => {
             data.append('fd_plan', selectedFdPlan?.value)
             data.append('payment_type', "self_transfer");
 
-            if (!errorMsg) {
-                setLoader(true)
-                try {
-                    const result = await handlePayents(data)
-                    setLoader(false)
-                    navigate.push("/dashboard")
-                    toast.success(result?.data?.message, {
-                        position: toast.POSITION.TOP_RIGHT,
-                    })
-                } catch (error) {
-                    toast.error(error?.response?.data?.message, {
-                        position: toast.POSITION.TOP_RIGHT,
-                    })
-                    setLoader(false)
-                }
+            setOpenModal(true)
+            try {
+                const result = await handlePayents(data)
+                setOpenModal(false)
+                navigate.push("/dashboard")
+                toast.success(result?.data?.message, {
+                    position: toast.POSITION.TOP_RIGHT,
+                })
+            } catch (error) {
+                toast.error(error?.response?.data?.message, {
+                    position: toast.POSITION.TOP_RIGHT,
+                })
+                setOpenModal(false)
             }
-
         },
     })
 
@@ -108,7 +101,7 @@ const SelfTransfer = props => {
         <React.Fragment>
             <div
                 className={
-                    loader
+                    openModal
                         ? "page-content payment  overlayerloader"
                         : "page-content payment"
                 }
@@ -361,8 +354,6 @@ const SelfTransfer = props => {
                                                     }
                                                     type="number"
                                                     name="customAmount"
-
-                                                    disabled={spinner}
                                                 />
 
                                                 {SelfTransferForm.touched.customAmount &&
@@ -396,7 +387,7 @@ const SelfTransfer = props => {
                                                 className="btn btn-primary w-100 waves-effect waves-light btn-save m-0"
                                                 type="submit"
                                             >
-                                                Self Transfer
+                                                {openModal ? <div className="ui active inline loader"></div> : "Self Transfer"}
                                             </button>
                                         </div>
                                     </Col>
@@ -407,7 +398,7 @@ const SelfTransfer = props => {
                     </Form>
                 </Container>
             </div >
-            {/* <TextLoader loading={loading} loader={loader} /> */}
+            <TextLoader loading={openModal} />
             < PaymentModal openModal={openModal} message={"Payment"} />
         </React.Fragment >
     )

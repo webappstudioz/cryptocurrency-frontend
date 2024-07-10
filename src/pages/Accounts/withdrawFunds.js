@@ -33,18 +33,18 @@ import { handlePayents, loginData } from "../Authentication/store/apiServices"
 // import file from "../../assets/images/file.png";
 import { useHistory } from "react-router-dom"
 
-const WihtdrawFunds = props => {
+const WihtdrawFunds = () => {
   let navigate = useHistory()
   const IMAGE_URL = process.env.REACT_APP_IMAGE_HOST
   const [loader, setLoader] = useState(false)
   const [custompay, setcustompay] = useState()
   const [selectedMethod, setSelectedMethod] = useState("bank")
-  const [spinner, setSpinner] = useState(false)
-  const [loading, setLoading] = useState("")
+  // const [spinner, setSpinner] = useState(false)
+  // const [loading, setLoading] = useState("")
   const [openModal, setOpenModal] = useState(false)
-  const [selectedFile, setSelectedFile] = useState([]);
-  const [inputKey, setInputKey] = useState(0);
-  const [errorMsg, setErrorMsg] = useState("");
+  // const [selectedFile, setSelectedFile] = useState([]);
+  // const [inputKey, setInputKey] = useState(0);
+  // const [errorMsg, setErrorMsg] = useState("");
   const [userInfo, setUserInfo] = useState("")
 
   useEffect(() => {
@@ -71,10 +71,10 @@ const WihtdrawFunds = props => {
       data.append('method_type', selectedMethod);
       data.append('amount', values?.customAmount);
       if (!errorMsg) {
-        setLoader(true)
+        setOpenModal(true)
         try {
           const result = await handlePayents(data)
-          setLoader(false)
+          setOpenModal(false)
           navigate.push("/dashboard")
           toast.success(result?.data?.message, {
 						position: toast.POSITION.TOP_RIGHT,
@@ -83,7 +83,7 @@ const WihtdrawFunds = props => {
           toast.error(error?.response?.data?.message, {
             position: toast.POSITION.TOP_RIGHT,
           })
-          setLoader(false)
+          setOpenModal(false)
         }
       }
 
@@ -118,37 +118,37 @@ const WihtdrawFunds = props => {
     },
   })
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const fileSize = file.size / 1024 / 1024; // in MB
-      const fileType = file.type.split("/")[1]; // get file extension
+  // const handleFileChange = (event) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     const fileSize = file.size / 1024 / 1024; // in MB
+  //     const fileType = file.type.split("/")[1]; // get file extension
 
-      // Validate file size (10MB max)
-      if (fileSize > 20) {
-        setErrorMsg("File size should be less than 20 MB");
-      } else {
-        // Validate file extension
-        if (
-          fileType === "jpg" ||
-          fileType === "jpeg" ||
-          fileType === "png" ||
-          fileType === "pdf" ||
-          fileType === "doc" ||
-          fileType === "xls" ||
-          fileType === "zip"
-        ) {
-          setSelectedFile([...selectedFile, file]);
-          // setSelectedFile(file)
-          setErrorMsg("");
-        } else {
-          setErrorMsg(
-            "Only JPG, PNG, PDF, DOC, XLS, and ZIP files are allowed"
-          );
-        }
-      }
-    }
-  };
+  //     // Validate file size (10MB max)
+  //     if (fileSize > 20) {
+  //       setErrorMsg("File size should be less than 20 MB");
+  //     } else {
+  //       // Validate file extension
+  //       if (
+  //         fileType === "jpg" ||
+  //         fileType === "jpeg" ||
+  //         fileType === "png" ||
+  //         fileType === "pdf" ||
+  //         fileType === "doc" ||
+  //         fileType === "xls" ||
+  //         fileType === "zip"
+  //       ) {
+  //         setSelectedFile([...selectedFile, file]);
+  //         // setSelectedFile(file)
+  //         setErrorMsg("");
+  //       } else {
+  //         setErrorMsg(
+  //           "Only JPG, PNG, PDF, DOC, XLS, and ZIP files are allowed"
+  //         );
+  //       }
+  //     }
+  //   }
+  // };
 
   return (
     <React.Fragment>
@@ -495,7 +495,7 @@ const WihtdrawFunds = props => {
                                   type="number"
                                   name="customAmount"
 
-                                  disabled={spinner}
+                                  // disabled={spinner}
                                 />
                               
                               {WithdrawForm.touched.customAmount &&
@@ -600,9 +600,9 @@ const WihtdrawFunds = props => {
                   <button
                     className="btn btn-primary w-100 waves-effect waves-light btn-save font-normal btnv1"
                     type="submit"
-                    disabled={spinner}
+                    disabled={openModal}
                   >
-                    {spinner ? <div className="ui active inline loader"></div> : "Withdraw Funds"}
+                    {openModal ? <div className="ui active inline loader"></div> : "Withdraw Funds"}
                   </button>
                 </div>
               </Form>
@@ -610,7 +610,7 @@ const WihtdrawFunds = props => {
           </Row>
         </Container>
       </div>
-      <TextLoader loading={loading} loader={loader} />
+      <TextLoader loading={loader || openModal} loader={loader} />
       <PaymentModal openModal={openModal} message={"Payment"} />
     </React.Fragment>
   )
