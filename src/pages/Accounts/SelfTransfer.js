@@ -40,6 +40,8 @@ const SelfTransfer = props => {
     const [sendFrom, setSendFrom] = useState({ name: "Fixed Wallet", value: "fixed_wallet" })
     const [isSendFrom, setIsSendFrom] = useState(false)
     const [isSendTo, setIsSendTo] = useState(false)
+    const [isFdOptions, setIsFdOption] = useState(false)
+    const [selectedFdPlan, setSelectedFdPlan] = useState({ name: "3 Months 3% Per Month", value: "3" })
 
     useEffect(() => {
         setPageTitle("Self Transfer")
@@ -61,9 +63,12 @@ const SelfTransfer = props => {
 
         onSubmit: async (values) => {
             let data = new FormData()
-            data.append('send-from', sendFrom?.value);
-            data.append('send-to', sendTo?.value);
+            data.append('send_from', sendFrom?.value);
+            data.append('send_to', sendTo?.value);
             data.append('amount', values?.customAmount);
+            data.append('fd_plan', selectedFdPlan?.value)
+            data.append('payment_type', "self_transfer");
+
             if (!errorMsg) {
                 setLoader(true)
                 try {
@@ -83,6 +88,21 @@ const SelfTransfer = props => {
 
         },
     })
+
+    const handleSendFrom = (option) => {
+        setSendFrom(option)
+        setIsSendFrom(!sendFrom)
+    }
+
+    const handleSendTo = (option) => {
+        setSendTo(option)
+        setIsSendTo(!isSendTo)
+    }
+
+    const handleFixed = (option) => {
+        setSelectedFdPlan(option)
+        setIsFdOption(!isFdOptions)
+    }
 
     return (
         <React.Fragment>
@@ -105,7 +125,7 @@ const SelfTransfer = props => {
                         }}
                     >
                         <Card>
-                            <CardBody>  
+                            <CardBody>
                                 <Row className="self-tran-form">
                                     <Col lg="6">
                                         <Label>Send From</Label>
@@ -125,7 +145,7 @@ const SelfTransfer = props => {
                                             <DropdownMenu className="outerdiv">
                                                 <>
                                                     {sendTo?.value !== "c2c_wallet" && <>
-                                                        <li disabled onClick={() => setSendFrom({ name: "C2C Wallet", value: "c2c_wallet" })}>
+                                                        <li disabled onClick={() => handleSendFrom({ name: "C2C Wallet", value: "c2c_wallet" })}>
                                                             <div className="form-check custom-checkbox">
                                                                 <label className="form-check-label" htmlFor="c2c_wallet">
                                                                     C2C Wallet
@@ -135,7 +155,7 @@ const SelfTransfer = props => {
                                                         <DropdownItem divider />
                                                     </>}
                                                     {sendTo?.value !== "fixed_wallet" && <>
-                                                        <li onClick={() => setSendFrom({ name: "Fixed Wallet", value: "fixed_wallet" })}>
+                                                        <li onClick={() => handleSendFrom({ name: "Fixed Wallet", value: "fixed_wallet" })}>
                                                             <div className="form-check custom-checkbox">
                                                                 <label
                                                                     className="form-check-label"
@@ -148,7 +168,7 @@ const SelfTransfer = props => {
                                                         <DropdownItem divider />
                                                     </>}
                                                     {sendTo?.value !== "monthly_return" && <>
-                                                        <li onClick={() => setSendFrom({ name: "Monthly Return", value: "monthly_return" })}>
+                                                        <li onClick={() => handleSendFrom({ name: "Monthly Return", value: "monthly_return" })}>
                                                             <div className="form-check custom-checkbox">
                                                                 <label
                                                                     className="form-check-label"
@@ -161,7 +181,7 @@ const SelfTransfer = props => {
                                                         <DropdownItem divider />
                                                     </>}
                                                     {sendTo?.value !== "comision_income" && <>
-                                                        <li onClick={() => setSendFrom({ name: "Comision Income", value: "comision_income" })}>
+                                                        <li onClick={() => handleSendFrom({ name: "Comision Income", value: "comision_income" })}>
                                                             <div className="form-check custom-checkbox">
                                                                 <label
                                                                     className="form-check-label"
@@ -195,7 +215,7 @@ const SelfTransfer = props => {
                                             <DropdownMenu className="outerdiv">
                                                 <>
                                                     {sendFrom?.value !== "c2c_wallet" && <>
-                                                        <li onClick={() => setSendTo({ name: "C2C Wallet", value: "c2c_wallet" })}>
+                                                        <li onClick={() => handleSendTo({ name: "C2C Wallet", value: "c2c_wallet" })}>
                                                             <div className="form-check custom-checkbox">
                                                                 <label className="form-check-label" htmlFor="c2c_wallet">
                                                                     C2C Wallet
@@ -205,7 +225,7 @@ const SelfTransfer = props => {
                                                         <DropdownItem divider />
                                                     </>}
                                                     {sendFrom?.value !== "fixed_wallet" && <>
-                                                        <li onClick={() => setSendTo({ name: "Fixed Wallet", value: "fixed_wallet" })}>
+                                                        <li onClick={() => handleSendTo({ name: "Fixed Wallet", value: "fixed_wallet" })}>
                                                             <div className="form-check custom-checkbox">
                                                                 <label className="form-check-label"
                                                                     htmlFor="fixed_wallet"
@@ -216,8 +236,8 @@ const SelfTransfer = props => {
                                                         </li>
                                                         <DropdownItem divider />
                                                     </>}
-                                                    {sendFrom?.value !== "monthly_return" && <>
-                                                        <li onClick={() => setSendTo({ name: "Monthly Return", value: "monthly_return" })}>
+                                                    {/* {sendFrom?.value !== "monthly_return" && <>
+                                                        <li onClick={() => handleSendTo({ name: "Monthly Return", value: "monthly_return" })}>
                                                             <div className="form-check custom-checkbox">
                                                                 <label
                                                                     className="form-check-label"
@@ -230,7 +250,7 @@ const SelfTransfer = props => {
                                                         <DropdownItem divider />
                                                     </>}
                                                     {sendFrom?.value !== "comision_income" && <>
-                                                        <li onClick={() => setSendTo({ name: "Comision Income", value: "comision_income" })}>
+                                                        <li onClick={() => handleSendTo({ name: "Comision Income", value: "comision_income" })}>
                                                             <div className="form-check custom-checkbox">
                                                                 <label
                                                                     className="form-check-label"
@@ -241,80 +261,79 @@ const SelfTransfer = props => {
                                                             </div>
                                                         </li>
                                                         <DropdownItem divider />
-                                                    </>}
+                                                    </>} */
+                                                    }
                                                 </>
                                             </DropdownMenu>
                                         </Dropdown>
                                     </Col>
-                                    <Col lg="6">
-                                        <Label>Option</Label>
+                                    {sendTo?.value === "fixed_wallet" && <Col lg="12">
+                                        <Label>Fixed Deposite Options</Label>
                                         <Dropdown
-                                            isOpen={isSendTo}
-                                            toggle={() => setIsSendTo(!isSendTo)}
+                                            isOpen={isFdOptions}
+                                            toggle={() => setIsFdOption(!isFdOptions)}
                                         >
                                             <button
                                                 className="dropdown-toggle wallet-dropdown-toggle"
                                                 type="button"
                                                 data-toggle="dropdown"
-                                                onClick={() => setIsSendTo(!isSendTo)}
+                                                onClick={() => setIsFdOption(!isFdOptions)}
                                             >
-                                                <span className="firstLettercapital">{sendTo?.name}</span>
+                                                <span className="firstLettercapital">{selectedFdPlan?.name}</span>
                                                 <span className="caret" />
                                             </button>
                                             <DropdownMenu className="outerdiv">
                                                 <>
-                                                    {sendFrom?.value !== "c2c_wallet" && <>
-                                                        <li onClick={() => setSendTo({ name: "C2C Wallet", value: "c2c_wallet" })}>
-                                                            <div className="form-check custom-checkbox">
-                                                                <label className="form-check-label" htmlFor="option">
-                                                                    Mutual Fund
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <DropdownItem divider />
-                                                    </>}
-                                                    {sendFrom?.value !== "fixed_wallet" && <>
-                                                        <li onClick={() => setSendTo({ name: "Fixed Wallet", value: "fixed_wallet" })}>
-                                                            <div className="form-check custom-checkbox">
-                                                                <label className="form-check-label"
-                                                                    htmlFor="fixed_wallet"
-                                                                >
-                                                                    Fixed Wallet
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <DropdownItem divider />
-                                                    </>}
-                                                    {sendFrom?.value !== "monthly_return" && <>
-                                                        <li onClick={() => setSendTo({ name: "Monthly Return", value: "monthly_return" })}>
-                                                            <div className="form-check custom-checkbox">
-                                                                <label
-                                                                    className="form-check-label"
-                                                                    htmlFor="monthly_return"
-                                                                >
-                                                                    Monthly Return
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <DropdownItem divider />
-                                                    </>}
-                                                    {sendFrom?.value !== "comision_income" && <>
-                                                        <li onClick={() => setSendTo({ name: "Comision Income", value: "comision_income" })}>
-                                                            <div className="form-check custom-checkbox">
-                                                                <label
-                                                                    className="form-check-label"
-                                                                    htmlFor="comision_income"
-                                                                >
-                                                                    Comision Income
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <DropdownItem divider />
-                                                    </>}
+
+                                                    <li onClick={() => handleFixed({ name: "3 Months 3% Per Month", value: "3" })}>
+                                                        <div className="form-check custom-checkbox">
+                                                            <label className="form-check-label" htmlFor="option">
+                                                                3 Months 3% Per Month
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                    <DropdownItem divider />
+
+
+                                                    <li onClick={() => handleFixed({ name: "6 Months 3.5% Per Month", value: "6" })}>
+                                                        <div className="form-check custom-checkbox">
+                                                            <label className="form-check-label"
+                                                                htmlFor="fixed_wallet"
+                                                            >
+                                                                6 Months 3.5% Per Month
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                    <DropdownItem divider />
+
+                                                    <li onClick={() => handleFixed({ name: "12 Months 4% Per Month", value: "12" })}>
+                                                        <div className="form-check custom-checkbox">
+                                                            <label
+                                                                className="form-check-label"
+                                                                htmlFor="monthly_return"
+                                                            >
+                                                                12 Months 4% Per Month
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                    <DropdownItem divider />
+
+
+                                                    <li onClick={() => handleFixed({ name: "24 Months 4.5% Per Month", value: "24" })}>
+                                                        <div className="form-check custom-checkbox">
+                                                            <label
+                                                                className="form-check-label"
+                                                                htmlFor="comision_income"
+                                                            >
+                                                                24 Months 4.5% Per Month
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                    <DropdownItem divider />
                                                 </>
                                             </DropdownMenu>
                                         </Dropdown>
-                                    </Col>
+                                    </Col>}
                                     <Col lg="6">
                                         <Label>Amount</Label>
                                         <div className="test form-check form-check-inline mt-20 ">
@@ -377,14 +396,14 @@ const SelfTransfer = props => {
                                                 className="btn btn-primary w-100 waves-effect waves-light btn-save m-0"
                                                 type="submit"
                                             >
-                                                Transfer
+                                                Self Transfer
                                             </button>
-                                        </div>    
+                                        </div>
                                     </Col>
                                 </Row>
                             </CardBody>
                         </Card>
-                        
+
                     </Form>
                 </Container>
             </div >
