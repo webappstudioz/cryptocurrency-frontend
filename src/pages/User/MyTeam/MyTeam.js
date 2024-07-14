@@ -128,14 +128,14 @@ const MyTeam = () => {
                     return <JoiningDate {...cellProps} />
                 },
             },
-            {
-                Header: "Status",
-                accessor: "status",
-                filterable: true,
-                Cell: cellProps => {
-                    return <AcountStatus {...cellProps} />
-                },
-            },
+            // {
+            //     Header: "Status",
+            //     accessor: "status",
+            //     filterable: true,
+            //     Cell: cellProps => {
+            //         return <AcountStatus {...cellProps} />
+            //     },
+            // },
             {
                 Header: "Action",
                 accessor: "",

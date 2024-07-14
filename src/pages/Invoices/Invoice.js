@@ -24,12 +24,13 @@ import {
 
 import { Col, Row, DropdownMenu, DropdownItem, Dropdown } from "reactstrap"
 import Vector1 from "../../assets/images/Vector1.svg"
-import { getInvoice } from "../Authentication/store/apiServices"
+import { getInvoice, loginData } from "../Authentication/store/apiServices"
 // import PermissionDenied from "../Authentication/PermissionDenied"
 import { toast } from "react-toastify"
 import { setPageTitle } from "../../helpers/api_helper_rs"
 import InvoiceTableContainer from "../../components/Common/InvoiceTableContainer"
 function Invoice() {
+  const userInfo = loginData()
   // const dispatch = useDispatch()
   // const [modal, setModal] = useState(false)
   // const [modal1, setModal1] = useState(false);
@@ -558,6 +559,7 @@ function Invoice() {
                   getTablePropsC={() => ({
                     className: "product-table ",
                   })}
+                  role={userInfo?.role}
                 />
               </div>
             </Col>

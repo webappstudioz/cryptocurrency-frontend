@@ -43,7 +43,8 @@ const InvoiceTableContainer = ({
   totalPages,
   currentPage,
   setPage,
-  setPageination
+  setPageination,
+  role
 }) => {
   const {
     getTableProps,
@@ -143,6 +144,16 @@ const InvoiceTableContainer = ({
     setPage(next)
     setPageination({ state: true, action: "pageBtn" })
   }
+
+  const handlePageRedirect = (e, id) => {
+    let pathName = ""
+    role === "Admin" ? pathName = `/admin/invoice-detail/${id}` : pathName = `/invoice-detail/${id}`
+    e.target.classList.contains("not-redirect") ? e?.preventDefault() :
+      navigate?.push({
+        pathname: pathName,
+      })
+  }
+
   return (
     <Fragment>
 
@@ -275,12 +286,13 @@ const InvoiceTableContainer = ({
                   <Fragment key={row.getRowProps().key}>
                     <tr
                       style={{ cursor: "pointer" }}
-                      onClick={(e) => {
-                        e.target.classList.contains("not-redirect") ? e?.preventDefault() :
-                          navigate?.push({
-                            pathname: `/invoice-detail/${row.original.id}`,
-                          })
-                      }}
+                      // onClick={(e) => {
+                      //   e.target.classList.contains("not-redirect") ? e?.preventDefault() :
+                      //     navigate?.push({
+                      //       pathname: `/invoice-detail/${row.original.id}`,
+                      //     })
+                      // }}
+                      onClick={(e) => { handlePageRedirect(e, row.original.id) }}
                     >
                       {row?.cells.map((cell) => {
                         return (

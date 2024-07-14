@@ -103,10 +103,10 @@ const userRoutes = [
   { path: "/my-profile", component: MyAccount },
   { path: "/invoice", component: Invoice },
   { path: "/self-transfer", component: SelfTransfer},
+  { path: "/invoice-detail/:id", component: InvoiceDetail },
 
   { path: "/services", component: ServiceList },
   { path: "/server-management/:id", component: ServerManagement },
-  { path: "/invoice-detail/:id", component: InvoiceDetail },
   { path: "/invoice-detail/:id/:mode", component: InvoiceDetail },
   { path: "/invoice-checkout", component: InvoiceCheckout },
   { path: "/reinstall-wizard-1", component: ReinstallWizard1 },
@@ -158,7 +158,7 @@ const adminRoutes = [
   // { path: "/admin-payment-history", component: PaymentHistory },
   { path: "/admin/results", component: StoreResulst },
   { path: "/admin/invoice", component: Invoice },
-
+  { path: "/admin/invoice-detail/:id", component: InvoiceDetail },
 ]
 
 const userVerifyRoutes = [

@@ -24,7 +24,8 @@ export const WITHDRAW_FUNDS = ""
 export const TRANSFER_FUNDS = ""
 export const GET_INVOICES = "/payment/list"
 export const GET_INVOICE_DETAIL = "/payment/detail"
-
+export const CHANGE_PAYMENT_STATUS = "/payment/change/status"
+export const PAYMENT_REJECT_REASONS = "/admin/invoice/rejection/reason"
 //REGISTER
 export const GOOGLE_LOGIN = "/auth/google"
 

@@ -424,6 +424,15 @@ export const invoiceForceRemote = async (invoiceId, action) => {
   return await postNew(url.FORCE_REMOTE + `/${invoiceId}/${action}`)
 }
 
+export const changePaymentStatus = async(data) => {
+  return await(url.CHANGE_PAYMENT_STATUS, data)
+}
+
+export const getPaymentRejectReasons = async() => {
+  return await getNew(url.PAYMENT_REJECT_REASONS)
+}
+
+
 // export const handleSelfTransfer 
 // export const withDrawFunds = async (data) => {
 //   return await postNew(url.WITHDRAW_FUNDS, data)
