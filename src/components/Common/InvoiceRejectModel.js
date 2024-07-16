@@ -75,19 +75,21 @@ const InvoiceRejectModal = ({ isRejectModal, setIsRejectModal, invoiceId }) => {
   }
 
   const handleReject = async () => {
-    setSpinner(true)
+    // setSpinner(true)
+    console.log("clickecc")
     try {
       let data = new URLSearchParams({
-        deposit_id: invoiceId,
-        reason: selectedReason,
-        description: description,
-        reason: "canceled",
+        invoice_id: invoiceId,
+        reason: 1,
+        status: "canceled",
+        description: "description",
       })
 
       let res = await changePaymentStatus(data)
       console.log("res", res)
 
     } catch (error) {
+      console.log("errr", error)
       toast.error(error?.response?.data?.message, {
         position: toast.POSITION.TOP_RIGHT,
       })
@@ -198,7 +200,6 @@ const InvoiceRejectModal = ({ isRejectModal, setIsRejectModal, invoiceId }) => {
           <div className="btn-group">
             <button
               className="btn btn-primary btn-modal waves-effect waves-light d-flex justify-content-center align-items-center buttoncustom "
-              type="submit"
               onClick={(e) => { setIsRejectModal(false) }}
               style={{
                 cursor:
@@ -211,8 +212,9 @@ const InvoiceRejectModal = ({ isRejectModal, setIsRejectModal, invoiceId }) => {
             </button>
             <button
               className="btn btn-primary w-100 waves-effect waves-light"
-              type="submit"
+              // type="submit"
               disabled={spinner}
+              onClick={() => {handleReject()}}
             >
               {spinner ? (
                 <div className="ui active inline loader"></div>

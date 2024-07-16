@@ -6,6 +6,7 @@ import {
   storeUserData,
   loginData,
   changePaymentStatus,
+  getPaymentRejectReasons,
 } from "../Authentication/store/apiServices"
 import TextLoader from "../../components/textLoader"
 import { toast } from "react-toastify"
@@ -94,10 +95,10 @@ function InvoiceDetail() {
   const handlePayment = async (status) => {
     console.log("accept")
     try {
-      let data = {
-        deposit_id: param.id,
+      let data = new URLSearchParams({
+        invoice_id: param.id,
         status: status
-      }
+      })
       let result = await changePaymentStatus(data)
       console.log("result", result)
     } catch (error) {
@@ -173,7 +174,7 @@ function InvoiceDetail() {
                       </div>
                     </div>
                   </div>
-                  <div className="btn-group mt-30">
+                  {Details?.payment_type === "pending" && <div className="btn-group mt-30">
                     <button
                       className="btn btn-primary w-100 waves-effect waves-light btn-cancel m-0"
                       onClick={() => { setIsRejectModal(true) }}
@@ -183,11 +184,11 @@ function InvoiceDetail() {
                     <button
                       className="btn btn-primary w-100 waves-effect waves-light btn-save m-0"
                       // type="submit"
-                      onClick={(e) => handlePayment("accept")}
+                      onClick={(e) => handlePayment("paid")}
                     >
                       Accept
                     </button>
-                  </div>
+                  </div>}
                 </div>
 
               </div>
