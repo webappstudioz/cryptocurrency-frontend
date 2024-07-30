@@ -73,7 +73,7 @@ function* loginUser({ payload: { user, history, invoiceId } }) {
             storeUserData(response?.data?.data)
             storeAuthToken(response?.data?.data?.bearer)
             // invoiceId? history.push(`/invoice-detail/${invoiceId}`) : 
-            response?.data?.data?.role === "Admin"? history.push("/admin/results") : history.push("/dashboard")
+            response?.data?.data?.role === "Admin"? history.push("/admin/dashboard") : history.push("/dashboard")
         }
       }
     }

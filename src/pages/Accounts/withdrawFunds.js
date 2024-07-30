@@ -26,32 +26,40 @@ import { toast } from "react-toastify"
 import TextLoader from "../../components/textLoader"
 import PaymentModal from "../../components/Common/PaymentModal"
 import BankLogo from "../../assets/images/c2c/banklogo.png"
-// import EthereumLogo from "../../assets/images/c2c/ethereum.png"
-// import BitcoinLogo from "../../assets/images/c2c/bitcoinlogo.png"
 import TetherLogo from "../../assets/images/c2c/tetherlogo.png"
-import { handlePayents, loginData } from "../Authentication/store/apiServices"
-// import file from "../../assets/images/file.png";
+import { getUserDetail, handlePayents, loginData, storeUserData } from "../Authentication/store/apiServices"
 import { useHistory } from "react-router-dom"
+import { isUserUpdated } from "../../store/auth/userdetails/actions"
+import { useDispatch } from "react-redux"
 
 const WihtdrawFunds = () => {
+  const dispatch = useDispatch()
   let navigate = useHistory()
   const IMAGE_URL = process.env.REACT_APP_IMAGE_HOST
   const [loader, setLoader] = useState(false)
   const [custompay, setcustompay] = useState()
   const [selectedMethod, setSelectedMethod] = useState("bank")
-  // const [spinner, setSpinner] = useState(false)
-  // const [loading, setLoading] = useState("")
   const [openModal, setOpenModal] = useState(false)
-  // const [selectedFile, setSelectedFile] = useState([]);
-  // const [inputKey, setInputKey] = useState(0);
-  // const [errorMsg, setErrorMsg] = useState("");
   const [userInfo, setUserInfo] = useState("")
 
   useEffect(() => {
     setPageTitle("Withdraw Funds")
     const info = loginData()
-    setUserInfo(info)
+    handleUserDetails(info?.id)
   }, [])
+
+  const handleUserDetails = async (userId) => {
+    try {
+      const result = await getUserDetail(userId)
+      const info = result?.data?.data
+      setUserInfo(info)
+      dispatch(isUserUpdated(info))
+      storeUserData(info)
+      setLoader(false)
+    } catch (error) {
+      setLoader(false)
+    }
+  }
 
   const WithdrawForm = useFormik({
     enableReinitialize: true,
@@ -86,69 +94,9 @@ const WihtdrawFunds = () => {
           setOpenModal(false)
         }
       }
-
-      // return
-      // let amount = ""
-      // values?.customAmount ? amount = values?.customAmount : amount = selectedAmount
-      // if (selectedMethod == "stripe" && amount) {
-      //   if (values?.customAmount) {
-      //     setstripecondition(true)
-      //     setSpinner(true)
-      //     setLoading(true)
-      //     setOpenModal(true)
-      //   } else if (selectedAmount != "custom") {
-      //     setstripecondition(true)
-      //     setSpinner(true)
-      //     setLoading(true)
-      //     setOpenModal(true)
-      //   }
-      // } else {
-      //   if (values?.customAmount) {
-      //     HandleAddWalletAmount(values?.customAmount)
-      //   } else if (selectedAmount != "custom") {
-      //     HandleAddWalletAmount(selectedAmount)
-      //   }
-      // }
-
-      // if (!values?.customAmount && selectedAmount === "custom") {
-      //   toast.error("Please select or enter an amount to wallet", {
-      //     position: toast.POSITION.TOP_RIGHT,
-      //   })
-      // }
     },
   })
 
-  // const handleFileChange = (event) => {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     const fileSize = file.size / 1024 / 1024; // in MB
-  //     const fileType = file.type.split("/")[1]; // get file extension
-
-  //     // Validate file size (10MB max)
-  //     if (fileSize > 20) {
-  //       setErrorMsg("File size should be less than 20 MB");
-  //     } else {
-  //       // Validate file extension
-  //       if (
-  //         fileType === "jpg" ||
-  //         fileType === "jpeg" ||
-  //         fileType === "png" ||
-  //         fileType === "pdf" ||
-  //         fileType === "doc" ||
-  //         fileType === "xls" ||
-  //         fileType === "zip"
-  //       ) {
-  //         setSelectedFile([...selectedFile, file]);
-  //         // setSelectedFile(file)
-  //         setErrorMsg("");
-  //       } else {
-  //         setErrorMsg(
-  //           "Only JPG, PNG, PDF, DOC, XLS, and ZIP files are allowed"
-  //         );
-  //       }
-  //     }
-  //   }
-  // };
 
   return (
     <React.Fragment>
@@ -228,54 +176,6 @@ const WihtdrawFunds = () => {
                               </Label>
                             </div>
                           </Col>
-                          {/* <Col>
-                            <div className="form-check form-check-inline mt-20">
-                              <Input
-                                type="radio"
-                                id="bitcoin"
-                                name="paymentMethod"
-                                className="form-check-input"
-                                value={"bitcoin"}
-                                checked={selectedMethod === "bitcoin"}
-                                onChange={() => { }}
-                                onClick={() => {
-                                  setSelectedMethod("bitcoin")
-                                }}
-                              // disabled={spinner}
-                              />
-                              <Label
-                                className="form-check-label"
-                                htmlFor="bitcoin"
-                              >
-                                <img src={BitcoinLogo} />
-                                <p className="font-normal">Bitcoin</p>
-                              </Label>
-                            </div>
-                          </Col>
-                          <Col>
-                            <div className="form-check form-check-inline mt-20">
-                              <Input
-                                type="radio"
-                                id="ethereum"
-                                name="paymentMethod"
-                                className="form-check-input"
-                                value={"ethereum"}
-                                checked={selectedMethod === "ethereum"}
-                                onChange={() => { }}
-                                onClick={() => {
-                                  setSelectedMethod("ethereum")
-                                }}
-                              // disabled={spinner}
-                              />
-                              <Label
-                                className="form-check-label"
-                                htmlFor="ethereum"
-                              >
-                                <img src={EthereumLogo} />
-                                <p className="font-normal">Ethereum</p>
-                              </Label>
-                            </div>
-                          </Col> */}
                         </Row>
                       </div>
                     </div>
@@ -284,31 +184,13 @@ const WihtdrawFunds = () => {
                 <div
                   className="slide"
                   style={{
-                    // height: selectedMethod === "stripe" ? selectedCard === "add_new"? "auto" : "450px" : "0px",
                     height: selectedMethod !== "bank" ? "auto" : "0px",
-                    // height: "auto",
-                    // height: stripeCardHeight,
                     overflow: "hidden",
                     maxHeight: "450px",
                     transition: "height 0.6s ease 0s",
                     opacity: selectedMethod !== "bank" ? 1 : 0,
                   }}
                 >
-                  {/* <Card className="m-10 stripe-form">
-                    <CardBody
-                      className="credit-card-scroll"
-                      style={{
-                        backgroundColor: "#fafafb",
-                        margin: "20px auto",
-                        overflowY: "auto",
-                        borderRadius: "12px",
-                        maxHeight: "400px",
-                      }}
-                    >
-                      <h3 style={{ textTransform: "capitalize" }} >{selectedMethod}</h3>
-                     
-                    </CardBody>
-                  </Card> */}
                   <div>
                     <div className="row">
                       <div className="col-md-12">
@@ -318,7 +200,7 @@ const WihtdrawFunds = () => {
                             <div className="col-md-6">
                               <table className="w-100">
                                 <tbody>
-                                  <img src={userInfo?.account_image ? (IMAGE_URL + userInfo?.account_image) : LogoGreen} style={{ height: "100%", width: "100%" }} />
+                                  <img src={userInfo?.crypto_image ? (IMAGE_URL + userInfo?.crypto_image) : LogoGreen} style={{ height: "100%", width: "100%" }} />
                                 </tbody>
                               </table>
                             </div>
@@ -347,31 +229,13 @@ const WihtdrawFunds = () => {
                 <div
                   className="slide"
                   style={{
-                    // height: selectedMethod === "stripe" ? selectedCard === "add_new"? "auto" : "450px" : "0px",
                     height: selectedMethod === "bank" ? "auto" : "0px",
-                    // height: "auto",
-                    // height: stripeCardHeight,
                     overflow: "hidden",
                     maxHeight: "450px",
                     transition: "height 0.6s ease 0s",
                     opacity: selectedMethod === "bank" ? 1 : 0,
                   }}
                 >
-                  {/* <Card className="m-10 stripe-form">
-                    <CardBody
-                      className="credit-card-scroll"
-                      style={{
-                        backgroundColor: "#fafafb",
-                        margin: "20px auto",
-                        overflowY: "auto",
-                        borderRadius: "12px",
-                        maxHeight: "400px",
-                      }}
-                    >
-                      <h3 style={{textTransform: "capitalize"}} >{selectedMethod}</h3>
-                      
-                    </CardBody>
-                  </Card> */}
                   <div>
                     <div className="row">
                       <div className="col-md-12">
@@ -469,7 +333,6 @@ const WihtdrawFunds = () => {
                         <Row>
                           <Col>
                             <div className="form-check-inline mt-20 w-100">
-                              {/* <span className="prefix">{currency?.prefix}$</span> */}
                               <div className="inner-input-box withdraw-amt-box">
                                 <label>Amount <span className="billing-max-amt"> *Maximum amount: 5000</span></label>
                                 <Input
@@ -522,80 +385,6 @@ const WihtdrawFunds = () => {
                     </div>
                   </CardBody>
                 </Card>
-                {/* <Card className="m-0">
-                  <CardBody>
-                    <Row>
-                      <Col>
-                        <div className="inner-content invite-user rd-group">
-                          <h6 className="font16  font-semibold">
-                            Complete Your Payment
-                          </h6>
-                          <div className="col-lg-6 form-group mb-4">
-                            <p className="place-holder">Upload Screen Short</p>
-                            <label
-                              htmlFor="file-upload"
-                              className="custom-file-upload form-control"
-                            >
-                              <img src={file} alt="Upload file icon" />
-                              <input
-                                disabled={spinner}
-                                key={inputKey}
-                                id="file-upload"
-                                type="file"
-                                accept=".jpg,.jpeg,.png,.pdf,.doc,.xls,.zip"
-                                onChange={handleFileChange}
-                                onClick={(event) => {
-                                  if (
-                                    event.target.files.length === 1 &&
-                                    event.target.files[0].name ===
-                                    selectedFile[selectedFile.length - 1]
-                                      ?.name
-                                  ) {
-                                    event.target.value = null;
-                                  }
-                                }}
-                                multiple
-                              />
-                            </label>
-                          </div>
-                          <div className="col-lg-6 form-group">
-                            <p className="place-holder">Payment id</p>
-                            <Input
-                              type="text"
-                              placeholder="Enter payment id"
-                              className="form-control"
-                              id="paymentId"
-                              name="paymentId"
-                              value={WithdrawFunds?.values?.paymentId || ""}
-                              onChange={WithdrawForm.handleChange}
-                              onBlur={WithdrawForm.handleBlur}
-                              invalid={
-                                WithdrawForm.touched.paymentId &&
-                                  WithdrawForm.errors.paymentId
-                                  ? true
-                                  : false
-                              }
-                            />
-                            {WithdrawForm.touched.paymentId &&
-                              WithdrawForm.errors.paymentId ? (
-                              <>
-                                <FormFeedback type="invalid">
-                                  <img
-                                    className="form-error-icon"
-                                    src={rederror}
-                                    alt=""
-                                    height={15}
-                                  />
-                                  {WithdrawForm.errors.paymentId}
-                                </FormFeedback>
-                              </>
-                            ) : null}
-                          </div>
-                        </div>
-                      </Col>
-                    </Row>
-                  </CardBody>
-                </Card> */}
                 <div className="btn-group mt-30">
                   <button
                     className="btn btn-primary w-100 waves-effect waves-light btn-save font-normal btnv1"

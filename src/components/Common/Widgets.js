@@ -269,9 +269,9 @@ export function WidBalance(props) {
   )
 }
 
-export function C2CWallet(props) {
-  const { balance } = props
-  const { currency } = props
+export function C2CWallet({title, balance, currency} = props) {
+  // const { balance } = props
+  // const { currency } = props
   return (
     <>
       <div className="info_block mb-4 mb-lg-0">
@@ -282,7 +282,7 @@ export function C2CWallet(props) {
           <div className="info_flex">
             <Row className="align-items-center">
               <Col md="12">
-                <p>C2C Wallet</p>
+                <p>{title}</p>
               </Col>
             </Row>
           </div>
@@ -343,6 +343,30 @@ export function FixedWallet(props) {
           <h6>
             {currency?.prefix}
             {balance || "$0.00 USD"} {currency?.suffix}
+          </h6>
+        </div>
+      </div>
+    </>
+  )
+}
+
+export function TotalUsers(props) {
+  return (
+    <>
+      <div className="info_block mb-4 mb-lg-0">
+        <div className="icon_img">
+          <Balance />
+        </div>
+        <div className="info_content">
+          <div className="info_flex">
+            <Row className="align-items-center">
+              <Col md="12">
+                <p>Total Active Users</p>
+              </Col>
+            </Row>
+          </div>
+          <h6>
+            0
           </h6>
         </div>
       </div>

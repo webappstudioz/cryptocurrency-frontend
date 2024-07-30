@@ -69,20 +69,42 @@ const DepositFunds = () => {
     initialValues: {
       customAmount: "",
       paymentId: "",
+      upiId: ""
     },
 
-    validationSchema: Yup.object({
+    validationSchema: (selectedMethod) => {
+      let schema = Yup.object().shape({
       customAmount: Yup.string()
         .required("Please enter amount.")
         .matches(customRegex?.amount, "Please valid amount"),
-      paymentId: Yup.string()
-        .required("Please enter payment id"),
-    }),
+      paymentId: Yup.string().when('selectedMethod', {
+        is: "tether",
+        then: Yup.string()
+          .required("Please enter payment id"),
+      }),
+      upiId: Yup.string().when('selectedMethod', {
+        is: "bank",
+        then: Yup.string()
+          .required("Please enter your UPI ID"),
+      }),  
+    })
 
+    return schema
+  },
     onSubmit: async (values) => {
       let data = new FormData()
-      data.append('image', selectedFile);
-      data.append('payment_id', values?.paymentId);
+      if(selectedFile){
+        data.append('image', selectedFile);
+      }
+
+      if(values?.paymentId){
+        data.append('payment_id', values?.paymentId);
+      }
+
+      if(values.upiId){
+        data.append('upi_id', values?.upiId)
+      }
+
       data.append('payment_type', "deposit");
       data.append('method_type', selectedMethod);
       data.append('amount', values?.customAmount);
@@ -243,7 +265,7 @@ const DepositFunds = () => {
                               </Label>
                             </div>
                           </Col>
-                          <Col>
+                          {/* <Col>
                             <div className="form-check form-check-inline mt-20">
                               <Input
                                 type="radio"
@@ -266,8 +288,8 @@ const DepositFunds = () => {
                                 <p className="font-normal">Bitcoin</p>
                               </Label>
                             </div>
-                          </Col>
-                          <Col>
+                          </Col> */}
+                          {/* <Col>
                             <div className="form-check form-check-inline mt-20">
                               <Input
                                 type="radio"
@@ -290,7 +312,7 @@ const DepositFunds = () => {
                                 <p className="font-normal">Ethereum</p>
                               </Label>
                             </div>
-                          </Col>
+                          </Col> */}
                         </Row>
                       </div>
                     </div>
@@ -299,31 +321,14 @@ const DepositFunds = () => {
                 <div
                   className="slide"
                   style={{
-                    // height: selectedMethod === "stripe" ? selectedCard === "add_new"? "auto" : "450px" : "0px",
                     height: selectedMethod !== "bank" ? "auto" : "0px",
-                    // height: "auto",
-                    // height: stripeCardHeight,
                     overflow: "hidden",
                     maxHeight: "450px",
                     transition: "height 0.6s ease 0s",
                     opacity: selectedMethod !== "bank" ? 1 : 0,
                   }}
                 >
-                  {/* <Card className="m-10 stripe-form">
-                    <CardBody
-                      className="credit-card-scroll"
-                      style={{
-                        backgroundColor: "#fafafb",
-                        margin: "20px auto",
-                        overflowY: "auto",
-                        borderRadius: "12px",
-                        maxHeight: "400px",
-                      }}
-                    >
-                      <h3 style={{ textTransform: "capitalize" }} >{selectedMethod}</h3>
-                     
-                    </CardBody>
-                  </Card> */}
+                  {/* Crupto start */}
                   <div>
                     <div className="row">
                       <div className="col-md-12">
@@ -333,7 +338,7 @@ const DepositFunds = () => {
                             <div className="col-md-6">
                               <table className="w-100">
                                 <tbody>
-                                  <img src={adminInfo?.account_image ? (IMAGE_URL + adminInfo?.account_image) : LogoGreen} style={{ height: "100%", width: "100%" }} />
+                                  <img src={adminInfo?.crypto_image ? (IMAGE_URL + adminInfo?.crypto_image) : LogoGreen} style={{ height: "100%", width: "100%" }} />
                                 </tbody>
                               </table>
                             </div>
@@ -362,38 +367,57 @@ const DepositFunds = () => {
                 <div
                   className="slide"
                   style={{
-                    // height: selectedMethod === "stripe" ? selectedCard === "add_new"? "auto" : "450px" : "0px",
                     height: selectedMethod === "bank" ? "auto" : "0px",
-                    // height: "auto",
-                    // height: stripeCardHeight,
                     overflow: "hidden",
                     maxHeight: "450px",
                     transition: "height 0.6s ease 0s",
                     opacity: selectedMethod === "bank" ? 1 : 0,
                   }}
                 >
-                  {/* <Card className="m-10 stripe-form">
-                    <CardBody
-                      className="credit-card-scroll"
-                      style={{
-                        backgroundColor: "#fafafb",
-                        margin: "20px auto",
-                        overflowY: "auto",
-                        borderRadius: "12px",
-                        maxHeight: "400px",
-                      }}
-                    >
-                      <h3 style={{textTransform: "capitalize"}} >{selectedMethod}</h3>
-                      
-                    </CardBody>
-                  </Card> */}
                   <div>
                     <div className="row">
                       <div className="col-md-12">
                         <h5 className="info_heding">Bank Details</h5>
                         <div className="tab_content tab-data-table">
                           <div className="row">
-                            <div className="col-md-6">
+                            <div className="col-md-12">
+                              <table className="w-100">
+                                <div className="col-lg-6 form-group payment-id-box" >
+                            <p className="place-holder">Payment id</p>
+                            <Input
+                              type="text"
+                              placeholder="Enter payment id"
+                              className="form-control"
+                              id="upiId"
+                              name="upiId"
+                              value={DepositForm?.values?.upiId || ""}
+                              onChange={DepositForm.handleChange}
+                              onBlur={DepositForm.handleBlur}
+                              invalid={
+                                DepositForm.touched.upiId &&
+                                  DepositForm.errors.upiId
+                                  ? true
+                                  : false
+                              }
+                            />
+                            {DepositForm.touched.upiId &&
+                              DepositForm.errors.upiId ? (
+                              <>
+                                <FormFeedback type="invalid">
+                                  <img
+                                    className="form-error-icon"
+                                    src={rederror}
+                                    alt=""
+                                    height={15}
+                                  />
+                                  {DepositForm.errors.upiId}
+                                </FormFeedback>
+                              </>
+                            ) : null}
+                          </div>
+                              </table>
+                            </div>
+                            {/* <div className="col-md-6">
                               <table className="w-100">
                                 <tbody>
                                   <img src={adminInfo?.account_image ? (IMAGE_URL + adminInfo?.account_image) : LogoGreen} style={{ height: "100%", width: "100%" }} />
@@ -454,7 +478,7 @@ const DepositFunds = () => {
                                   </tr>
                                 </tbody>
                               </table>
-                            </div>
+                            </div> */}
                           </div>
                           <br />
                         </div>
@@ -539,7 +563,7 @@ const DepositFunds = () => {
                     </div>
                   </CardBody>
                 </Card>
-                <Card className="m-0 mt-3">
+               {selectedMethod === "tether" && <Card className="m-0 mt-3">
                   <CardBody>
                     <Row>
                       <Col>
@@ -629,7 +653,7 @@ const DepositFunds = () => {
                       </Col>
                     </Row>
                   </CardBody>
-                </Card>
+                </Card>}
                 <div className="btn-group mt-30">
                   <button
                     className="btn btn-primary w-100 waves-effect waves-light btn-save font-normal btnv1"

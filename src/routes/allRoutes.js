@@ -71,6 +71,7 @@ import AdminUpdateProfile from "../pages/Admin/AdminUpdateProfile"
 import SingleUserDetail from "../pages/Authentication/SingleUserDetail"
 import { components } from "react-select/dist/react-select.cjs.prod"
 import SelfTransfer from "../pages/Accounts/SelfTransfer"
+import AdminDashboard from "../pages/Admin/AdminDashboard"
 
 const authRoutes = [
   { path: "/login", component: Login },
@@ -159,6 +160,7 @@ const adminRoutes = [
   { path: "/admin/results", component: StoreResulst },
   { path: "/admin/invoice", component: Invoice },
   { path: "/admin/invoice-detail/:id", component: InvoiceDetail },
+  { path: "/admin/dashboard", component: AdminDashboard }
 ]
 
 const userVerifyRoutes = [

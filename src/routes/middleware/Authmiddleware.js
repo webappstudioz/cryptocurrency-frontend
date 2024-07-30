@@ -34,7 +34,7 @@ const Authmiddleware = ({
 
         return (
           <Redirect
-            to={{ pathname: "/admin/results" }}
+            to={{ pathname: "/admin/dashboard" }}
           />
         );
       } else if (isAuthProtected && !info) {

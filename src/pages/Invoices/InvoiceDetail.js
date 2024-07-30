@@ -174,7 +174,7 @@ function InvoiceDetail() {
                       </div>
                     </div>
                   </div>
-                  {Details?.payment_type === "pending" && <div className="btn-group mt-30">
+                  {Details?.status === "pending" && <div className="btn-group mt-30">
                     <button
                       className="btn btn-primary w-100 waves-effect waves-light btn-cancel m-0"
                       onClick={() => { setIsRejectModal(true) }}
@@ -190,17 +190,16 @@ function InvoiceDetail() {
                     </button>
                   </div>}
                 </div>
-
               </div>
             </div>
           </div>
         </section>
       </>
-      <InvoiceRejectModal 
-        isRejectModal={isRejectModal} 
-        setIsRejectModal={setIsRejectModal} 
+      <InvoiceRejectModal
+        isRejectModal={isRejectModal}
+        setIsRejectModal={setIsRejectModal}
         invoiceId={param.id}
-        />
+      />
       <TextLoader loading={loading} loader={loader} />
       {/* <PaymentModal openModal={openModal} message={"Payment"}/> */}
     </div>
