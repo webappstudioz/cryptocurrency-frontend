@@ -77,6 +77,7 @@ const authRoutes = [
   { path: "/login", component: Login },
   { path: "/forgot-password", component: ForgetPwd },
   { path: "/register", component: Register },
+  { path: "/register/:referral", component: Register },
   { path: "/email-verify", component: Emailverification },
   { path: "/reset-password/:token", component: ResetPassword },
   { path: "/login-suspended", component: LoginSuspended },

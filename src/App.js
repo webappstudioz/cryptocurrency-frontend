@@ -1,9 +1,15 @@
 import PropTypes from "prop-types"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, 
+  // useState 
+} from "react"
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom"
 // import { useHistory } from "react-router-dom"
 
-import { connect, useDispatch, useSelector } from "react-redux"
+import { 
+  connect, 
+  // useDispatch, 
+  // useSelector 
+} from "react-redux"
 
 // Import Routes all
 import { userRoutes, authRoutes, userVerifyRoutes, unAuthrizedRoutes, adminRoutes } from "./routes/allRoutes"
@@ -24,26 +30,30 @@ import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import PageNotFound from "./pages/Authentication/PageNotFound"
 import UnAuthrizedmiddleware from "./routes/middleware/UnAuthrizedmiddleware"
-import { checkSessionExpire, decrypt, storeLoginTime } from "./helpers/api_helper_rs"
-import { CONFIGURATIONS } from "./constants/api/api_path"
-import { getListOsInstallServers, productDetails } from "./pages/Authentication/store/apiServices"
-import { getOsInstallationInfo } from "../src/pages/Authentication/store/apiServices"
-import { update } from "lodash"
-import { osListFetched } from "./store/osInstallList/action"
+import { 
+  checkSessionExpire, 
+  // decrypt, 
+  storeLoginTime
+ } from "./helpers/api_helper_rs"
+// import { CONFIGURATIONS } from "./constants/api/api_path"
+// import { getListOsInstallServers, productDetails } from "./pages/Authentication/store/apiServices"
+// import { getOsInstallationInfo } from "../src/pages/Authentication/store/apiServices"
+// import { update } from "lodash"
+// import { osListFetched } from "./store/osInstallList/action"
 import Adminmiddleware from "./routes/middleware/Adminmiddleware"
 const App = props => {
-  const dispatch = useDispatch()
-  const hit = useSelector(state => state?.OSInstallationList?.hit)
-  const [getJobTimer, setGetJobTimer] = useState(10000)
+  // const dispatch = useDispatch()
+  // const hit = useSelector(state => state?.OSInstallationList?.hit)
+  // const [getJobTimer, setGetJobTimer] = useState(10000)
   useEffect(() => {
     //check user active or in-active
-      const interval = setInterval(() => {
-        checkSessionExpire()
-      }, 1000);
+    const interval = setInterval(() => {
+      checkSessionExpire()
+    }, 1000);
 
-      return () => {
-        clearInterval(interval);
-      };
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   // useEffect(() => {
@@ -215,16 +225,16 @@ const App = props => {
   //     localStorage.setItem(CONFIGURATIONS?.SERVER_INSTALL_ARRAY, JSON.stringify(storedArray));
   //   }
   // }
-  
+
   useEffect(() => {
     window?.addEventListener('mousemove', handleUserActivity);
     window?.addEventListener('keypress', handleUserActivity);
     window?.addEventListener('touchstart', handleUserActivity);
-  },[])
+  }, [])
 
   const handleUserActivity = () => {
     let auth = localStorage.getItem("authToken")
-    auth? storeLoginTime() : null
+    auth ? storeLoginTime() : null
   }
 
   function getLayout() {
@@ -276,6 +286,7 @@ const App = props => {
         <Switch>
           {authRoutes?.map((route, idx) => (
             <Authmiddleware
+              exact={true}
               path={route?.path}
               layout={NonAuthLayout}
               component={route?.component}
@@ -283,8 +294,8 @@ const App = props => {
               isAuthProtected={false}
             />
           ))}
-          {unAuthrizedRoutes?.map((route, idx) =>(
-            <UnAuthrizedmiddleware 
+          {unAuthrizedRoutes?.map((route, idx) => (
+            <UnAuthrizedmiddleware
               exact={true}
               path={route?.path}
               layout={UnAuthLayout}
@@ -317,7 +328,7 @@ const App = props => {
           ))}
 
           {adminRoutes?.map((route, idx) => (
-            <Adminmiddleware 
+            <Adminmiddleware
               path={route?.path}
               layout={AdminsLayout}
               component={route?.component}

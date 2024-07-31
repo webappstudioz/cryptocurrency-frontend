@@ -384,14 +384,14 @@ const Dashboard = ({ fullRes } = props) => {
                         <th>Your Referral Link</th>
                         <React.Fragment>
                           <td className="text-right">
-                            {Base_URL + "/" + logInfo?.user_name}
+                            {Base_URL + "/register/" + logInfo?.user_name}
                           </td>
                           <td></td>
                           <td></td>
                           <td>
                             <svg
                               onClick={() => {
-                                copy(`${Base_URL}/${logInfo?.user_name}`);
+                                copy(`${Base_URL}/register/${logInfo?.user_name}`);
                                 toast("Referral code has been copied.", {
                                   autoClose: 1000,
                                 });

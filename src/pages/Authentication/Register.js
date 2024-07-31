@@ -45,6 +45,7 @@ import {
  } from "../Authentication/store/apiServices"
 // import { toast } from "react-toastify"
 import { setPageTitle } from "../../helpers/api_helper_rs"
+import { useParams } from "react-router-dom"
 
 // var settings = {
 //   dots: true,
@@ -56,6 +57,7 @@ import { setPageTitle } from "../../helpers/api_helper_rs"
 // }
 
 const Register = props => {
+  const { referral } = useParams();
   const phoneInputRef = useRef(null);
   const [passwordInputType, setPasswordInputType] = useState(true)
   const [loader, setLoader] = useState(false)
@@ -75,7 +77,7 @@ const Register = props => {
     setPageTitle("Registration")
     getcountry()
     // getGstCountriesList()
-  }, [])
+  }, [referral])
 
   const getcountry = async () => {
     try {
@@ -118,7 +120,7 @@ const Register = props => {
       password: "",
       phoneNumber: "",
       country: "",
-      referralCode: "",
+      referralCode: referral || "",
       termConditions: false,
       // gst:""
     },
@@ -209,21 +211,21 @@ const Register = props => {
     }
   }, [reduxData])
 
-  const responseGoogle = response => {
-    if (response) {
-      var data = new URLSearchParams({
-        first_name: response?.profileObj?.givenName,
-        last_name: response?.profileObj?.familyName,
-        email: response?.profileObj?.email,
-        social_id: response?.profileObj?.googleId,
-        imageUrl: response?.profileObj?.imageUrl,
-        social_type: "google",
-      })
-      setLoader(true)
-      setAction(true)
-      dispatch(registerSocial(data, navigate))
-    }
-  }
+  // const responseGoogle = response => {
+  //   if (response) {
+  //     var data = new URLSearchParams({
+  //       first_name: response?.profileObj?.givenName,
+  //       last_name: response?.profileObj?.familyName,
+  //       email: response?.profileObj?.email,
+  //       social_id: response?.profileObj?.googleId,
+  //       imageUrl: response?.profileObj?.imageUrl,
+  //       social_type: "google",
+  //     })
+  //     setLoader(true)
+  //     setAction(true)
+  //     dispatch(registerSocial(data, navigate))
+  //   }
+  // }
 
   useEffect(() => {
     const clientId =
@@ -251,7 +253,7 @@ const Register = props => {
     return function cleanup() {
       document.body.className = ""
     }
-  }, [dispatch])
+  }, [])
 
   // const verifyInvitation = async token => {
   //   setLoader(true)
