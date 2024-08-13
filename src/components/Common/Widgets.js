@@ -130,7 +130,7 @@ export function WidServer(props) {
         </div>
         <div className="info_content">
           <div className="info_flex">
-            <Row className="align-items-center">
+            <Row className="align-items-center"> 
               <Col md="12">
                 <p>Servers</p>
               </Col>

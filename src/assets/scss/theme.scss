@@ -1132,7 +1132,7 @@ a.dropdown-item,
   height: 100%;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -25%);
+  transform: translate(-50%, -50%);
 }
 .rd-group .radio-btn img {
   margin-bottom: 20px;
@@ -6354,11 +6354,12 @@ body{
 .casino-wrapper {
   max-width: 1200px;
   width: 100%;
-  background-color: #00a105;
+  background-color: #285a3d;
   border-radius: 15px;
-  border: 3px solid gold;
+  border: 3px solid #c3a507;
   padding: 20px;
   margin: 0 auto;
+  overflow: hidden;
 }
 
 .casino-top-btn-grp {
@@ -6371,7 +6372,7 @@ body{
   flex-direction: column;
   max-width: 150px;
   min-height: 45px;
-  border: 3px solid #fec72d;
+  border: 3px solid #c3a507;
   width: 100%;
   padding: 0px;
   justify-content: center;
@@ -6442,11 +6443,13 @@ body{
 .table-color-box .color-box-name.red{
   background-color: red;
 }
-.table-top-heading{
+.table-top-heading {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 .zero-num{
   background-color: green;
@@ -7288,10 +7291,12 @@ html, body{
   -bs-gutter-y: 0 !important;
 }
 .login-left-wrapper {
-  display: flex;
+  display: grid;
+  grid-gap: 5px;
   gap: 5px;
   justify-content: center;
   align-items: center;
+  grid-template-columns: repeat(5, 1fr);
 }
 .login-left-input input {
   width: 100%;
@@ -7300,7 +7305,7 @@ html, body{
 .results-login-page {
   position: absolute;
   left: 0px;
-  bottom: 40px;
+  bottom: 0px;
   background-color: #ffc92b;
   padding: 10px;
   width: 100%;
@@ -7495,7 +7500,231 @@ html, body{
 .account-pages.register .right_content .ragister .form-group .iti .iti__selected-flag{
   border-radius: 12px 0px 0px 12px !important;
 }
-.admin-user-list-table{
-  min-width: 1150px;
+.admin-user-list-table {
+  min-width: 1600px;
 }
+.results-login-page .table_v1.invoice-listing table tr td{
+  font-size: 12px;
+  line-height: 12px;
+  padding: 10px 4px;
+  text-align: left;
+}
+.results-login-page .table_v1.invoice-listing table tr tH{
+  font-size: 12px;
+}
+.results-login-page .table_v1.invoice-listing table tr td div{
+  font-size: 12px;
+}
+.results-login-page .table_v1.invoice-listing table{
+  border-spacing: 0px 4px;
+}
+.results-login-page .table_v1.invoice-listing {
+  overflow: auto;
+  min-height: unset !important;
+}
+.results-login-page .table-responsive{
+  max-height: 194px;
+}
+.login-left-input{
+  width: 100%;
+  max-width: 700px;
+}
+.login-date-time {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+}
+.login-date-div h1 {
+  color: #fff;
+  font-size: 18px;
+  line-height: 18px;
+}
+.login-date-div p {
+  color: #fff;
+  font-size: 18px;
+  line-height: 18px;
+}
+.login-date-div {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.login-left-wrapper .login-left-input label{
+  font-size: 12px;
+  margin: 0;
+}
+.login-left-wrapper .login-left-input input {
+  text-align: center;
+  max-height: 30px;
+}
+.filter-left {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.date-fiter-box{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+
+// ================Responsive CSS Start =================
+
+@media screen and (max-width: 1200px){
+  .rs-product-left-title.rs-product-left-title-wrap.title-group .dropdown-group {
+    flex-wrap: wrap;
+  }
+}
+@media screen and (max-width: 992px){
+  .rd-group .radio-btn img {
+    margin-bottom: 10px;
+  }
+  .self-tran-form .dropdown .wallet-dropdown-toggle{
+    width: 100% !important;
+  }
+  .self-tran-form div .outerdiv.dropdown-menu.show {
+    margin-top: 10px;
+    width: 100%;
+  }
+  .self-tran-form .inner-input-box {
+    width: 100%;
+  }
+  .self-tran-form .self-trans-field{
+    max-width: 100%;
+    position: relative;
+    margin: 0;
+  }
+  .self-tran-form .chose-payment.form-control {
+    border: 1px solid #ddd;
+    max-width: 100%;
+  }
+  .billing-max-amt {
+    justify-content: flex-start;
+  }
+  .self-tran-form .btn-group{
+    margin-top: 0 !important;
+  }
+  body.sidebar-enable .vertical-menu {
+    display: block;
+    position: fixed;
+    overflow-y: auto;
+    transition: all 0.3s ease-in;
+    transform: translateX(0px);
+    z-index: 9999;
+  }
+  .vertical-menu {
+    display: block;
+    top: 0;
+    transform: translateX(-1000px);
+    transition: all 0.6s ease-in;
+  }
+  .account-img-box{
+    // margin-bottom: 20px;
+    max-width: 300px;
+    margin: 0 auto 20px;
+  }
+}
+@media screen and (max-width: 767px) {
+
+  .main-content {
+    padding: 45px 15px;
+  }
+  .db-memeber-details-table table{
+    min-width: 800px;
+  }
+  .dashboard-marquee-box{
+    margin-top: 16px !important;
+  }
+  .page-content.server-management {
+    padding-bottom: 40px !important;
+  }
+  .page-content {
+    padding: 50px 15px;
+  }
+  .info_heding {
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+  // .poker-num-box input {
+  //   max-width: 30px;
+  // }
+  .poker-num {
+    width: 30px;
+    height: 30px;
+  }
+  .poker-color-box {
+    flex-direction: column;
+  }
+  .table-color-box input {
+    border: 1px solid #fff;
+    width: 100%;
+  }
+  .wheel {
+    left: -26px; 
+    margin: 0 auto;
+    border-radius: 100%;
+    overflow: hidden;
+  }
+  .rd-group .radio-btn label p{
+    font-size: 14px;
+  }  
+  .my-team-tab-box .nav-tabs{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .chartfilter {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .account-img-box {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  .account-img-box{
+    max-width: 150px;
+    margin: 0 auto 20px;
+  }
+  .tab-data-table th, .tab-data-table td {
+    padding: 16px 5px;
+    font-size: 14px;
+  }
+  .page-content {
+    padding: 50px 0px;
+  }
+  .tab_content {
+    padding: 20px 10px;
+  
+  }
+  .page-content.server-management {
+    padding-bottom: 0px !important;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -273,97 +273,99 @@ const MyTeam = () => {
                     </div>
                     <div className="rs-product-left-title rs-product-left-title-wrap title-group">
                         <div className="dropdown-group">
-                            <div className="dropdown">
-                                <div className="top-center search">
-                                    <div className="app-search d-none d-lg-block p-0">
-                                        <div className="position-relative">
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                value={search}
-                                                placeholder={"Search"}
-                                                onChange={e => {
-                                                    // handleSearch(e?.target?.value)
-                                                    setSearch(e?.target?.value)
-                                                    // handleDebounceVal(e?.target?.value)
-                                                }}
-                                            />
-                                            {!search ? (
-                                                <span className={"uil-search"}></span>
-                                            ) : (
-                                                <span
-                                                    className={"uil-times"}
-                                                    style={{ cursor: "pointer" }}
-                                                    onClick={e => {
-                                                        // handleSearch()
-                                                        // handleDebounceVal("")
-                                                        // dashBoardCall0(0)
-                                                        setSearch("")
+                            <div className="filter-left">
+                                <div className="dropdown">
+                                    <div className="top-center search">
+                                        <div className="app-search d-none d-lg-block p-0">
+                                            <div className="position-relative">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    value={search}
+                                                    placeholder={"Search"}
+                                                    onChange={e => {
+                                                        // handleSearch(e?.target?.value)
+                                                        setSearch(e?.target?.value)
+                                                        // handleDebounceVal(e?.target?.value)
                                                     }}
-                                                ></span>
-                                            )}
+                                                />
+                                                {!search ? (
+                                                    <span className={"uil-search"}></span>
+                                                ) : (
+                                                    <span
+                                                        className={"uil-times"}
+                                                        style={{ cursor: "pointer" }}
+                                                        onClick={e => {
+                                                            // handleSearch()
+                                                            // handleDebounceVal("")
+                                                            // dashBoardCall0(0)
+                                                            setSearch("")
+                                                        }}
+                                                    ></span>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="dropdown">
-                                <Dropdown
-                                    isOpen={isUserStatusFilter}
-                                    toggle={() => setIsUserStatusFilter(!isUserStatusFilter)}
-                                >
-                                    <button
-                                        className="btn btn-primary dropdown-toggle"
-                                        type="button"
-                                        data-toggle="dropdown"
-                                        onClick={() => setIsUserStatusFilter(!isUserStatusFilter)}
+                                <div className="dropdown">
+                                    <Dropdown
+                                        isOpen={isUserStatusFilter}
+                                        toggle={() => setIsUserStatusFilter(!isUserStatusFilter)}
                                     >
-                                        {selectedUserStatus == "all"
-                                            ? "All"
-                                            : selectedUserStatus == "active"
-                                                ? "Active"
-                                                : selectedUserStatus == "inactive"
-                                                    ? "In-active"
-                                                    : ""}
-                                        <span className="caret" />
-                                    </button>
-                                    <DropdownMenu className="outerdiv">
-                                        <>
-                                            <li onClick={() => userStatusFilter("all")}>
-                                                <div className="form-check custom-checkbox">
-                                                    <label
-                                                        className="form-check-label"
-                                                        htmlFor="All"
-                                                    >
-                                                        All
-                                                    </label>
-                                                </div>
-                                            </li>
-                                            <DropdownItem divider />
-                                            <li onClick={() => userStatusFilter("active")}>
-                                                <div className="form-check custom-checkbox">
-                                                    <label
-                                                        className="form-check-label"
-                                                        htmlFor="Active"
-                                                    >
-                                                        Active
-                                                    </label>
-                                                </div>
-                                            </li>
-                                            <DropdownItem divider />
-                                            <li onClick={() => userStatusFilter("inactive")}>
-                                                <div className="form-check custom-checkbox">
-                                                    <label
-                                                        className="form-check-label"
-                                                        htmlFor="In-active"
-                                                    >
-                                                        In-active
-                                                    </label>
-                                                </div>
-                                            </li>
-                                            <DropdownItem divider />
-                                        </>
-                                    </DropdownMenu>
-                                </Dropdown>
+                                        <button
+                                            className="btn btn-primary dropdown-toggle"
+                                            type="button"
+                                            data-toggle="dropdown"
+                                            onClick={() => setIsUserStatusFilter(!isUserStatusFilter)}
+                                        >
+                                            {selectedUserStatus == "all"
+                                                ? "All"
+                                                : selectedUserStatus == "active"
+                                                    ? "Active"
+                                                    : selectedUserStatus == "inactive"
+                                                        ? "In-active"
+                                                        : ""}
+                                            <span className="caret" />
+                                        </button>
+                                        <DropdownMenu className="outerdiv">
+                                            <>
+                                                <li onClick={() => userStatusFilter("all")}>
+                                                    <div className="form-check custom-checkbox">
+                                                        <label
+                                                            className="form-check-label"
+                                                            htmlFor="All"
+                                                        >
+                                                            All
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                                <DropdownItem divider />
+                                                <li onClick={() => userStatusFilter("active")}>
+                                                    <div className="form-check custom-checkbox">
+                                                        <label
+                                                            className="form-check-label"
+                                                            htmlFor="Active"
+                                                        >
+                                                            Active
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                                <DropdownItem divider />
+                                                <li onClick={() => userStatusFilter("inactive")}>
+                                                    <div className="form-check custom-checkbox">
+                                                        <label
+                                                            className="form-check-label"
+                                                            htmlFor="In-active"
+                                                        >
+                                                            In-active
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                                <DropdownItem divider />
+                                            </>
+                                        </DropdownMenu>
+                                    </Dropdown>
+                                </div>
                             </div>
 
                             <div className="dropdown">
@@ -371,36 +373,38 @@ const MyTeam = () => {
                                     className="chartfilter"
                                 // className={loader ? "chartfilter overlayerloader" : "chartfilter"}
                                 >
-                                    <span>
-                                        <p className="datelabel">From</p>
-                                        <DatePicker
-                                            selected={startDate}
-                                            placeholderText="Please select a date"
-                                            onChange={date => {
-                                                setStartDate(date)
-                                                settoDate(toDate ? toDate : new Date())
+                                    <div className="date-fiter-box">
+                                        <span>
+                                            <p className="datelabel">From</p>
+                                            <DatePicker
+                                                selected={startDate}
+                                                placeholderText="Please select a date"
+                                                onChange={date => {
+                                                    setStartDate(date)
+                                                    settoDate(toDate ? toDate : new Date())
 
-                                                // comparisonvalid(date, toDate)
-                                            }}
-                                            // minDate={registrationDate}
-                                            maxDate={new Date()}
-                                            dateFormat={"yyyy/MM/dd"}
-                                        />
-                                    </span>
-                                    <span>
-                                        <p className="datelabel">To</p>
-                                        <DatePicker
-                                            selected={toDate}
-                                            placeholderText="Please select a date"
-                                            onChange={date => {
-                                                settoDate(date)
-                                                // comparisonvalid(startDate, date)
-                                            }}
-                                            minDate={startDate}
-                                            maxDate={new Date()}
-                                            dateFormat={"yyyy/MM/dd"}
-                                        />
-                                    </span>
+                                                    // comparisonvalid(date, toDate)
+                                                }}
+                                                // minDate={registrationDate}
+                                                maxDate={new Date()}
+                                                dateFormat={"yyyy/MM/dd"}
+                                            />
+                                        </span>
+                                        <span>
+                                            <p className="datelabel">To</p>
+                                            <DatePicker
+                                                selected={toDate}
+                                                placeholderText="Please select a date"
+                                                onChange={date => {
+                                                    settoDate(date)
+                                                    // comparisonvalid(startDate, date)
+                                                }}
+                                                minDate={startDate}
+                                                maxDate={new Date()}
+                                                dateFormat={"yyyy/MM/dd"}
+                                            />
+                                        </span>
+                                    </div>
                                     <div className="filter-clear-btns">
                                         <button
                                             // title={
@@ -432,7 +436,7 @@ const MyTeam = () => {
                         </div>
                     </div>
                     <div className="theme_tab">
-                        <div className="tab-header">
+                        <div className="tab-header my-team-tab-box">
                             <div className="row">
                                 <div className="col-md-10">
                                     <ul className="nav nav-tabs" id="myTab" role="tablist">

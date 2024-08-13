@@ -329,7 +329,7 @@ const SelfTransfer = () => {
                                     </Col>}
                                     <Col lg="6">
                                         <Label>Amount</Label>
-                                        <div className="test form-check form-check-inline mt-20 ">
+                                        <div className="test form-check form-check-inline self-trans-field ">
                                             {/* <span className="prefix">{currency?.prefix}$</span> */}
                                             <div className="inner-input-box">
                                                 <Input

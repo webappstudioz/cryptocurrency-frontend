@@ -72,6 +72,7 @@ import SingleUserDetail from "../pages/Authentication/SingleUserDetail"
 import { components } from "react-select/dist/react-select.cjs.prod"
 import SelfTransfer from "../pages/Accounts/SelfTransfer"
 import AdminDashboard from "../pages/Admin/AdminDashboard"
+import GameResults from "../pages/GameResults/GameResults"
 
 const authRoutes = [
   { path: "/login", component: Login },
@@ -158,7 +159,7 @@ const adminRoutes = [
   { path: "/admin/update", component: AdminUpdateProfile },
   { path: "/changepassword", component: AdminChangePassword },
   // { path: "/admin-payment-history", component: PaymentHistory },
-  { path: "/admin/results", component: StoreResulst },
+  { path: "/admin/game-results", component: GameResults },
   { path: "/admin/invoice", component: Invoice },
   { path: "/admin/invoice-detail/:id", component: InvoiceDetail },
   { path: "/admin/dashboard", component: AdminDashboard }

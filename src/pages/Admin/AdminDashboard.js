@@ -61,20 +61,16 @@ const AdminDashboard = () => {
                         </div>
                     </div>
                     <div>
-                        <div className="row">
-                            <div className="col-md-6">
+                        <div className="row g-3">
+                            <div className="col-lg-6">
                                 <div className="tab_content tab-data-table">
                                     {/* <h5 className="info_heding">Profile Details</h5> */}
-                                    <table className="w-100">
-                                        <tbody>
-                                            <div>
-                                                <img src={logoGreen} style={{ height: "100%", width: "100%" }} />
-                                            </div>
-                                        </tbody>
-                                    </table>
+                                    <div className="account-img-box">
+                                        <img src={logoGreen} style={{ height: "100%", width: "100%" }} />
+                                    </div>
                                 </div>
                             </div>
-                            <div className="col-md-6">
+                            <div className="col-lg-6">
                                 <div className="tab_content tab-data-table">
                                     {/* <h5 className="info_heding">Authentications</h5> */}
                                     <table className="w-100">

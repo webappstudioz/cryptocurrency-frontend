@@ -154,12 +154,12 @@ const SidebarContent = (props) => {
                 <span>Invoices</span>
               </Link>
             </li>
-            {/* <li>
-              <Link to="/add-accounts" className="waves-effect">
+            <li>
+              <Link to="/admin/game-results" className="waves-effect">
                 <img src={server} alt="" />
-                <span>Add Accounts</span>
+                <span>Results</span>
               </Link>
-            </li> */}
+            </li>
             {/* <li>
               <Link to="/payment-history" className="waves-effect">
                 <img src={server} alt="" />

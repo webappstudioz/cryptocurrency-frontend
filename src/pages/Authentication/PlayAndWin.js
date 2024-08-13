@@ -98,314 +98,318 @@ const PlayandWin = (props) => {
                                         </div>
                                     </div>
                                 </div>
-                                <table className="poker-number-table">
-                                    <tr>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num red">
-                                                    1
+                                <div className="poker-table-box">
+                                    <div className="table-responsive">
+                                        <table className="poker-number-table">
+                                        <tr>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num red">
+                                                        1
+                                                    </div>
+                                                    <input type="text"></input>
                                                 </div>
-                                                <input type="text"></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num">
-                                                    2
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num">
+                                                        2
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num red">
-                                                    3
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num red">
+                                                        3
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num">
-                                                    4
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num">
+                                                        4
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num red">
-                                                    5
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num red">
+                                                        5
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num">
-                                                    6
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num">
+                                                        6
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num red">
-                                                    7
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num red">
+                                                        7
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num">
-                                                    8
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num">
+                                                        8
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num red">
-                                                    9
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num red">
+                                                        9
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num">
-                                                    10
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num">
+                                                        10
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num">
-                                                    11
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num">
+                                                        11
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box red">
-                                                <div className="poker-num">
-                                                    12
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box red">
+                                                    <div className="poker-num">
+                                                        12
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num">
-                                                    13
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num">
+                                                        13
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num red">
-                                                    14
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num red">
+                                                        14
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num">
-                                                    15
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num">
+                                                        15
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num red">
-                                                    16
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num red">
+                                                        16
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num">
-                                                    17
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num">
+                                                        17
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num red">
-                                                    18
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num red">
+                                                        18
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num red">
-                                                    19
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num red">
+                                                        19
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num">
-                                                    20
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num">
+                                                        20
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num red">
-                                                    21
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num red">
+                                                        21
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num">
-                                                    22
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num">
+                                                        22
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num red">
-                                                    23
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num red">
+                                                        23
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num">
-                                                    24
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num">
+                                                        24
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num red">
-                                                    25
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num red">
+                                                        25
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num">
-                                                    26
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num">
+                                                        26
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num red">
-                                                    27
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num red">
+                                                        27
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num">
-                                                    28
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num">
+                                                        28
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num">
-                                                    29
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num">
+                                                        29
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num red">
-                                                    30
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num red">
+                                                        30
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num">
-                                                    31
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num">
+                                                        31
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num red">
-                                                    32
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num red">
+                                                        32
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num">
-                                                    33
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num">
+                                                        33
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num red">
-                                                    34
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num red">
+                                                        34
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num">
-                                                    35
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num">
+                                                        35
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="poker-num-box">
-                                                <div className="poker-num red">
-                                                    36
+                                            </td>
+                                            <td>
+                                                <div className="poker-num-box">
+                                                    <div className="poker-num red">
+                                                        36
+                                                    </div>
+                                                    <input type="text"  ></input>
                                                 </div>
-                                                <input type="text"  ></input>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
+                                            </td>
+                                        </tr>
+                                        </table>
+                                    </div>
+                                </div>
                                 <div className="poker-color-box mt-3">
                                     <div className="table-color-box">
                                         <div className="color-box-name red">
