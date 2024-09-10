@@ -23,7 +23,6 @@ const ShowResultsAndTime = () => {
         getResults()
     }, [])
 
-
     const columns = useMemo(
         () => [
             {
@@ -110,7 +109,7 @@ const ShowResultsAndTime = () => {
     // Format date and time
     const formattedDate = dateTime.toLocaleDateString();
     const formattedTime = dateTime.toLocaleTimeString();
-
+   
     const TableData = [
         {
             serialNumber: 1,

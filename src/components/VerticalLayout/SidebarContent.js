@@ -117,6 +117,13 @@ const SidebarContent = props => {
                 <span>Play & Win</span>
               </Link>
             </li>
+
+            <li>
+              <Link to="/game-results" className="waves-effect">
+                <img src={billing} alt="" />
+                <span>Game Results</span>
+              </Link>
+            </li>
             {/* <li className="menu-title s-title sidebar-title-v2">
               {props.t("Accounts")}
             </li> */}

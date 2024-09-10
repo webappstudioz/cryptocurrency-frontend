@@ -112,7 +112,7 @@ const ResetPassword = props => {
         let data = new URLSearchParams({
         token: token,
         password: values.password,
-        confirm_password: values.confirmPassword,
+        password_confirmation: values.confirmPassword,
       })
       setSpinner(true)
       setAction(true)

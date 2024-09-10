@@ -432,6 +432,9 @@ export const getPaymentRejectReasons = async () => {
   return await getNew(url.PAYMENT_REJECT_REASONS)
 }
 
+export const handlePlacebet = async (data) => {
+  await postNew(url.PLACE_BET, data)
+}
 
 // export const handleSelfTransfer
 // export const withDrawFunds = async (data) => {

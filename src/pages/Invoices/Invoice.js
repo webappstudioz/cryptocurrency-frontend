@@ -120,17 +120,13 @@ function Invoice() {
       }
     } catch (error) {
       console.log("error", error)
-      if (error?.response?.data?.status_code == 403) {
-        // setPermissionDen(true)
-      }
-      if (error?.response?.data?.status_code != 401) {
-        // setPermissionDen(true)
-        setLoader(false)
-        setLoading(false)
-        toast.error(error?.response?.data?.message, {
-          position: toast.POSITION.TOP_RIGHT,
-        })
-      }
+      // setPermissionDen(true)
+      setLoader(false)
+      setLoading(false)
+      toast.error(error?.response?.data?.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      })
+
     }
   }
 
@@ -141,14 +137,14 @@ function Invoice() {
         status: status,
         payment_type: paymentType,
         pagination: pageSizes,
-        page:page
+        page: page
         // page: 1
       })
     } else {
       data = new URLSearchParams({
         payment_type: paymentType,
         pagination: pageSizes,
-        page:page
+        page: page
         // page: 1
       })
     }

@@ -14,7 +14,7 @@ import {
 
 import { Col, Row, DropdownMenu, DropdownItem, Dropdown } from "reactstrap"
 import Vector1 from "../../assets/images/Vector1.svg"
-import { getInvoice, loginData } from "../Authentication/store/apiServices"
+import { getGameResults, getInvoice, loginData } from "../Authentication/store/apiServices"
 import { toast } from "react-toastify"
 import { setPageTitle } from "../../helpers/api_helper_rs"
 import ResultsTableContainer from "../../components/Common/ResultsTable"
@@ -52,6 +52,18 @@ function GameResults() {
     setPageTitle("Game Results")
     // getInvoiceList()
   }, [])
+
+  const getReults = async() => {
+    try{
+      let res = await getGameResults()
+      console.log("res", res)
+    }catch(error){
+      console.log("error", error)
+      toast.error(error?.response?.data?.message, {
+        position:toast.POSITION.TOP_RIGHT
+      })
+    }
+  }
 
   const getInvoiceList = async (data) => {
     try {

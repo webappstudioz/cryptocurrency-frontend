@@ -63,3 +63,5 @@ export const TimeFormat = {
 
 //short code of those countries which data is not available in phone input and flag is not available in country list
 export const noCountryData = ["aq", "bv", "tp", "xa", "tf", "hm", "xj", "xm", "an", "pn", "xg", "gs", "um", "yu", "xu"]
+export const RedNumbers = [1, 5, 9, , 7, 11, 14, 16, 18, 19, 21, 25, 23,27, 30, 34, 32, 36]
+export const BlackNumbers = [2, 6,  10, 4, 8, 12, 13, 31, 35, 29, 33, 28, 24, 20, 22, 26, 13, 17, 15]

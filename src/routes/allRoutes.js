@@ -73,6 +73,7 @@ import { components } from "react-select/dist/react-select.cjs.prod"
 import SelfTransfer from "../pages/Accounts/SelfTransfer"
 import AdminDashboard from "../pages/Admin/AdminDashboard"
 import GameResults from "../pages/GameResults/GameResults"
+import AllBetsList from "../pages/Admin/AllBetsList"
 
 const authRoutes = [
   { path: "/login", component: Login },
@@ -107,6 +108,7 @@ const userRoutes = [
   { path: "/invoice", component: Invoice },
   { path: "/self-transfer", component: SelfTransfer},
   { path: "/invoice-detail/:id", component: InvoiceDetail },
+  { path: "/game-results", component: GameResults },
 
   { path: "/services", component: ServiceList },
   { path: "/server-management/:id", component: ServerManagement },
@@ -162,7 +164,8 @@ const adminRoutes = [
   { path: "/admin/game-results", component: GameResults },
   { path: "/admin/invoice", component: Invoice },
   { path: "/admin/invoice-detail/:id", component: InvoiceDetail },
-  { path: "/admin/dashboard", component: AdminDashboard }
+  { path: "/admin/dashboard", component: AdminDashboard },
+  { path: "/admin/all-bets", component: AllBetsList }
 ]
 
 const userVerifyRoutes = [
