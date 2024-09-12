@@ -26,7 +26,7 @@ export const GET_INVOICES = "/payment/list"
 export const GET_INVOICE_DETAIL = "/payment/detail"
 export const CHANGE_PAYMENT_STATUS = "/payment/change/status"
 export const PAYMENT_REJECT_REASONS = "/admin/invoice/rejection/reason"
-export const PLACE_BET = "/number/store"
+export const PLACE_BET = "/bet/place"
 
 //REGISTER
 export const GOOGLE_LOGIN = "/auth/google"

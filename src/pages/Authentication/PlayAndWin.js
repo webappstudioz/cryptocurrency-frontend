@@ -9,7 +9,7 @@ const PlayandWin = (props) => {
     const [dateTime, setDateTime] = useState(new Date());
     const formattedDate = dateTime.toLocaleDateString();
     const formattedTime = dateTime.toLocaleTimeString();
-    const maxVal = 25
+    const maxVal = 2500
     const [allNumbers, setAllNumbers] = useState([
         { name: "1", amount: "" },
         { name: "2", amount: "" },
@@ -140,18 +140,17 @@ const PlayandWin = (props) => {
                 ...value,
             }
             const numberArray = Object.keys(betNumbers).map(key => ({
-                'Amount': Number(betNumbers[key]),  // Convert value to number
-                'W_number': key  // Use the key as it is
+                'amount': Number(betNumbers[key]),  // Convert value to number
+                'bet_number': key  // Use the key as it is
               }));
-
-              let payload = new URLSearchParams({
+              console.log("numberArray",numberArray)
+              let payload = ({
                 number: numberArray,
-                timeZone: formattedTime,
               })
             // timezone: "",
             console.log("payload", payload)
             try {
-                let res = await handlePlacebet(payload)
+                let res = await handlePlacebet({number: numberArray})
                 console.log("res", res)
             } catch (error) {
                 console.log("error", error)

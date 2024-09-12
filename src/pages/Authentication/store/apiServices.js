@@ -433,7 +433,7 @@ export const getPaymentRejectReasons = async () => {
 }
 
 export const handlePlacebet = async (data) => {
-  await postNew(url.PLACE_BET, data)
+  await postDataImg(url.PLACE_BET, data)
 }
 
 // export const handleSelfTransfer
